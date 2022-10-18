@@ -273,5 +273,17 @@ void CGRenderContext::GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unor
 	//slopes.back() = (pnts.front().x() - pnts.back().x()) / (pnts.front().y() - pnts.back().y());
 	//return slopes;
 }
+void CGRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+void CGRenderContext::BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+void CGRenderContext::FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+
+}
+void CGRenderContext::FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+
+}
 
 CG_NAMESPACE_EXIT

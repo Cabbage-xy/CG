@@ -76,11 +76,11 @@ public:
 	void GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap);
 	//int Compare(const void * a, const void * b);
 	//边界表示的种子填充算法
-	//virtual void BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
-	//virtual void BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
+	virtual void BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
+	virtual void BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
 	//内点表示的种子填充算法
-	//virtual void FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor);
-	//virtual void FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor);
+	virtual void FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor);
+	virtual void FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor);
 	//扫描线种子填充算法
 	//virtual void ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
 	//virtual void ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor);
