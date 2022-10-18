@@ -195,6 +195,7 @@
     <ClInclude Include="CG2DEllipse.h" />
     <ClInclude Include="CG2DLine.h" />
     <ClInclude Include="CG2DLineSegment.h" />
+    <ClInclude Include="CG2DPolygon.h" />
     <ClInclude Include="CG2DPolyLine.h" />
     <ClInclude Include="CG2DRay.h" />
     <ClInclude Include="CG2DRenderable.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Create2DLineSegment.h" />
     <ClInclude Include="Create2DPolyLine.h" />
     <ClInclude Include="Create2DRay.h" />
+    <ClInclude Include="Create2DSeedFill.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CGDI2DChildFrame.h" />
@@ -248,6 +250,7 @@
     <ClCompile Include="CG2DEllipse.cpp" />
     <ClCompile Include="CG2DLine.cpp" />
     <ClCompile Include="CG2DLineSegment.cpp" />
+    <ClCompile Include="CG2DPolygon.cpp" />
     <ClCompile Include="CG2DPolyLine.cpp" />
     <ClCompile Include="CG2DRay.cpp" />
     <ClCompile Include="CG2DRenderable.cpp" />
@@ -273,6 +276,7 @@
     <ClCompile Include="Create2DLineSegment.cpp" />
     <ClCompile Include="Create2DPolyLine.cpp" />
     <ClCompile Include="Create2DRay.cpp" />
+    <ClCompile Include="Create2DSeedFill.cpp" />
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="CGDI2DChildFrame.cpp" />
     <ClCompile Include="MainFrm.cpp" />

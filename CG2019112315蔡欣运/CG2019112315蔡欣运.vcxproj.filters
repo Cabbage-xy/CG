@@ -168,6 +168,12 @@
     <ClInclude Include="Create2DCircle3Point.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Create2DSeedFill.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CG2DPolygon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CG2019112315蔡欣运.cpp">
@@ -309,6 +315,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Create2DCircle3Point.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Create2DSeedFill.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CG2DPolygon.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

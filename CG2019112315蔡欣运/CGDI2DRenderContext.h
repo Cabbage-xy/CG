@@ -33,13 +33,18 @@ public:
 	void CirclePlot(const Vec2i& center, int x, int y, unsigned long color); //用于在MidPoint和Bresenham中绘制八个对称位置的像素
 	virtual void MidPointCircle(const Vec2i& center, int radius, unsigned long color);
 	virtual void BresenhamCircle(const Vec2i& center, int radius, unsigned long color);
-	/*
-	virtual void CircleArc(const Vec2i& center, int radius, unsigned long color, float startAngle, float sweepAngle); //逆时针
+	
+	//virtual void CircleArc(const Vec2i& center, int radius, unsigned long color, float startAngle, float sweepAngle); //逆时针
 	//椭圆绘制算法（轴对齐椭圆）
-	virtual void MidPointEllipse(const Vec2i& center, int a, int b, unsigned long color);
-	virtual void EllipseArc(const Vec2i& center, int a, int b, unsigned long color, float startAngle, float sweepAngle); //逆时针
+	//virtual void MidPointEllipse(const Vec2i& center, int a, int b, unsigned long color);
+	//virtual void EllipseArc(const Vec2i& center, int a, int b, unsigned long color, float startAngle, float sweepAngle); //逆时针
 	//有效边表多边形扫描线填充算法
 	virtual void ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor);
+	void DrawPixel(int x, int y, unsigned long fillcolor);
+	bool IsOdd(int num);
+	void CalculateBounds(const Vec2iArray& pnts, int& yLow, int& yHigh, int& xLow, int& xHigh);
+	void PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts, int yHigh, int yLow);
+	void GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap);
 	//边界表示的种子填充算法
 	virtual void BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
 	virtual void BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
@@ -47,7 +52,7 @@ public:
 	virtual void FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor);
 	virtual void FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor);
 	//扫描线种子填充算法
-	virtual void ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor);*/
+	virtual void ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
 protected:
 #ifdef USEMEMDC
 	//二维图形用（双缓存支持）

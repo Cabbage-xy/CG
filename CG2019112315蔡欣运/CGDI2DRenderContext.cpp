@@ -362,6 +362,125 @@ void CGDI2DRenderContext::BresenhamCircle(const Vec2i& center, int radius, unsig
 	}
 	return;
 }
+
+//有效边表多边形扫描线填充算法
+int Compare(const void* a, const void* b) {
+	float* pa = (float*)a;
+	float* pb = (float*)b;
+	return (*pa) - (*pb);  //从小到大排序
+}
+
+void CGDI2DRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor)
+{
+	int yLow, yHigh, xLow, xHigh;
+	CalculateBounds(pnts, yLow, yHigh, xLow, xHigh);
+
+	std::unordered_map<int, std::vector<float>> yHitsMap;
+	PrepareMap(yHitsMap, pnts, yHigh, yLow);
+
+
+	for (int y = yLow; y <= yHigh; y++) {
+		sort(yHitsMap.at(y).begin(), yHitsMap.at(y).end());
+
+		int counter = 0;
+		for (int x = xLow; x <= xHigh; x++) {
+			if (x >= yHitsMap.at(y)[counter])
+			{
+				DrawPixel(x, y, fillcolor);
+				counter++;
+			}
+
+			if (IsOdd(counter))
+				DrawPixel(x, y, fillcolor);
+		}
+	}
+
+
+}
+
+void CGDI2DRenderContext::DrawPixel(int x, int y, unsigned long fillcolor) {
+	if (mView == nullptr && mHWND == 0 && mHDC == 0)
+		return;
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+#endif
+	HDC hDC = 0;
+#ifdef USEMEMDC
+	hDC = hmemDC(); //使用双缓存（内存DC）
+#else
+	hDC = hdc(); //不使用双缓存（内存DC）
+#endif
+	CClientDC dc(mView); //如果hDC为0时使用
+	//以下是直线段的绘制（自行补充）
+	if (hDC != 0)
+	{
+		::SetPixel(hDC, (int)(x + 0.5), (int)(y + 0.5), fillcolor);
+	}
+	else
+	{
+		dc.SetPixel((int)(x + 0.5), (int)(y + 0.5), fillcolor);
+	}
+}
+
+bool CGDI2DRenderContext::IsOdd(int num) {
+	return num % 2;
+}
+
+void  CGDI2DRenderContext::CalculateBounds(const Vec2iArray& pnts, int& yLow, int& yHigh,
+	int& xLow, int& xHigh) {
+	yLow = xLow = 25000;
+	for (auto pnt : pnts) {
+		if (pnt.x() > xHigh) xHigh = pnt.x();
+		if (pnt.y() > yHigh) yHigh = pnt.y();
+		if (pnt.x() < xLow) xLow = pnt.x();
+		if (pnt.x() < yLow) yLow = pnt.y();
+	}
+}
+
+void CGDI2DRenderContext::PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts, int yHigh, int yLow) {
+	for (int p1 = 0; p1 < pnts.size(); p1++) {
+		int p2 = (p1 + 1) % pnts.size();
+
+		GetHits(pnts[p1], pnts[p2], yLow, yHigh, yHitsMap);
+	}
+}
+
+void CGDI2DRenderContext::GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap) {
+	if (p2.y() == p1.y()) return;
+	float k = (p2.x() - p1.x()) / (p2.y() - p1.y());
+
+	for (int y = yLow; y <= yHigh; y++) {
+		float hit = k * (y - p1.y()) + p1.x();
+		bool found = yHitsMap.find(y) != yHitsMap.end();
+		if (!found) {
+			yHitsMap.insert({ y, std::vector<float>() });
+		}
+
+		yHitsMap[y].push_back(hit);
+	}
+}
+
+//边界表示的种子填充算法
+void CGDI2DRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+void CGDI2DRenderContext::BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+//内点表示的种子填充算法
+void CGDI2DRenderContext::FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+
+}
+void CGDI2DRenderContext::FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+
+}
+//扫描线种子填充算法
+void CGDI2DRenderContext::ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+
+
 #ifdef USEMEMDC
 void CGDI2DRenderContext::SwapBackBuffer()
 {
