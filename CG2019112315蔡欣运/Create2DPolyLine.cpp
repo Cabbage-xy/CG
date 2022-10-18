@@ -28,7 +28,7 @@ int Create2DPolyLine::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 			mPoints.push_back(pos);
 		}
 		mPoints[0] = pos;
-		mView->Prompt(_T("请单机输入折线段的下一点，或双击输入折线段终点")); //通过处理事件的View显示到状态栏
+		mView->Prompt(_T("请单机输入折线段的下一点，或回车输入折线段终点")); //通过处理事件的View显示到状态栏
 	}
 	else if (mStep >= 2)
 	{
