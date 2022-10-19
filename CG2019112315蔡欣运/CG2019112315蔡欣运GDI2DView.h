@@ -122,6 +122,8 @@ public:
 	afx_msg void OnUpdateDrawCircle1pointRadius(CCmdUI* pCmdUI);
 	afx_msg void OnDrawCircle3point();
 	afx_msg void OnUpdateDrawCircle3point(CCmdUI* pCmdUI);
+	afx_msg void OnDrawPolygon();
+	afx_msg void OnUpdateDrawPolygon(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // CG2019112315蔡欣运GDI2DView.cpp 中的调试版本

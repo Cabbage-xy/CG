@@ -30,6 +30,7 @@
 #include "Create2DCircle1PointRadius.h"
 #include "Create2DCircle2PointDiameter.h"
 #include "Create2DCircle3Point.h"
+#include "Create2DPolygon.h"
 #include "Pick2DRenderable.h"
 
 #include "CGRenderContext.h"
@@ -86,6 +87,8 @@ BEGIN_MESSAGE_MAP(CCG2019112315蔡欣运GDI2DView, CGDI2DView/*CView*/)
 	ON_UPDATE_COMMAND_UI(ID_DRAW_CIRCLE_1POINT_RADIUS, &CCG2019112315蔡欣运GDI2DView::OnUpdateDrawCircle1pointRadius)
 	ON_COMMAND(ID_DRAW_CIRCLE_3POINT, &CCG2019112315蔡欣运GDI2DView::OnDrawCircle3point)
 	ON_UPDATE_COMMAND_UI(ID_DRAW_CIRCLE_3POINT, &CCG2019112315蔡欣运GDI2DView::OnUpdateDrawCircle3point)
+	ON_COMMAND(ID_DRAW_POLYGON, &CCG2019112315蔡欣运GDI2DView::OnDrawPolygon)
+	ON_UPDATE_COMMAND_UI(ID_DRAW_POLYGON, &CCG2019112315蔡欣运GDI2DView::OnUpdateDrawPolygon)
 END_MESSAGE_MAP()
 
 // CCG2019112315蔡欣运GDI2DView 构造/析构
@@ -142,7 +145,7 @@ void CCG2019112315蔡欣运GDI2DView::OnDraw(CDC* pDC)
 	// TODO: 在此处为本机数据添加绘制代码
 	//pDC->MoveTo(100, 100); //默认画笔移到(100, 100)
 	//pDC->LineTo(500, 200); //默认画笔绘制到(500, 200)
-	//mRenderContext->setView(this);
+	
 	RenderScene();
 }
 
@@ -457,8 +460,6 @@ void CCG2019112315蔡欣运GDI2DView::OnDrawCdc()
 	fontGrade.CreatePointFont(100, L"宋体");//初始化
 	CFont* pOldFont = dc.SelectObject(&fontGrade);//将CFont对象选入到当前DC中即为设置当前字体及大小
 	dc.DrawText(_T("你好"), &rect, DT_LEFT | DT_WORDBREAK | DT_NOPREFIX | DT_EDITCONTROL);
-
-	
 }
 
 bool CCG2019112315蔡欣运GDI2DView::RenderScene()
@@ -885,4 +886,32 @@ void CCG2019112315蔡欣运GDI2DView::OnUpdateDrawCircle3point(CCmdUI* pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dCircle3Point);
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnDrawPolygon()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (mCommand)
+	{
+		mCommand->Cancel();
+		delete mCommand;
+		mCommand = nullptr;
+	}
+	mCommand = new Create2DPolygon(this);
+	/*mRenderContext->setView(this);
+	Vec2iArray pnts;
+	pnts.push_back(Vec2i(100, 100));
+	pnts.push_back(Vec2i(200, 250));
+	pnts.push_back(Vec2i(100, 300));
+	pnts.push_back(Vec2i(0, 200));
+	mRenderContext->ScanLinePolygonFill(pnts, AFX_IDC_COLOR_BLACK);
+	Invalidate();*/
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnUpdateDrawPolygon(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dPolygon);
 }
