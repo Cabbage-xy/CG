@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CGDI2DRenderContext.h"
 #include "CGDI2DView.h"
+#include <stack>
 CG_NAMESPACE_ENTER
 CGDI2DRenderContext::CGDI2DRenderContext()
 {
@@ -401,7 +402,7 @@ void CGDI2DRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned l
 }
 
 void CGDI2DRenderContext::DrawPixel(int x, int y, unsigned long fillcolor) {
-	if (mView == nullptr && mHWND == 0 && mHDC == 0)
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
 		return;
 #ifdef USEMEMDC
 	if (mMemDC == 0)
@@ -483,17 +484,169 @@ bool CGDI2DRenderContext::isPartialExtremum(const Vec2iArray& pnts, const int x,
 
 //边界表示的种子填充算法
 void CGDI2DRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
-
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if ((color != boundcolor) && (color != fillcolor)) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if ((color != boundcolor) && (color != fillcolor))
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	BoundFill4(x - 1, y, boundcolor, fillcolor); //左
+	//	BoundFill4(x, y + 1, boundcolor, fillcolor); //上
+	//	BoundFill4(x + 1, y, boundcolor, fillcolor); //右
+	//	BoundFill4(x, y - 1, boundcolor, fillcolor); //下
+	//}
+#endif
 }
 void CGDI2DRenderContext::BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
-
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if ((color != boundcolor) && (color != fillcolor)) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			Vec2i pLT(p.x() - 1, p.y() + 1), pRT(p.x() + 1, p.y() + 1);
+			Vec2i pLB(p.x() - 1, p.y() - 1), pRB(p.x() + 1, p.y() - 1);
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+			pointStack.push(pLT);
+			pointStack.push(pRT);
+			pointStack.push(pLB);
+			pointStack.push(pRB);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if ((color != boundcolor) && (color != fillcolor))
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	BoundFill8(x + 1, y, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y, boundcolor, fillcolor);
+	//	BoundFill8(x, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x, y - 1, boundcolor, fillcolor);
+	//	BoundFill8(x + 1, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y - 1, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x + 1, y - 1, boundcolor, fillcolor);
+	//}
+#endif
 }
 //内点表示的种子填充算法
 void CGDI2DRenderContext::FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
-
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if (color == innercolor) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if (color == innercolor)
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	FloodFill4(x - 1, y, innercolor, fillcolor); //左
+	//	FloodFill4(x, y + 1, innercolor, fillcolor); //上
+	//	FloodFill4(x + 1, y, innercolor, fillcolor); //右
+	//	FloodFill4(x, y - 1, innercolor, fillcolor); //下
+	//}
+#endif
 }
 void CGDI2DRenderContext::FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
-
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if (color == innercolor) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			Vec2i pLT(p.x() - 1, p.y() + 1), pRT(p.x() + 1, p.y() + 1);
+			Vec2i pLB(p.x() - 1, p.y() - 1), pRB(p.x() + 1, p.y() - 1);
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+			pointStack.push(pLT);
+			pointStack.push(pRT);
+			pointStack.push(pLB);
+			pointStack.push(pRB);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if (color == innercolor)
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	FloodFill8(x + 1, y, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y, innercolor, fillcolor);
+	//	FloodFill8(x, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x, y - 1, innercolor, fillcolor);
+	//	FloodFill8(x + 1, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y - 1, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x + 1, y - 1, innercolor, fillcolor);
+	//}
+#endif
 }
 //扫描线种子填充算法
 void CGDI2DRenderContext::ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {

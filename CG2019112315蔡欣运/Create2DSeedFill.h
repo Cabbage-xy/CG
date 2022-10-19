@@ -15,7 +15,7 @@ public:
 	//取消正在执行的命令（如按ESC键）
 	virtual int Cancel();
 protected:
-	//Pos2i
+	Pos2i mPoint;
 };
 CG_NAMESPACE_EXIT
 #endif //_CREATE2DSEEDFILL_H_INCLUDED

@@ -80,4 +80,6 @@ public:
 	afx_msg void OnUpdateAlgorithmCircle(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmPolygon(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmSeed(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateBoundColor(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInnerColor(CCmdUI* pCmdUI);
 };

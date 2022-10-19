@@ -139,13 +139,15 @@
 #define ID_PICK_NONE                    32818
 #define ID_PICK_ONE                     32819
 #define ID_BUTTON2                      32820
+#define ID_PICK_SEED_POINT              32820
+#define ID_DRAW_2DLINE_TIME             32822
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32821
+#define _APS_NEXT_COMMAND_VALUE         32823
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           312
 #endif

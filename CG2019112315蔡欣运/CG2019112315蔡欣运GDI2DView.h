@@ -124,6 +124,9 @@ public:
 	afx_msg void OnUpdateDrawCircle3point(CCmdUI* pCmdUI);
 	afx_msg void OnDrawPolygon();
 	afx_msg void OnUpdateDrawPolygon(CCmdUI* pCmdUI);
+	afx_msg void OnPickSeedPoint();
+	afx_msg void OnUpdatePickSeedPoint(CCmdUI* pCmdUI);
+	afx_msg void OnDraw2dLineTime();
 };
 
 #ifndef _DEBUG  // CG2019112315蔡欣运GDI2DView.cpp 中的调试版本

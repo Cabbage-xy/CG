@@ -15,6 +15,7 @@ enum CommandType
 	cmd2dCircle2PointDiameter = 7, //两点为直径画圆
 	cmd2dCircle3Point = 8, //三点外接圆
 	cmd2dPolygon = 9, //绘制一般多边形
+	cmd2dSeedFill = 10, //种子填充
 	//……其他自定义命令
 	cmd2dPickRenderable = 1000, //拾取图形
 };

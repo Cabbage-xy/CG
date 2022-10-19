@@ -96,6 +96,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <StackCommitSize>300000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -144,6 +145,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <StackCommitSize>300000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
