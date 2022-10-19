@@ -150,11 +150,9 @@ void CGRenderContext::BresenhamCircle(const Vec2i& center, int radius, unsigned 
 }
 
 
-void CGRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor)
-{
-	return;
+void CGRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor){
+	
 }
-
 void CGRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
 
 }

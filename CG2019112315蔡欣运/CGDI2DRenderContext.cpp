@@ -376,26 +376,28 @@ void CGDI2DRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned l
 	CalculateBounds(pnts, yLow, yHigh, xLow, xHigh);
 
 	std::unordered_map<int, std::vector<float>> yHitsMap;
-	PrepareMap(yHitsMap, pnts, yHigh, yLow);
+	PrepareMap(yHitsMap, pnts);
 
 
 	for (int y = yLow; y <= yHigh; y++) {
 		sort(yHitsMap.at(y).begin(), yHitsMap.at(y).end());
 
-		int counter = 0;
+		int counter = 0, listIndex = 0;
 		for (int x = xLow; x <= xHigh; x++) {
-			if (x >= yHitsMap.at(y)[counter])
+			if (x >= yHitsMap.at(y)[listIndex])
 			{
 				DrawPixel(x, y, fillcolor);
-				counter++;
+				counter++, listIndex++;
+				if (listIndex >= yHitsMap.at(y).size()) break;
+				//当扫描线上有两点x坐标相同时，表明遇到了顶点，则判断该顶点是否为局部极值
+				if (yHitsMap.at(y)[listIndex] == yHitsMap.at(y)[listIndex - 1]) {
+					if (!isPartialExtremum(pnts, x, y)) listIndex++;
+				}
 			}
-
 			if (IsOdd(counter))
 				DrawPixel(x, y, fillcolor);
 		}
 	}
-
-
 }
 
 void CGDI2DRenderContext::DrawPixel(int x, int y, unsigned long fillcolor) {
@@ -430,25 +432,29 @@ bool CGDI2DRenderContext::IsOdd(int num) {
 void  CGDI2DRenderContext::CalculateBounds(const Vec2iArray& pnts, int& yLow, int& yHigh,
 	int& xLow, int& xHigh) {
 	yLow = xLow = 25000;
+	yHigh = xHigh = -25000;
 	for (auto pnt : pnts) {
 		if (pnt.x() > xHigh) xHigh = pnt.x();
 		if (pnt.y() > yHigh) yHigh = pnt.y();
 		if (pnt.x() < xLow) xLow = pnt.x();
-		if (pnt.x() < yLow) yLow = pnt.y();
+		if (pnt.y() < yLow) yLow = pnt.y();
 	}
 }
 
-void CGDI2DRenderContext::PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts, int yHigh, int yLow) {
+
+void CGDI2DRenderContext::PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts) {
 	for (int p1 = 0; p1 < pnts.size(); p1++) {
 		int p2 = (p1 + 1) % pnts.size();
-
-		GetHits(pnts[p1], pnts[p2], yLow, yHigh, yHitsMap);
+		GetHits(pnts[p1], pnts[p2], yHitsMap);
 	}
 }
 
-void CGDI2DRenderContext::GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap) {
+void CGDI2DRenderContext::GetHits(Vec2i p1, Vec2i p2, std::unordered_map<int, std::vector<float>>& yHitsMap) {
 	if (p2.y() == p1.y()) return;
-	float k = (p2.x() - p1.x()) / (p2.y() - p1.y());
+	float k = (float)(p2.x() - p1.x()) / (float)(p2.y() - p1.y());
+	int yLow, yHigh;
+	yLow = p2.y() < p1.y() ? p2.y() : p1.y();
+	yHigh = p2.y() < p1.y() ? p1.y() : p2.y();
 
 	for (int y = yLow; y <= yHigh; y++) {
 		float hit = k * (y - p1.y()) + p1.x();
@@ -458,6 +464,20 @@ void CGDI2DRenderContext::GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::
 		}
 
 		yHitsMap[y].push_back(hit);
+	}
+}
+
+bool CGDI2DRenderContext::isPartialExtremum(const Vec2iArray& pnts, const int x, const int y) {
+	for (int i = 0; i < pnts.size(); i++) {
+		if (pnts[i].y() == y && pnts[i].x() == x) {
+			int p1 = (i + pnts.size() - 1) % pnts.size();
+			int p2 = (i + 1) % pnts.size();
+			//在同侧
+			if (pnts[p1].y() - y < 0 == pnts[p2].y() - y < 0)
+				return true;
+			else
+				return false;
+		}
 	}
 }
 

@@ -43,8 +43,11 @@ public:
 	void DrawPixel(int x, int y, unsigned long fillcolor);
 	bool IsOdd(int num);
 	void CalculateBounds(const Vec2iArray& pnts, int& yLow, int& yHigh, int& xLow, int& xHigh);
-	void PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts, int yHigh, int yLow);
-	void GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap);
+	//void PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts, int yHigh, int yLow);
+	//void GetHits(Vec2i p1, Vec2i p2, int yLow, int yHigh, std::unordered_map<int, std::vector<float>>& yHitsMap);
+	void PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts);
+	void GetHits(Vec2i p1, Vec2i p2, std::unordered_map<int, std::vector<float>>& yHitsMap);
+	bool isPartialExtremum(const Vec2iArray& pnts, const int x, const int y);
 	//边界表示的种子填充算法
 	virtual void BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
 	virtual void BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor);
