@@ -220,6 +220,7 @@
     <ClInclude Include="Create2DCircle3Point.h" />
     <ClInclude Include="Create2DLine.h" />
     <ClInclude Include="Create2DLineSegment.h" />
+    <ClInclude Include="Create2dPolygon.h" />
     <ClInclude Include="Create2DPolyLine.h" />
     <ClInclude Include="Create2DRay.h" />
     <ClInclude Include="Create2DSeedFill.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="Create2DCircle3Point.cpp" />
     <ClCompile Include="Create2DLine.cpp" />
     <ClCompile Include="Create2DLineSegment.cpp" />
+    <ClCompile Include="Create2dPolygon.cpp" />
     <ClCompile Include="Create2DPolyLine.cpp" />
     <ClCompile Include="Create2DRay.cpp" />
     <ClCompile Include="Create2DSeedFill.cpp" />
