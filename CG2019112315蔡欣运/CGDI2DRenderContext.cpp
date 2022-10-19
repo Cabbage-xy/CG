@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CGDI2DRenderContext.h"
 #include "CGDI2DView.h"
+#include <stack>
 CG_NAMESPACE_ENTER
 CGDI2DRenderContext::CGDI2DRenderContext()
 {
@@ -362,6 +363,297 @@ void CGDI2DRenderContext::BresenhamCircle(const Vec2i& center, int radius, unsig
 	}
 	return;
 }
+
+//有效边表多边形扫描线填充算法
+int Compare(const void* a, const void* b) {
+	float* pa = (float*)a;
+	float* pb = (float*)b;
+	return (*pa) - (*pb);  //从小到大排序
+}
+
+void CGDI2DRenderContext::ScanLinePolygonFill(const Vec2iArray& pnts, unsigned long fillcolor)
+{
+	int yLow, yHigh, xLow, xHigh;
+	CalculateBounds(pnts, yLow, yHigh, xLow, xHigh);
+
+	std::unordered_map<int, std::vector<float>> yHitsMap;
+	PrepareMap(yHitsMap, pnts);
+
+
+	for (int y = yLow; y <= yHigh; y++) {
+		sort(yHitsMap.at(y).begin(), yHitsMap.at(y).end());
+
+		int counter = 0, listIndex = 0;
+		for (int x = xLow; x <= xHigh; x++) {
+			if (x >= yHitsMap.at(y)[listIndex])
+			{
+				DrawPixel(x, y, fillcolor);
+				counter++, listIndex++;
+				if (listIndex >= yHitsMap.at(y).size()) break;
+				//当扫描线上有两点x坐标相同时，表明遇到了顶点，则判断该顶点是否为局部极值
+				if (yHitsMap.at(y)[listIndex] == yHitsMap.at(y)[listIndex - 1]) {
+					if (!isPartialExtremum(pnts, x, y)) listIndex++;
+				}
+			}
+			if (IsOdd(counter))
+				DrawPixel(x, y, fillcolor);
+		}
+	}
+}
+
+void CGDI2DRenderContext::DrawPixel(int x, int y, unsigned long fillcolor) {
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+		return;
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+#endif
+	HDC hDC = 0;
+#ifdef USEMEMDC
+	hDC = hmemDC(); //使用双缓存（内存DC）
+#else
+	hDC = hdc(); //不使用双缓存（内存DC）
+#endif
+	CClientDC dc(mView); //如果hDC为0时使用
+	//以下是直线段的绘制（自行补充）
+	if (hDC != 0)
+	{
+		::SetPixel(hDC, (int)(x + 0.5), (int)(y + 0.5), fillcolor);
+	}
+	else
+	{
+		dc.SetPixel((int)(x + 0.5), (int)(y + 0.5), fillcolor);
+	}
+}
+
+bool CGDI2DRenderContext::IsOdd(int num) {
+	return num % 2;
+}
+
+void  CGDI2DRenderContext::CalculateBounds(const Vec2iArray& pnts, int& yLow, int& yHigh,
+	int& xLow, int& xHigh) {
+	yLow = xLow = 25000;
+	yHigh = xHigh = -25000;
+	for (auto pnt : pnts) {
+		if (pnt.x() > xHigh) xHigh = pnt.x();
+		if (pnt.y() > yHigh) yHigh = pnt.y();
+		if (pnt.x() < xLow) xLow = pnt.x();
+		if (pnt.y() < yLow) yLow = pnt.y();
+	}
+}
+
+
+void CGDI2DRenderContext::PrepareMap(std::unordered_map<int, std::vector<float>>& yHitsMap, const Vec2iArray& pnts) {
+	for (int p1 = 0; p1 < pnts.size(); p1++) {
+		int p2 = (p1 + 1) % pnts.size();
+		GetHits(pnts[p1], pnts[p2], yHitsMap);
+	}
+}
+
+void CGDI2DRenderContext::GetHits(Vec2i p1, Vec2i p2, std::unordered_map<int, std::vector<float>>& yHitsMap) {
+	if (p2.y() == p1.y()) return;
+	float k = (float)(p2.x() - p1.x()) / (float)(p2.y() - p1.y());
+	int yLow, yHigh;
+	yLow = p2.y() < p1.y() ? p2.y() : p1.y();
+	yHigh = p2.y() < p1.y() ? p1.y() : p2.y();
+
+	for (int y = yLow; y <= yHigh; y++) {
+		float hit = k * (y - p1.y()) + p1.x();
+		bool found = yHitsMap.find(y) != yHitsMap.end();
+		if (!found) {
+			yHitsMap.insert({ y, std::vector<float>() });
+		}
+
+		yHitsMap[y].push_back(hit);
+	}
+}
+
+bool CGDI2DRenderContext::isPartialExtremum(const Vec2iArray& pnts, const int x, const int y) {
+	for (int i = 0; i < pnts.size(); i++) {
+		if (pnts[i].y() == y && pnts[i].x() == x) {
+			int p1 = (i + pnts.size() - 1) % pnts.size();
+			int p2 = (i + 1) % pnts.size();
+			//在同侧
+			if (pnts[p1].y() - y < 0 == pnts[p2].y() - y < 0)
+				return true;
+			else
+				return false;
+		}
+	}
+}
+
+//边界表示的种子填充算法
+void CGDI2DRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if ((color != boundcolor) && (color != fillcolor)) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if ((color != boundcolor) && (color != fillcolor))
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	BoundFill4(x - 1, y, boundcolor, fillcolor); //左
+	//	BoundFill4(x, y + 1, boundcolor, fillcolor); //上
+	//	BoundFill4(x + 1, y, boundcolor, fillcolor); //右
+	//	BoundFill4(x, y - 1, boundcolor, fillcolor); //下
+	//}
+#endif
+}
+void CGDI2DRenderContext::BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if ((color != boundcolor) && (color != fillcolor)) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			Vec2i pLT(p.x() - 1, p.y() + 1), pRT(p.x() + 1, p.y() + 1);
+			Vec2i pLB(p.x() - 1, p.y() - 1), pRB(p.x() + 1, p.y() - 1);
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+			pointStack.push(pLT);
+			pointStack.push(pRT);
+			pointStack.push(pLB);
+			pointStack.push(pRB);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if ((color != boundcolor) && (color != fillcolor))
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	BoundFill8(x + 1, y, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y, boundcolor, fillcolor);
+	//	BoundFill8(x, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x, y - 1, boundcolor, fillcolor);
+	//	BoundFill8(x + 1, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y - 1, boundcolor, fillcolor);
+	//	BoundFill8(x - 1, y + 1, boundcolor, fillcolor);
+	//	BoundFill8(x + 1, y - 1, boundcolor, fillcolor);
+	//}
+#endif
+}
+//内点表示的种子填充算法
+void CGDI2DRenderContext::FloodFill4(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if (color == innercolor) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if (color == innercolor)
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	FloodFill4(x - 1, y, innercolor, fillcolor); //左
+	//	FloodFill4(x, y + 1, innercolor, fillcolor); //上
+	//	FloodFill4(x + 1, y, innercolor, fillcolor); //右
+	//	FloodFill4(x, y - 1, innercolor, fillcolor); //下
+	//}
+#endif
+}
+void CGDI2DRenderContext::FloodFill8(int x, int y, unsigned long innercolor, unsigned long fillcolor) {
+	if (mView == nullptr || mHWND == 0 || mHDC == 0)
+	{
+		return;
+	}
+#ifdef USEMEMDC
+	if (mMemDC == 0)
+		return;
+	Vec2i point(x, y);
+	std::stack<Vec2i> pointStack;
+	pointStack.push(point);
+	while (!pointStack.empty()) {
+		Vec2i p = pointStack.top();
+		pointStack.pop();
+		int color = ::GetPixel(mMemDC, p.x(), p.y());
+		if (color == innercolor) {
+			::SetPixel(mMemDC, p.x(), p.y(), fillcolor);
+			Vec2i pTop(p.x(), p.y() + 1), pBottom(p.x(), p.y() - 1);
+			Vec2i pLeft(p.x() - 1, p.y()), pRight(p.x() + 1, p.y());
+			Vec2i pLT(p.x() - 1, p.y() + 1), pRT(p.x() + 1, p.y() + 1);
+			Vec2i pLB(p.x() - 1, p.y() - 1), pRB(p.x() + 1, p.y() - 1);
+			pointStack.push(pLeft);
+			pointStack.push(pTop);
+			pointStack.push(pBottom);
+			pointStack.push(pRight);
+			pointStack.push(pLT);
+			pointStack.push(pRT);
+			pointStack.push(pLB);
+			pointStack.push(pRB);
+		}
+	}
+	//int color = ::GetPixel(mMemDC, x, y);
+	//if (color == innercolor)
+	//{
+	//	::SetPixel(mMemDC, x, y, fillcolor);
+	//	FloodFill8(x + 1, y, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y, innercolor, fillcolor);
+	//	FloodFill8(x, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x, y - 1, innercolor, fillcolor);
+	//	FloodFill8(x + 1, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y - 1, innercolor, fillcolor);
+	//	FloodFill8(x - 1, y + 1, innercolor, fillcolor);
+	//	FloodFill8(x + 1, y - 1, innercolor, fillcolor);
+	//}
+#endif
+}
+//扫描线种子填充算法
+void CGDI2DRenderContext::ScanLineSeedFill(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
+
+}
+
+
 #ifdef USEMEMDC
 void CGDI2DRenderContext::SwapBackBuffer()
 {

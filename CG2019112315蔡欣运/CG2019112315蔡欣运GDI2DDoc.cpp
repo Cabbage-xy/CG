@@ -41,13 +41,15 @@ BEGIN_MESSAGE_MAP(CCG2019112315蔡欣运GDI2DDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_PEN_COLOR, &CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenColor)
 	ON_UPDATE_COMMAND_UI(ID_PEN_WIDTH, &CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenWidth)
 	ON_UPDATE_COMMAND_UI(ID_PEN_STYLE, &CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenStyle)
-	ON_UPDATE_COMMAND_UI(ID_BRUSH_USE, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushUse)
+	//ON_UPDATE_COMMAND_UI(ID_BRUSH_USE, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushUse)
 	ON_UPDATE_COMMAND_UI(ID_BRUSH_COLOR, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushColor)
 	ON_UPDATE_COMMAND_UI(ID_BRUSH_INDEX, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushIndex)
 	ON_UPDATE_COMMAND_UI(ID_ALGORITHM_LINE, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmLine)
 	ON_UPDATE_COMMAND_UI(ID_ALGORITHM_CIRCLE, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmCircle)
 	ON_UPDATE_COMMAND_UI(ID_ALGORITHM_POLYGON, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmPolygon)
 	ON_UPDATE_COMMAND_UI(ID_ALGORITHM_SEED, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmSeed)
+	ON_UPDATE_COMMAND_UI(ID_BOUND_COLOR, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateBoundColor)
+	ON_UPDATE_COMMAND_UI(ID_INNER_COLOR, &CCG2019112315蔡欣运GDI2DDoc::OnUpdateInnerColor)
 END_MESSAGE_MAP()
 
 
@@ -259,11 +261,11 @@ void CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenStyle(CCmdUI* pCmdUI)
 }
 
 
-void CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushUse(CCmdUI* pCmdUI)
-{
-	// TODO: 在此添加命令更新用户界面处理程序代码
-	pCmdUI->Enable(true);
-}
+//void CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushUse(CCmdUI* pCmdUI)
+//{
+//	// TODO: 在此添加命令更新用户界面处理程序代码
+//	pCmdUI->Enable(true);
+//}
 
 
 void CCG2019112315蔡欣运GDI2DDoc::OnUpdateBrushColor(CCmdUI* pCmdUI)
@@ -302,6 +304,20 @@ void CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmPolygon(CCmdUI* pCmdUI)
 
 
 void CCG2019112315蔡欣运GDI2DDoc::OnUpdateAlgorithmSeed(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->Enable(true);
+}
+
+
+void CCG2019112315蔡欣运GDI2DDoc::OnUpdateBoundColor(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->Enable(true);
+}
+
+
+void CCG2019112315蔡欣运GDI2DDoc::OnUpdateInnerColor(CCmdUI* pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	pCmdUI->Enable(true);

@@ -1,23 +1,23 @@
 #include "pch.h"
-#include "Create2DPolyLine.h"
+#include "Create2DPolygon.h"
 #include "CGDI2DView.h"
 #include "CG2DLineSegment.h"
-#include "CG2DPolyLine.h"
+#include "CG2DPolygon.h"
 CG_NAMESPACE_ENTER
-Create2DPolyLine::Create2DPolyLine(CGView* pview/* = nullptr*/)
+Create2DPolygon::Create2DPolygon(CGView* pview/* = nullptr*/)
 	:UIEventListener(pview)
 {
 	mPoints.push_back(Pos2i(0, 0));
 	mStep = 0;
 }
-Create2DPolyLine::~Create2DPolyLine()
+Create2DPolygon::~Create2DPolygon()
 {
 }
-int Create2DPolyLine::GetType() //命令类型
+int Create2DPolygon::GetType() //命令类型
 {
-	return cmd2dPolyline;
+	return cmd2dPolygon;
 }
-int Create2DPolyLine::OnLButtonDown(UINT nFlags, const Pos2i& pos)
+int Create2DPolygon::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 {
 	if (mView == nullptr)
 		return -1;
@@ -28,12 +28,12 @@ int Create2DPolyLine::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 			mPoints.push_back(pos);
 		}
 		mPoints[0] = pos;
-		mView->Prompt(_T("请单机输入折线段的下一点，或回车输入折线段终点")); //通过处理事件的View显示到状态栏
+		mView->Prompt(_T("请单机输入多边形的下一点，或回车输入多边形终点")); //通过处理事件的View显示到状态栏
 	}
 	else if (mStep >= 2)
 	{
 		//擦除最后橡皮线
-		
+
 		CClientDC dc(mView);
 		CPen pen(PS_SOLID, 1, RGB(0, 0, 0));
 		CPen* pOldPen = dc.SelectObject(&pen);
@@ -65,16 +65,18 @@ int Create2DPolyLine::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 			mPoints[mStep - 1] = pos;
 		}
 	}
-	mPoints.push_back(pos);
+	
+		mPoints.push_back(pos);
 	return 0;
 }
 //双击结束绘制
-int Create2DPolyLine::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+int Create2DPolygon::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	if (mView == nullptr)
 		return -1;
 	//按下回车时完成绘制
 	if (nChar == VK_RETURN) {
 		if (mStep >= 1) {
+			//擦除橡皮线
 			CClientDC dc(mView);
 			CPen pen(PS_SOLID, 1, RGB(0, 0, 0));
 			CPen* pOldPen = dc.SelectObject(&pen);
@@ -86,15 +88,18 @@ int Create2DPolyLine::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			dc.SelectObject(pOldPen);
 			//获取各点对应的场景坐标
 			std::vector<Vec2d> points;
-			for (auto &v : mPoints) {
-				points.push_back(mView->ViewPortToWorld(v));
+			for (int i = 0; i < mPoints.size(); i++) {
+				int next = (i + 1) % mPoints.size();
+				//删去连续两点为同一点的冗余
+				if(mPoints[i] != mPoints[next])
+					points.push_back(mView->ViewPortToWorld(mPoints[i]));
 			}
 			//创建线段并添加到场景
-			CG2DPolyLine* pPolyLine = new CG2DPolyLine(points);
-			pPolyLine->setPenColor(mView->PenColor()); //多态
-			pPolyLine->setPenWidth(mView->PenWidth());
-			pPolyLine->setPenStyle(mView->PenStyle());
-			mView->addRenderable(pPolyLine); //创建成功，添加到场景
+			CG2DPolygon* pPolygon = new CG2DPolygon(points);
+			pPolygon->setPenColor(mView->PenColor()); //多态
+			pPolygon->setPenWidth(mView->PenWidth());
+			pPolygon->setPenStyle(mView->PenStyle());
+			mView->addRenderable(pPolygon); //创建成功，添加到场景
 			mView->Invalidate();
 			mView->UpdateWindow();
 		}
@@ -107,13 +112,13 @@ int Create2DPolyLine::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	return 0;
 }
-int Create2DPolyLine::OnMouseMove(UINT nFlags, const Pos2i& pos)
+int Create2DPolygon::OnMouseMove(UINT nFlags, const Pos2i& pos)
 {
 	if (mView == nullptr)
 		return -1;
 	if (mStep == 0)
 	{
-		mView->Prompt(_T("请输入折线的起点"));
+		mView->Prompt(_T("请输入多边形的起点"));
 	}
 	else if (mStep >= 1) //已经输入了起点后，当前鼠标移动的位置与起点形成橡皮线
 	{
@@ -158,7 +163,7 @@ int Create2DPolyLine::OnMouseMove(UINT nFlags, const Pos2i& pos)
 	}
 	return 0;
 }
-int Create2DPolyLine::Cancel()
+int Create2DPolygon::Cancel()
 {
 	if (mView == nullptr)
 		return -1;

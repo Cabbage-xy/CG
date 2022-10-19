@@ -73,11 +73,13 @@ public:
 	afx_msg void OnUpdatePenColor(CCmdUI* pCmdUI);
 	afx_msg void OnUpdatePenWidth(CCmdUI* pCmdUI);
 	afx_msg void OnUpdatePenStyle(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateBrushUse(CCmdUI* pCmdUI);
+	//afx_msg void OnUpdateBrushUse(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateBrushColor(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateBrushIndex(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmLine(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmCircle(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmPolygon(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAlgorithmSeed(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateBoundColor(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInnerColor(CCmdUI* pCmdUI);
 };

@@ -96,6 +96,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <StackCommitSize>300000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -144,6 +145,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <StackCommitSize>300000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -195,6 +197,7 @@
     <ClInclude Include="CG2DEllipse.h" />
     <ClInclude Include="CG2DLine.h" />
     <ClInclude Include="CG2DLineSegment.h" />
+    <ClInclude Include="CG2DPolygon.h" />
     <ClInclude Include="CG2DPolyLine.h" />
     <ClInclude Include="CG2DRay.h" />
     <ClInclude Include="CG2DRenderable.h" />
@@ -219,8 +222,10 @@
     <ClInclude Include="Create2DCircle3Point.h" />
     <ClInclude Include="Create2DLine.h" />
     <ClInclude Include="Create2DLineSegment.h" />
+    <ClInclude Include="Create2dPolygon.h" />
     <ClInclude Include="Create2DPolyLine.h" />
     <ClInclude Include="Create2DRay.h" />
+    <ClInclude Include="Create2DSeedFill.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CGDI2DChildFrame.h" />
@@ -248,6 +253,7 @@
     <ClCompile Include="CG2DEllipse.cpp" />
     <ClCompile Include="CG2DLine.cpp" />
     <ClCompile Include="CG2DLineSegment.cpp" />
+    <ClCompile Include="CG2DPolygon.cpp" />
     <ClCompile Include="CG2DPolyLine.cpp" />
     <ClCompile Include="CG2DRay.cpp" />
     <ClCompile Include="CG2DRenderable.cpp" />
@@ -271,8 +277,10 @@
     <ClCompile Include="Create2DCircle3Point.cpp" />
     <ClCompile Include="Create2DLine.cpp" />
     <ClCompile Include="Create2DLineSegment.cpp" />
+    <ClCompile Include="Create2dPolygon.cpp" />
     <ClCompile Include="Create2DPolyLine.cpp" />
     <ClCompile Include="Create2DRay.cpp" />
+    <ClCompile Include="Create2DSeedFill.cpp" />
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="CGDI2DChildFrame.cpp" />
     <ClCompile Include="MainFrm.cpp" />
