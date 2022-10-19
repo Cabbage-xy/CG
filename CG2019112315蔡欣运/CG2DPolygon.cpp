@@ -58,52 +58,85 @@ void CG2DPolygon::Render(CGRenderContext* pRC, CGCamera* pCamera) //绘制对象，使
 	for (auto &mp : mPoints) {
 		points.push_back(pCamera->WorldtoViewPort(mp));
 	}
-	int lineAlgorithm = pRC->getView()->LineAlgorithm();
-	if (lineAlgorithm == CGRenderContext::aLineCDC) {
-		CPen pen(penStyle(), penWidth(), penColor());
-		if (hDC != 0)
-		{
-			HPEN hOldPen = (HPEN)::SelectObject(hDC, pen.GetSafeHandle());
-			for (int i = 0; i < points.size() - 1; i++) {
-				::MoveToEx(hDC, points[i].x(), points[i].y(), nullptr);
-				::LineTo(hDC, points[i + 1].x(), points[i + 1].y());
+	int useBrush = pRC->getView()->UseBrush();
+	if (useBrush == true) {//使用填充算法
+		int fillAlgorithm = pRC->getView()->FillAlgorithm();
+		if (fillAlgorithm == CGRenderContext::aFillCDC) {
+			CPen pen(penStyle(), penWidth(), penColor());
+			CBrush brush(brushColor());
+			CPoint *cpoints = new CPoint[points.size()];
+			for (int i = 0; i < points.size(); i++) {
+				cpoints[i].x = points[i].x();
+				cpoints[i].y = points[i].y();
 			}
-			::MoveToEx(hDC, points.back().x(), points.back().y(), nullptr);
-			::LineTo(hDC, points.front().x(), points.front().y());
-			::SelectObject(hDC, hOldPen);
+			if (hDC != 0)
+			{
+				HPEN hOldPen = (HPEN)::SelectObject(hDC, pen.GetSafeHandle());
+				HBRUSH hOldBrush = (HBRUSH)::SelectObject(hDC, brush.GetSafeHandle());
+				::Polygon(hDC, cpoints, points.size());
+				::SelectObject(hDC, hOldPen);
+			}
+			else
+			{
+				CClientDC dc(pRC->getView());
+				CPen* pOldPen = dc.SelectObject(&pen);
+				CBrush* pOldBrush = dc.SelectObject(&brush);
+				dc.Polygon(cpoints, points.size());
+				dc.SelectObject(pOldPen);
+			}
+			delete[] cpoints;
 		}
-		else
-		{
-			CClientDC dc(pRC->getView());
-			CPen* pOldPen = dc.SelectObject(&pen);
-			for (int i = 0; i < points.size() - 1; i++) {
-				dc.MoveTo(points[i].x(), points[i].y());
-				dc.LineTo(points[i + 1].x(), points[i + 1].y());
-			} 
-			dc.MoveTo(points.back().x(), points.back().y());
-			dc.LineTo(points.front().x(), points.front().y());
-			dc.SelectObject(pOldPen);
+		else if (fillAlgorithm == CGRenderContext::aFillScanlinePolygon) {
+			pRC->ScanLinePolygonFill(points, brushColor());
 		}
 	}
-	else if (lineAlgorithm == CGRenderContext::aLineDDA) {
-		for (int i = 0; i < points.size() - 1; i++) {
-			pRC->DDALine(points[i], points[i + 1], penColor());
+	else {//使用线段绘制算法
+		int lineAlgorithm = pRC->getView()->LineAlgorithm();
+		if (lineAlgorithm == CGRenderContext::aLineCDC) {
+			CPen pen(penStyle(), penWidth(), penColor());
+			if (hDC != 0)
+			{
+				HPEN hOldPen = (HPEN)::SelectObject(hDC, pen.GetSafeHandle());
+				for (int i = 0; i < points.size(); i++) {
+					int p1 = i, p2 = (i + 1) % points.size();
+					::MoveToEx(hDC, points[p1].x(), points[p1].y(), nullptr);
+					::LineTo(hDC, points[p2].x(), points[p2].y());
+				}
+				::SelectObject(hDC, hOldPen);
+			}
+			else
+			{
+				CClientDC dc(pRC->getView());
+				CPen* pOldPen = dc.SelectObject(&pen);
+				for (int i = 0; i < points.size(); i++) {
+					int p1 = i, p2 = (i + 1) % points.size();
+					dc.MoveTo(points[p1].x(), points[p1].y());
+					dc.LineTo(points[p2].x(), points[p2].y());
+				}
+				dc.SelectObject(pOldPen);
+			}
 		}
-		pRC->DDALine(points.back(), points.front(), penColor());
-	}
-	else if (lineAlgorithm == CGRenderContext::aLineMidPoint) {
-		for (int i = 0; i < points.size() - 1; i++) {
-			pRC->MidPointLine(points[i], points[i + 1], penColor());
+		else if (lineAlgorithm == CGRenderContext::aLineDDA) {
+			for (int i = 0; i < points.size(); i++) {
+				int p1 = i, p2 = (i + 1) % points.size();
+				pRC->DDALine(points[p1], points[p2], penColor());
+			}
 		}
-		pRC->MidPointLine(points.back(), points.front(), penColor());
+		else if (lineAlgorithm == CGRenderContext::aLineMidPoint) {
+			for (int i = 0; i < points.size(); i++) {
+				int p1 = i, p2 = (i + 1) % points.size();
+				pRC->MidPointLine(points[p1], points[p2], penColor());
+			}
 
-	}
-	else if (lineAlgorithm == CGRenderContext::aLineBresenham) {
-		for (int i = 0; i < points.size() - 1; i++) {
-			pRC->BresenhamLine(points[i], points[i + 1], penColor());
 		}
-		pRC->BresenhamLine(points.back(), points.front(), penColor());
+		else if (lineAlgorithm == CGRenderContext::aLineBresenham) {
+			for (int i = 0; i < points.size(); i++) {
+				int p1 = i, p2 = (i + 1) % points.size();
+				pRC->BresenhamLine(points[p1], points[p2], penColor());
+			}
+		}
 	}
+	
 
 	//此处仅以绘制对象包围盒的方式显示对象被选中，也可以自行确定选中显示方式
 	if (status() == CGRenderable::sSelected) //对象处于选中状态
