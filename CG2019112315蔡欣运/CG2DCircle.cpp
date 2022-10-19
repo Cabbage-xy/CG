@@ -60,20 +60,26 @@ void CG2DCircle::Render(CGRenderContext* pRC, CGCamera* pCamera) //»æÖÆ¶ÔÏó£¬Ê¹Ó
 	int circleAlgorithm = pRC->getView()->CircleAlgorithm();
 	if (circleAlgorithm == CGRenderContext::aCircleCDC) {
 		CPen pen(penStyle(), penWidth(), penColor());
+		//CBrush brush(RGB(255, 255, 255));
+		CBrush brush(brushColor());
 		Vec2i v1 = pCamera->WorldtoViewPort(Vec2d(mCenter.x() - r, mCenter.y() - r));
 		Vec2i v2 = pCamera->WorldtoViewPort(Vec2d(mCenter.x() + r, mCenter.y() + r));
 		if (hDC != 0)
 		{
 			HPEN hOldPen = (HPEN)::SelectObject(hDC, pen.GetSafeHandle());
+			HBRUSH hOldBrush = (HBRUSH)::SelectObject(hDC, brush.GetSafeHandle());
 			::Ellipse(hDC, v1.x(), v1.y(), v2.x(), v2.y());
 			::SelectObject(hDC, hOldPen);
+			::SelectObject(hDC, hOldBrush);
 		}
 		else
 		{
 			CClientDC dc(pRC->getView());
 			CPen* pOldPen = dc.SelectObject(&pen);
+			CBrush* pOldBrush = dc.SelectObject(&brush);
 			dc.Ellipse(v1.x(), v1.y(), v2.x(), v2.y());
 			dc.SelectObject(pOldPen);
+			dc.SelectObject(pOldBrush);
 		}
 	}
 	else if (circleAlgorithm == CGRenderContext::aCrcleMidPoint) {
