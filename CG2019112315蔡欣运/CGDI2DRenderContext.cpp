@@ -508,15 +508,6 @@ void CGDI2DRenderContext::BoundFill4(int x, int y, unsigned long boundcolor, uns
 			pointStack.push(pRight);
 		}
 	}
-	//int color = ::GetPixel(mMemDC, x, y);
-	//if ((color != boundcolor) && (color != fillcolor))
-	//{
-	//	::SetPixel(mMemDC, x, y, fillcolor);
-	//	BoundFill4(x - 1, y, boundcolor, fillcolor); //вС
-	//	BoundFill4(x, y + 1, boundcolor, fillcolor); //ио
-	//	BoundFill4(x + 1, y, boundcolor, fillcolor); //ср
-	//	BoundFill4(x, y - 1, boundcolor, fillcolor); //об
-	//}
 #endif
 }
 void CGDI2DRenderContext::BoundFill8(int x, int y, unsigned long boundcolor, unsigned long fillcolor) {
