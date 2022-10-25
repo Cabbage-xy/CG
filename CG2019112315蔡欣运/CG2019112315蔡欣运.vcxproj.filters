@@ -177,6 +177,15 @@
     <ClInclude Include="Create2dPolygon.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix22.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix33.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CG2019112315蔡欣运.cpp">
@@ -327,6 +336,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Create2dPolygon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix22.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix33.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

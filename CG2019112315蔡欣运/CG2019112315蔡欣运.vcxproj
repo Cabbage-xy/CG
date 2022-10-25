@@ -230,6 +230,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="CGDI2DChildFrame.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Matrix22.h" />
+    <ClInclude Include="Matrix33.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pick2DRenderable.h" />
@@ -238,6 +240,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UIEventListener.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
     <ClInclude Include="ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +287,8 @@
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="CGDI2DChildFrame.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Matrix22.cpp" />
+    <ClCompile Include="Matrix33.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -295,6 +300,7 @@
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="UIEventListener.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="ViewTree.cpp" />
   </ItemGroup>
   <ItemGroup>
