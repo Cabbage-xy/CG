@@ -198,6 +198,40 @@ public:
 	// 通过下标访问元素
 	T& operator[] (unsigned i) { return elements[i]; }
 	constexpr const T& operator[] (unsigned i) const { return elements[i]; }
+
+	///增补内容
+	// 按类型设置元素值
+	template <typename S> void setValue(S a, S b)
+	{
+		x() = (T)a;
+		y() = (T)b;
+	}
+	template <typename S> void setValue(const Vector2<S>& v)
+	{
+		x() = (T)v.x();
+		y() = (T)v.y();
+	}
+	// 按需取出元素的值
+	template <typename S> void getValue(S& a, S& b) const
+	{
+		a = S(x());
+		b = S(y());
+	}
+	template <typename S> void getValue(Vector2<S>& v) const
+	{
+		v.x() = S(x());
+		v.x() = S(y());
+	}
+	constexpr static unsigned int dimensions() { return element_count; }
+	// 类型最小值（通常是负值）
+	constexpr static T baseTypeLowest() { return std::numeric_limits<T>::lowest(); }
+	// 类型最大值（通常是正值）
+	constexpr static T baseTypeMax() { return std::numeric_limits<T>::max(); }
+	// 类型最小值（通常是负值）
+	constexpr static T baseTypeSmallest() { return std::numeric_limits<T>::min(); }
+	// 类型小值e则 1+e != 1
+	constexpr static T baseTypeEpsilon() { return std::numeric_limits<T>::epsilon(); }
+
 protected:
 	T elements[element_count];
 };
