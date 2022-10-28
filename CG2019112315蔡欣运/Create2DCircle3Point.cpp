@@ -57,6 +57,8 @@ int Create2DCircle3Point::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 		pCircle->setPenColor(mView->PenColor()); //多态
 		pCircle->setPenWidth(mView->PenWidth());
 		pCircle->setPenStyle(mView->PenStyle());
+		pCircle->setBrushColor(mView->BrushColor());
+		pCircle->setBrushUse(mView->UseBrush());
 		mView->addRenderable(pCircle); //创建成功，添加到场景
 		mView->Invalidate();
 		mView->UpdateWindow();
