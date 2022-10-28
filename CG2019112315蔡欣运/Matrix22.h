@@ -1,7 +1,10 @@
 #ifndef _MATRIX22_H_INCLUDED
 #define _MATRIX22_H_INCLUDED
 #include "Vector2.h"
-template <typename T> class Matrix22
+//template <typename T>
+//class Vector2;
+CG_NAMESPACE_ENTER
+template <typename T> class Matrix22 
 {
 public:
 	typedef T BaseType;
@@ -66,11 +69,15 @@ public:
 	//按元素所在行列访问元素
 	const T& e(int i, int j) const { return eVec[j][i]; }
 	T& e(int i, int j) { return eVec[j][i]; }
+
 protected:
 	Vector2<T> eVec[2]; //列向量
 };
+
 typedef Matrix22<int> Mat2i;
 typedef Matrix22<float> Mat2f;
 typedef Matrix22<double> Mat2d;
+
 typedef Mat2d Mat2;
+CG_NAMESPACE_EXIT
 #endif //_MATRIX22_H_INCLUDED
