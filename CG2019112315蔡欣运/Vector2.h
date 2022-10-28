@@ -247,21 +247,24 @@ inline std::ostream& operator<< (std::ostream& s, const Vector2<T>& v)
 {
 	return s << '(' << v.x() << ' ' << v.y() << ')';
 }
-//预定义的便捷访问模板类
+//预定义的便捷访问模板类：二维矢量类
 typedef Vector2<int> Vec2i;
 typedef Vector2<unsigned int> Vec2u;
 typedef Vector2<float> Vec2f;
 typedef Vector2<double> Vec2d;
 typedef Vec2d Vec2;
+//预定义的便捷访问模板类：二维位置类
 typedef Vector2<int> Pos2i;
 typedef Vector2<unsigned int> Pos2u;
 typedef Vector2<float> Pos2f;
 typedef Vector2<double> Pos2d;
 typedef Pos2d Pos2;
+//预定义的便捷访问模板类：二维矢量数组类
 typedef std::vector<Vec2i> Vec2iArray;
 typedef std::vector<Vec2u> Vec2uArray;
 typedef std::vector<Vec2f> Vec2fArray;
 typedef std::vector<Vec2d> Vec2dArray;
+//预定义的便捷访问模板类：二维位置数组类
 typedef std::vector<Pos2i> Pos2iArray;
 typedef std::vector<Pos2u> Pos2uArray;
 typedef std::vector<Pos2f> Pos2fArray;
