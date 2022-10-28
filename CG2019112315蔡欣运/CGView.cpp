@@ -140,4 +140,29 @@ void CGView::AppendPicked(const Vec2d& p, double radius) //添加选择
 {
 	//派生类中实现
 }
+//二维图形对象的几何变换（针对选择集中的对象）
+void CGView::Translate(double tx, double ty) //平移
+{
+	//派生类中实现
+}
+void CGView::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	//派生类中实现
+}
+void CGView::Scale(double sx, double sy) //缩放
+{
+	//派生类中实现
+}
+void CGView::Scale(double sx, double sy, double cx, double cy) //缩放（关于指定参考点缩放）
+{
+	//派生类中实现
+}
+void CGView::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir) //缩放（指定参考点，缩放方向）
+{
+	//派生类中实现
+}
+void CGView::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	//派生类中实现
+}
 CG_NAMESPACE_EXIT

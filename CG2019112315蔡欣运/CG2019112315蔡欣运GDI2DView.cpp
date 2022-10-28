@@ -32,6 +32,11 @@
 #include "Create2DCircle3Point.h"
 #include "Create2DPolygon.h"
 #include "Create2DSeedFill.h"
+
+#include "TransformTranslate2DRenderable.h"
+#include "TransformRotate2DRenderable.h"
+#include "TransformScale2DRenderable.h"
+
 #include "Pick2DRenderable.h"
 
 #include "CGRenderContext.h"
@@ -92,6 +97,29 @@ BEGIN_MESSAGE_MAP(CCG2019112315蔡欣运GDI2DView, CGDI2DView/*CView*/)
 	ON_UPDATE_COMMAND_UI(ID_DRAW_POLYGON, &CCG2019112315蔡欣运GDI2DView::OnUpdateDrawPolygon)
 	ON_COMMAND(ID_PICK_SEED_POINT, &CCG2019112315蔡欣运GDI2DView::OnPickSeedPoint)
 	ON_UPDATE_COMMAND_UI(ID_PICK_SEED_POINT, &CCG2019112315蔡欣运GDI2DView::OnUpdatePickSeedPoint)
+	ON_COMMAND(ID_TRANSFORM_TRANSLATE_LEFT, &CCG2019112315蔡欣运GDI2DView::OnTransformTranslateLeft)
+	ON_COMMAND(ID_TRANSFORM_TRANSLATE_RIGHT, &CCG2019112315蔡欣运GDI2DView::OnTransformTranslateRight)
+	ON_COMMAND(ID_TRANSFORM_TRANSLATE_UP, &CCG2019112315蔡欣运GDI2DView::OnTransformTranslateUp)
+	ON_COMMAND(ID_TRANSFORM_TRANSLATE_DOWN, &CCG2019112315蔡欣运GDI2DView::OnTransformTranslateDown)
+	ON_COMMAND(ID_TRANSFORM_ROTATE_ORIGIN, &CCG2019112315蔡欣运GDI2DView::OnTransformRotateOrigin)
+	ON_COMMAND(ID_TRANSFORM_TRANSLATE_FREE, &CCG2019112315蔡欣运GDI2DView::OnTransformTranslateFree)
+	ON_COMMAND(ID_TRANSFORM_ROTATE_PICK_POINT, &CCG2019112315蔡欣运GDI2DView::OnTransformRotatePickPoint)
+	ON_COMMAND(ID_TRANSFORM_SCALE_UP, &CCG2019112315蔡欣运GDI2DView::OnTransformScaleUp)
+	ON_COMMAND(ID_TRANSFORM_SCALE_DOWN, &CCG2019112315蔡欣运GDI2DView::OnTransformScaleDown)
+	ON_COMMAND(ID_TRANSFORM_SCALE, &CCG2019112315蔡欣运GDI2DView::OnTransformScale)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_X_AXIS, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorXAxis)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_Y_AXIS, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYAxis)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_ORIGIN, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorOrigin)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_Y_EQ_POS_X, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYEqPosX)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_Y_EQ_NEG_POS_X, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYEqNegPosX)
+	ON_COMMAND(ID_TRANSFORM_MIRROR_CHOOSE_LINE, &CCG2019112315蔡欣运GDI2DView::OnTransformMirrorChooseLine)
+	ON_COMMAND(ID_TRANSFORM_SHEAR_X_AXIS, &CCG2019112315蔡欣运GDI2DView::OnTransformShearXAxis)
+	ON_COMMAND(ID_TRANSFORM_SHEAR_Y_AXIS, &CCG2019112315蔡欣运GDI2DView::OnTransformShearYAxis)
+	ON_COMMAND(ID_TRANSFORM_SHEAR_X_Y_AXIS, &CCG2019112315蔡欣运GDI2DView::OnTransformShearXYAxis)
+	ON_COMMAND(ID_TRANSFORM_MATRIX, &CCG2019112315蔡欣运GDI2DView::OnTransformMatrix)
+	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_TRANSLATE_FREE, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformTranslateFree)
+	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_ROTATE_PICK_POINT, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformRotatePickPoint)
+	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_SCALE, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformScale)
 END_MESSAGE_MAP()
 
 // CCG2019112315蔡欣运GDI2DView 构造/析构
@@ -471,6 +499,10 @@ bool CCG2019112315蔡欣运GDI2DView::RenderScene()
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return false;
+#ifdef USEMEMDC
+	if (mRenderContext != nullptr)
+		mRenderContext->setView(this);
+#endif
 	//调用文档类的RenderScene
 	return pDoc->RenderScene(mRenderContext);
 }
@@ -938,3 +970,297 @@ void CCG2019112315蔡欣运GDI2DView::OnUpdatePickSeedPoint(CCmdUI* pCmdUI)
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dSeedFill);
 }
+
+
+//二维图形对象的几何变换（针对选择集中的对象）
+void CCG2019112315蔡欣运GDI2DView::Translate(double tx, double ty) //平移
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Translate(tx, ty);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::Rotate(double angle, double cx, double cy)//旋转（逆时针为正，度）
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Rotate(angle, cx, cy);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::Scale(double sx, double sy) //缩放
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Scale(sx, sy);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::Scale(double sx, double sy, double cx, double cy)
+//缩放
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Scale(sx, sy, cx, cy);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::Scale(double sx, double sy, double cx, double cy, const Vec2d&
+	xDir) //缩放
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Scale(sx, sy, cx, cy, xDir);
+			Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->ShearXYAxis(shx, shy);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+
+//Button响应函数
+void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateLeft()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Translate(-10, 0); //每次移动的距离可自定义一个常量，此处表示点击【左移】，选中的图形左移5个单位
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateRight()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Translate(10, 0); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateUp()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Translate(0, 10); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateDown()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Translate(0, -10); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateFree()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (mCommand)
+	{
+		mCommand->Cancel();
+		delete mCommand;
+		mCommand = nullptr;
+	}
+	mCommand = new TransformTranslate2DRenderable(this);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnUpdateTransformTranslateFree(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dTranslateRenderable);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformRotateOrigin()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Rotate(5, 0, 0); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformRotatePickPoint()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (mCommand)
+	{
+		mCommand->Cancel();
+		delete mCommand;
+		mCommand = nullptr;
+	}
+	mCommand = new TransformRotate2DRenderable(this);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnUpdateTransformRotatePickPoint(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dRotateRenderable);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformScaleUp()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Scale(1.1, 1.1); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformScaleDown()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->Scale(0.9, 0.9); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformScale()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (mCommand)
+	{
+		mCommand->Cancel();
+		delete mCommand;
+		mCommand = nullptr;
+	}
+	mCommand = new TransformScale2DRenderable(this);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnUpdateTransformScale(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dScaleRenderable);
+}
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorXAxis()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->MirrorXAxis(); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYAxis()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->MirrorYAxis(); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorOrigin()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->MirrorOrigin(); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYEqPosX()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->MirrorYeqPosX(); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorYEqNegPosX()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->MirrorYeNegPX(); //每次移动的距离可自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMirrorChooseLine()
+{
+	// TODO: 在此添加命令处理程序代码
+	AfxMessageBox(_T("暂未实现"));
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformShearXAxis()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->ShearXAxis(1); //自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformShearYAxis()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+		pDoc->ShearYAxis(1); //自定义一个常量
+	Invalidate();
+	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformShearXYAxis()
+{
+	// TODO: 在此添加命令处理程序代码
+	AfxMessageBox(_T("暂未实现"));
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnTransformMatrix()
+{
+	// TODO: 在此添加命令处理程序代码
+	AfxMessageBox(_T("暂未实现"));
+}
+

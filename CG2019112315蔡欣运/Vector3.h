@@ -262,25 +262,25 @@ public:
 	//规范化（可返回原长度、是否成功）
 	const Vector3& normalize(T* len = nullptr, bool* success = nullptr)
 	{
-	T leng = length();
-	if (len)
-	*len = leng;
-	if (leng)
-	{
-	x() /= leng;
-	y() /= leng;
-	z() /= leng;
-	if (success)
-	*success = true;
+		T leng = length();
+		if (len)
+			*len = leng;
+		if (leng)
+		{
+			x() /= leng;
+			y() /= leng;
+			z() /= leng;
+			if (success)
+				*success = true;
+		}
+		else {
+			if (success)
+				*success = false;
+		}
+		return *this;
 	}
-	else {
-	if (success)
-	*success = false;
-	}
-	return *this;
-	}
-		//返回规范化向量（可返回原长度、是否成功）
-		Vector3 normalized(T* len = nullptr, bool* success = nullptr) const
+	//返回规范化向量（可返回原长度、是否成功）
+	Vector3 normalized(T* len = nullptr, bool* success = nullptr) const
 	{
 		T leng = length();
 		if (len)

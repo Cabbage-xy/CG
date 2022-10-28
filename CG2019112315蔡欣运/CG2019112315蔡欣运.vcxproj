@@ -238,6 +238,10 @@
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TransformMirror2DRenderable.h" />
+    <ClInclude Include="TransformRotate2DRenderable.h" />
+    <ClInclude Include="TransformScale2DRenderable.h" />
+    <ClInclude Include="TransformTranslate2DRenderable.h" />
     <ClInclude Include="UIEventListener.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
@@ -298,6 +302,10 @@
     </ClCompile>
     <ClCompile Include="Pick2DRenderable.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="TransformMirror2DRenderable.cpp" />
+    <ClCompile Include="TransformRotate2DRenderable.cpp" />
+    <ClCompile Include="TransformScale2DRenderable.cpp" />
+    <ClCompile Include="TransformTranslate2DRenderable.cpp" />
     <ClCompile Include="UIEventListener.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />

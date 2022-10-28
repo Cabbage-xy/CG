@@ -226,6 +226,7 @@ bool CCG2019112315蔡欣运GDI2DDoc::AppendPicked(const Vec2d& p, double radius)
 		return true;
 	return false;
 }
+
 bool CCG2019112315蔡欣运GDI2DDoc::RenderScene(CGRenderContext* pRC)
 {
 	if (pRC == nullptr || pRC->getView() == nullptr)
@@ -237,7 +238,63 @@ bool CCG2019112315蔡欣运GDI2DDoc::RenderScene(CGRenderContext* pRC)
 	return mScene.Render(pRC, &mCamera);
 }
 
-
+//二维图形对象的几何变换（针对选择集中的对象）
+bool CCG2019112315蔡欣运GDI2DDoc::Translate(double tx, double ty) //平移
+{
+	return mScene.Translate(tx, ty);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	return mScene.Rotate(angle, cx, cy);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::Scale(double sx, double sy) //缩放
+{
+	return mScene.Scale(sx, sy);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::Scale(double sx, double sy, double cx, double cy) //缩放（关于指定参考点缩放）
+{
+	return mScene.Scale(sx, sy, cx, cy);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir)//缩放（指定参考点，缩放方向）
+{
+	return mScene.Scale(sx, sy, cx, cy, xDir);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::MirrorXAxis() //关于X轴对称（二维、三维）
+{
+	return mScene.MirrorXAxis();
+}
+bool CCG2019112315蔡欣运GDI2DDoc::MirrorYAxis() //关于Y轴对称（二维、三维）
+{
+	return mScene.MirrorYAxis();
+}
+bool CCG2019112315蔡欣运GDI2DDoc::MirrorYeqPosX() //关于y=x对称（二维、三维）
+{
+	return mScene.MirrorYeqPosX();
+}
+bool CCG2019112315蔡欣运GDI2DDoc::MirrorYeNegPX() //关于y=-x对称（二维、三维）
+{
+	return mScene.MirrorYeNegPX();
+}
+bool CCG2019112315蔡欣运GDI2DDoc::MirrorOrigin() //关于原点对称（二维、三维）
+{
+	return mScene.MirrorOrigin();
+}
+bool CCG2019112315蔡欣运GDI2DDoc::ShearXAxis(double shx) //沿X轴错切
+{
+	return mScene.ShearXAxis(shx);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::ShearYAxis(double shy) //沿Y轴错切
+{
+return mScene.ShearYAxis(shy);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	return mScene.ShearXYAxis(shx, shy);
+}
+bool CCG2019112315蔡欣运GDI2DDoc::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
+{
+	return mScene.Transform(mat);
+}
 
 
 void CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenColor(CCmdUI* pCmdUI)

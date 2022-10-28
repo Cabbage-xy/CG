@@ -46,6 +46,13 @@ public:
 	//图形对象的拾取（二维图形）
 	virtual void UpdatePicked(const Vec2d& p, double radius); //更新选择
 	virtual void AppendPicked(const Vec2d& p, double radius); //添加选择
+	//二维图形对象的几何变换（针对选择集中的对象）
+	virtual void Translate(double tx, double ty); //平移
+	virtual void Rotate(double angle, double cx, double cy); //旋转（逆时针为正，度）
+	virtual void Scale(double sx, double sy); //缩放
+	virtual void Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
+	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
+	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 	// 实现
 public:
 	virtual ~CGView();

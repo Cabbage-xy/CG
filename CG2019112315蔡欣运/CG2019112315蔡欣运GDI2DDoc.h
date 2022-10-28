@@ -42,6 +42,22 @@ public:
 	//图形对象的拾取（二维图形）
 	bool UpdatePicked(const Vec2d& p, double radius); //更新选择
 	bool AppendPicked(const Vec2d& p, double radius); //添加选择
+	//二维图形对象的几何变换
+	bool Translate(double tx, double ty); //平移
+	bool Rotate(double angle, double cx, double cy); //旋转（逆时针为正，度）
+	bool Scale(double sx, double sy); //缩放（关于坐标原点缩放）
+	bool Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
+	bool Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
+	bool MirrorXAxis(); //关于X轴对称（二维、三维）
+	bool MirrorYAxis(); //关于Y轴对称（二维、三维）
+	bool MirrorYeqPosX(); //关于y=x对称（二维、三维）
+	bool MirrorYeNegPX(); //关于y=-x对称（二维、三维）
+	bool MirrorOrigin(); //关于原点对称（二维、三维）
+	bool ShearXAxis(double shx); //沿X轴错切
+	bool ShearYAxis(double shy); //沿Y轴错切
+	bool ShearXYAxis(double shx, double shy); //沿X、Y轴错切
+	bool Transform(const Mat3d& mat); //几何变换（左乘给定矩阵）
+
 // 重写
 public:
 	virtual BOOL OnNewDocument();
