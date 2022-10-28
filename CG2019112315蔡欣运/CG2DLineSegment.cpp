@@ -154,5 +154,130 @@ bool CG2DLineSegment::Picked(const Vec2d& p, double radius) //是否拾取到
 	}
 	return false;
 }
-
+//二维图形对象的几何变换（重写基类的虚函数）
+void CG2DLineSegment::Translate(double tx, double ty) //平移
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.x() += tx;
+	mStart.y() += ty;
+	mEnd.x() += tx;
+	mEnd.y() += ty;
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	//使用变换矩阵实现
+	Mat3d mat = Mat3d::getRotation(angle, Vec2d(cx, cy));
+	Vec3d start = operator*(mat, Vec3d(mStart));
+	Vec3d end = operator*(mat, Vec3d(mEnd));
+	mStart = Vec2d(start.x(), start.y());
+	mEnd = Vec2d(end.x(), end.y());
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::Scale(double sx, double sy) //缩放
+{
+	//关于坐标原点缩放，简单变换，不使用矩阵直接运算
+	mStart.x() *= sx;
+	mStart.y() *= sy;
+	mEnd.x() *= sx;
+	mEnd.y() *= sy;
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::Scale(double sx, double sy, double cx, double cy) //缩放
+{
+	//关于指定点缩放，使用矩阵直接运算
+	Mat3d mat = Mat3d::getScaling(Vec2d(sx, sy), Vec2d(cx, cy));
+	Vec3d start = operator*(mat, Vec3d(mStart));
+	Vec3d end = operator*(mat, Vec3d(mEnd));
+	mStart = Vec2d(start.x(), start.y());
+	mEnd = Vec2d(end.x(), end.y());
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir) //缩放
+{
+	//关于指定点缩放，使用矩阵直接运算
+	Mat3d mat = Mat3d::getScaling(Vec2d(sx, sy), Vec2d(cx, cy), xDir);
+	Vec3d start = operator*(mat, Vec3d(mStart));
+	Vec3d end = operator*(mat, Vec3d(mEnd));
+	mStart = Vec2d(start.x(), start.y());
+	mEnd = Vec2d(end.x(), end.y());
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::MirrorXAxis() //关于X轴对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.y() = -mStart.y();
+	mEnd.y() = -mEnd.y();
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::MirrorYAxis() //关于Y轴对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.x() = -mStart.x();
+	mEnd.x() = -mEnd.x();
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::MirrorYeqPosX() //关于y=x对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	double t = mStart.x();
+	mStart.x() = mStart.y();
+	mStart.y() = t;
+	t = mEnd.x();
+	mEnd.x() = mEnd.y();
+	mEnd.y() = t;
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::MirrorYeNegPX() //关于y=-x对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	double t = mStart.x();
+	mStart.x() = -mStart.y();
+	mStart.y() = -t;
+	t = mEnd.x();
+	mEnd.x() = -mEnd.y();
+	mEnd.y() = -t;
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::MirrorOrigin() //关于原点对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.x() = -mStart.x();
+	mStart.y() = -mStart.y();
+	mEnd.x() = -mEnd.x();
+	mEnd.y() = -mEnd.y();
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::ShearXAxis(double shx) //沿X轴错切
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.x() = mStart.x() + shx * mStart.y();
+	mEnd.x() = mEnd.x() + shx * mEnd.y();
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::ShearYAxis(double shy) //沿Y轴错切
+{
+	//简单变换，不使用矩阵直接运算
+	mStart.y() = mStart.y() + shy * mStart.x();
+	mEnd.y() = mEnd.y() + shy * mEnd.x();
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	//使用变换矩阵实现
+	Mat3d mat = Mat3d::getShear(shx, shy);
+	Vec3d start = operator*(mat, Vec3d(mStart));
+	Vec3d end = operator*(mat, Vec3d(mEnd));
+	mStart = Vec2d(start.x(), start.y());
+	mEnd = Vec2d(end.x(), end.y());
+	setBoundsDirty(true);
+}
+void CG2DLineSegment::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
+{
+	Vec3d start = operator*(mat, Vec3d(mStart));
+	Vec3d end = operator*(mat, Vec3d(mEnd));
+	mStart = Vec2d(start.x(), start.y());
+	mEnd = Vec2d(end.x(), end.y());
+	setBoundsDirty(true);
+}
 CG_NAMESPACE_EXIT
