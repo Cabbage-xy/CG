@@ -42,4 +42,61 @@ bool CGRenderable::Picked(const Vec2d& p, double radius) //（二维）是否拾取到
 	//派生类中实现
 	return false;
 }
+//二维图形对象的几何变换
+void CGRenderable::Translate(double tx, double ty) //平移
+{
+	//派生类中实现
+}
+void CGRenderable::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	//派生类中实现
+}
+void CGRenderable::Scale(double sx, double sy) //缩放
+{
+	//派生类中实现
+}
+void CGRenderable::Scale(double sx, double sy, double cx, double cy) //缩放
+{
+	//派生类中实现
+}
+void CGRenderable::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir) //缩放
+{
+	//派生类中实现
+}
+void CGRenderable::MirrorXAxis() //关于X轴对称（二维、三维）
+{
+	//派生类中实现
+}
+void CGRenderable::MirrorYAxis() //关于Y轴对称（二维、三维）
+{
+	//派生类中实现
+}
+void CGRenderable::MirrorYeqPosX() //关于y=x对称（二维、三维）
+{
+	//派生类中实现
+}
+void CGRenderable::MirrorYeNegPX() //关于y=-x对称（二维、三维）
+{
+	//派生类中实现
+}
+void CGRenderable::MirrorOrigin() //关于原点对称（二维、三维）
+{
+	//派生类中实现
+}
+void CGRenderable::ShearXAxis(double shx) //沿X轴错切
+{
+	//派生类中实现
+}
+void CGRenderable::ShearYAxis(double shy) //沿Y轴错切
+{
+	//派生类中实现
+}
+void CGRenderable::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	//派生类中实现
+}
+void CGRenderable::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
+{
+	//派生类中实现
+}
 CG_NAMESPACE_EXIT

@@ -210,5 +210,201 @@ CGRenderable* CGScene::AppendPicked(const Vec2d& p, double radius) //添加选择
 	}
 	return nullptr;
 }
-
+//二维图形对象的几何变换（针对选择集中的对象）
+bool CGScene::Translate(double tx, double ty) //平移
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Translate(tx, ty);
+		i++;
+	}
+	return true;
+}
+bool CGScene::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Rotate(angle, cx, cy);
+		i++;
+	}
+	return true;
+}
+bool CGScene::Scale(double sx, double sy) //缩放
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Scale(sx, sy);
+		i++;
+	}
+	return true;
+}
+bool CGScene::Scale(double sx, double sy, double cx, double cy) //缩放（关于指定参考点缩放）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Scale(sx, sy, cx, cy);
+		i++;
+	}
+	return true;
+}
+bool CGScene::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir) //缩放（指定参考点，缩放方向）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Scale(sx, sy, cx, cy, xDir);
+		i++;
+	}
+	return true;
+}
+bool CGScene::MirrorXAxis() //关于X轴对称（二维、三维）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->MirrorXAxis();
+		i++;
+	}
+	return true;
+}
+bool CGScene::MirrorYAxis() //关于Y轴对称（二维、三维）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->MirrorYAxis();
+		i++;
+	}
+	return true;
+}
+bool CGScene::MirrorYeqPosX() //关于y=x对称（二维、三维）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->MirrorYeqPosX();
+		i++;
+	}
+	return true;
+}
+bool CGScene::MirrorYeNegPX() //关于y=-x对称（二维、三维）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->MirrorYeNegPX();
+		i++;
+	}
+	return true;
+}
+bool CGScene::MirrorOrigin() //关于原点对称（二维、三维）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->MirrorOrigin();
+		i++;
+	}
+	return true;
+}
+bool CGScene::ShearXAxis(double shx) //沿X轴错切
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->ShearXAxis(shx);
+		i++;
+	}
+	return true;
+}
+bool CGScene::ShearYAxis(double shy) //沿Y轴错切
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->ShearYAxis(shy);
+		i++;
+	}
+	return true;
+}
+bool CGScene::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->ShearXYAxis(shx, shy);
+		i++;
+	}
+	return true;
+}
+bool CGScene::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
+{
+	int i = 0, cnt = mSelections.GetSize();
+	if (cnt == 0)
+		return false;
+	while (i < cnt)
+	{
+		CGRenderable* s = mSelections.GetAt(i);
+		if (s)
+			s->Transform(mat);
+		i++;
+	}
+	return true;
+}
 CG_NAMESPACE_EXIT

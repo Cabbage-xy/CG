@@ -45,10 +45,6 @@ int Create2DSeedFill::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 				dc.FloodFill(pos.x(), pos.y(), mView->BoundColor());
 				dc.SelectObject(pOldBrush);
 			}
-			//CClientDC dc(mView);
-			//CPen* pOldPen = dc.SelectObject(&pen);
-			//dc.FloodFill(pos.x(), pos.y(), mView->BoundColor());
-			//dc.SelectObject(pOldPen);
 		}
 		else if (algrithm == CGRenderContext::aFillSeedBound4)
 			mView->GetRenderContext()->BoundFill4(pos.x(), pos.y(), mView->BoundColor(),
@@ -69,8 +65,8 @@ int Create2DSeedFill::OnLButtonDown(UINT nFlags, const Pos2i& pos)
 		((CGDI2DRenderContext*)(mView->GetRenderContext()))->SwapBackBuffer();
 #endif
 		mStep = 0; //设为0可重新开始绘制圆
-		mView->Invalidate();
-		mView->UpdateWindow();
+		//mView->Invalidate();
+		//mView->UpdateWindow();
 		mView->Prompt(_T("选择种子点"));
 	}
 	return 0;

@@ -198,6 +198,40 @@ public:
 	// 通过下标访问元素
 	T& operator[] (unsigned i) { return elements[i]; }
 	constexpr const T& operator[] (unsigned i) const { return elements[i]; }
+
+	///增补内容
+	// 按类型设置元素值
+	template <typename S> void setValue(S a, S b)
+	{
+		x() = (T)a;
+		y() = (T)b;
+	}
+	template <typename S> void setValue(const Vector2<S>& v)
+	{
+		x() = (T)v.x();
+		y() = (T)v.y();
+	}
+	// 按需取出元素的值
+	template <typename S> void getValue(S& a, S& b) const
+	{
+		a = S(x());
+		b = S(y());
+	}
+	template <typename S> void getValue(Vector2<S>& v) const
+	{
+		v.x() = S(x());
+		v.x() = S(y());
+	}
+	constexpr static unsigned int dimensions() { return element_count; }
+	// 类型最小值（通常是负值）
+	constexpr static T baseTypeLowest() { return std::numeric_limits<T>::lowest(); }
+	// 类型最大值（通常是正值）
+	constexpr static T baseTypeMax() { return std::numeric_limits<T>::max(); }
+	// 类型最小值（通常是负值）
+	constexpr static T baseTypeSmallest() { return std::numeric_limits<T>::min(); }
+	// 类型小值e则 1+e != 1
+	constexpr static T baseTypeEpsilon() { return std::numeric_limits<T>::epsilon(); }
+
 protected:
 	T elements[element_count];
 };
@@ -213,21 +247,24 @@ inline std::ostream& operator<< (std::ostream& s, const Vector2<T>& v)
 {
 	return s << '(' << v.x() << ' ' << v.y() << ')';
 }
-//预定义的便捷访问模板类
+//预定义的便捷访问模板类：二维矢量类
 typedef Vector2<int> Vec2i;
 typedef Vector2<unsigned int> Vec2u;
 typedef Vector2<float> Vec2f;
 typedef Vector2<double> Vec2d;
 typedef Vec2d Vec2;
+//预定义的便捷访问模板类：二维位置类
 typedef Vector2<int> Pos2i;
 typedef Vector2<unsigned int> Pos2u;
 typedef Vector2<float> Pos2f;
 typedef Vector2<double> Pos2d;
 typedef Pos2d Pos2;
+//预定义的便捷访问模板类：二维矢量数组类
 typedef std::vector<Vec2i> Vec2iArray;
 typedef std::vector<Vec2u> Vec2uArray;
 typedef std::vector<Vec2f> Vec2fArray;
 typedef std::vector<Vec2d> Vec2dArray;
+//预定义的便捷访问模板类：二维位置数组类
 typedef std::vector<Pos2i> Pos2iArray;
 typedef std::vector<Pos2u> Pos2uArray;
 typedef std::vector<Pos2f> Pos2fArray;

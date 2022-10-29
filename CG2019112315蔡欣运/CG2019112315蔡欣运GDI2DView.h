@@ -69,6 +69,13 @@ public:
 	//图形对象添加到场景，用于交互创建对象
 	virtual bool addRenderable(CGRenderable* r);
 	virtual bool delReaderable(CGRenderable* r);
+	//二维图形对象的几何变换（针对选择集中的对象）
+	virtual void Translate(double tx, double ty); //平移
+	virtual void Rotate(double angle, double cx, double cy); //旋转（逆时针为正，度）
+	virtual void Scale(double sx, double sy); //缩放
+	virtual void Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
+	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
+	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 // 实现
 public:
 	virtual ~CCG2019112315蔡欣运GDI2DView();
@@ -126,7 +133,29 @@ public:
 	afx_msg void OnUpdateDrawPolygon(CCmdUI* pCmdUI);
 	afx_msg void OnPickSeedPoint();
 	afx_msg void OnUpdatePickSeedPoint(CCmdUI* pCmdUI);
-	afx_msg void OnDraw2dLineTime();
+	afx_msg void OnTransformTranslateLeft();
+	afx_msg void OnTransformTranslateRight();
+	afx_msg void OnTransformTranslateUp();
+	afx_msg void OnTransformTranslateDown();
+	afx_msg void OnTransformRotateOrigin();
+	afx_msg void OnTransformTranslateFree();
+	afx_msg void OnTransformRotatePickPoint();
+	afx_msg void OnTransformScaleUp();
+	afx_msg void OnTransformScaleDown();
+	afx_msg void OnTransformScale();
+	afx_msg void OnTransformMirrorXAxis();
+	afx_msg void OnTransformMirrorYAxis();
+	afx_msg void OnTransformMirrorOrigin();
+	afx_msg void OnTransformMirrorYEqPosX();
+	afx_msg void OnTransformMirrorYEqNegPosX();
+	afx_msg void OnTransformMirrorChooseLine();
+	afx_msg void OnTransformShearXAxis();
+	afx_msg void OnTransformShearYAxis();
+	afx_msg void OnTransformShearXYAxis();
+	afx_msg void OnTransformMatrix();
+	afx_msg void OnUpdateTransformTranslateFree(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateTransformRotatePickPoint(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateTransformScale(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // CG2019112315蔡欣运GDI2DView.cpp 中的调试版本
