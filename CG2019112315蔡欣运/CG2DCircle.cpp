@@ -90,5 +90,83 @@ void CG2DCircle::Render(CGRenderContext* pRC, CGCamera* pCamera) //»æÖÆ¶ÔÏó£¬Ê¹Ó
 		Vec2i center = pCamera->WorldtoViewPort(mCenter);
 		pRC->BresenhamCircle(center, (int)r, penColor());
 	}
+	//´Ë´¦½öÒÔ»æÖÆ¶ÔÏó°üÎ§ºĞµÄ·½Ê½ÏÔÊ¾¶ÔÏó±»Ñ¡ÖĞ£¬Ò²¿ÉÒÔ×ÔĞĞÈ·¶¨Ñ¡ÖĞÏÔÊ¾·½Ê½
+	if (status() == CGRenderable::sSelected) //¶ÔÏó´¦ÓÚÑ¡ÖĞ×´Ì¬
+	{
+		//ÒÔ°üÎ§ºĞ»æÖÆÑ¡ÖĞ×´Ì¬
+		ABox2d abox = BoundingABox(); //¼ÆËã°üÎ§ºĞ£¬»æÖÆ°üÎ§ºĞ
+		Vec2i v1 = pCamera->WorldtoViewPort(abox.minCorner());
+		Vec2i v2 = pCamera->WorldtoViewPort(abox.maxCorner());
+		CPen pen(PS_DASHDOT, 1, RGB(0, 0, 255));
+		if (hDC != 0)
+		{
+			HPEN hOldPen = (HPEN)::SelectObject(hDC, pen.GetSafeHandle());
+			HBRUSH hOldBrush = (HBRUSH)::SelectObject(hDC, (HBRUSH)GetStockObject(NULL_BRUSH));
+			::Rectangle(hDC, v1.x(), v1.y(), v2.x(), v2.y());
+			::SelectObject(hDC, hOldPen);
+			::SelectObject(hDC, hOldBrush);
+		}
+		else
+		{
+			CClientDC dc(pRC->getView()); //²»Ê¹ÓÃË«»º´æ£¨ÄÚ´æDC£©£¬Ö±½ÓÊ¹ÓÃClientDC
+			CPen* pOldPen = dc.SelectObject(&pen);
+			CBrush* pOldBursh = (CBrush*)dc.SelectStockObject(NULL_BRUSH);
+			dc.Rectangle(v1.x(), v1.y(), v2.x(), v2.y());
+			dc.SelectObject(pOldPen);
+			dc.SelectObject(pOldBursh);
+		}
+	}
 }
+void CG2DCircle::computeBoundingBox() //¼ÆËã°üÎ§ºĞ
+{
+	mABox.setNull(); //ÏÈÇå¿Õ
+	mABox.addPoint(Vec2d(mCenter.x() + r, mCenter.y() + r)); //×óÉÏ½Ç
+	mABox.addPoint(Vec2d(mCenter.x() - r, mCenter.y() - r)); //ÓÒÏÂ½Ç
+	setBoundsDirty(false);
+}
+//¶şÎ¬Í¼ĞÎ¶ÔÏóµÄ¼¸ºÎ±ä»»£¨ÖØĞ´»ùÀàµÄĞéº¯Êı£©
+void CG2DCircle::Translate(double tx, double ty) //Æ½ÒÆ
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	mCenter.x() += tx;
+	mCenter.y() += ty;
+	setBoundsDirty(true);
+}
+
+void CG2DCircle::MirrorXAxis() //¹ØÓÚXÖá¶Ô³Æ£¨¶şÎ¬¡¢ÈıÎ¬£©
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	mCenter.y() = -mCenter.y();
+	setBoundsDirty(true);
+}
+void CG2DCircle::MirrorYAxis() //¹ØÓÚYÖá¶Ô³Æ£¨¶şÎ¬¡¢ÈıÎ¬£©
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	mCenter.x() = -mCenter.x();
+	setBoundsDirty(true);
+}
+void CG2DCircle::MirrorYeqPosX() //¹ØÓÚy=x¶Ô³Æ£¨¶şÎ¬¡¢ÈıÎ¬£©
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	double t = mCenter.x();
+	mCenter.x() = mCenter.y();
+	mCenter.y() = t;
+	setBoundsDirty(true);
+}
+void CG2DCircle::MirrorYeNegPX() //¹ØÓÚy=-x¶Ô³Æ£¨¶şÎ¬¡¢ÈıÎ¬£©
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	double t = mCenter.x();
+	mCenter.x() = -mCenter.y();
+	mCenter.y() = -t;
+	setBoundsDirty(true);
+}
+void CG2DCircle::MirrorOrigin() //¹ØÓÚÔ­µã¶Ô³Æ£¨¶şÎ¬¡¢ÈıÎ¬£©
+{
+	//¼òµ¥±ä»»£¬²»Ê¹ÓÃ¾ØÕóÖ±½ÓÔËËã
+	mCenter.x() = -mCenter.x();
+	mCenter.y() = -mCenter.y();
+	setBoundsDirty(true);
+}
+
 CG_NAMESPACE_EXIT

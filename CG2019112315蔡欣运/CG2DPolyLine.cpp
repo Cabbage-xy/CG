@@ -157,5 +157,132 @@ bool CG2DPolyLine::Picked(const Vec2d& p, double radius) //是否拾取到
 	}*/
 	return false;
 }
-
+//二维图形对象的几何变换（重写基类的虚函数）
+void CG2DPolyLine::Translate(double tx, double ty) //平移
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.x() += tx;
+		point.y() += ty;
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::Rotate(double angle, double cx, double cy) //旋转（逆时针为正，度）
+{
+	//使用变换矩阵实现
+	Mat3d mat = Mat3d::getRotation(angle, Vec2d(cx, cy));
+	for (auto& point : mPoints) {
+		Vec3d p = operator*(mat, Vec3d(point));
+		point = Vec2d(p.x(), p.y());
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::Scale(double sx, double sy) //缩放
+{
+	//关于坐标原点缩放，简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.x() *= sx;
+		point.y() *= sy;
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::Scale(double sx, double sy, double cx, double cy) //缩放
+{
+	//关于指定点缩放，使用矩阵直接运算
+	Mat3d mat = Mat3d::getScaling(Vec2d(sx, sy), Vec2d(cx, cy));
+	for (auto& point : mPoints) {
+		Vec3d p = operator*(mat, Vec3d(point));
+		point = Vec2d(p.x(), p.y());
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir) //缩放
+{
+	//关于指定点缩放，使用矩阵直接运算
+	Mat3d mat = Mat3d::getScaling(Vec2d(sx, sy), Vec2d(cx, cy), xDir);
+	for (auto& point : mPoints) {
+		Vec3d p = operator*(mat, Vec3d(point));
+		point = Vec2d(p.x(), p.y());
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::MirrorXAxis() //关于X轴对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.y() = -point.y();
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::MirrorYAxis() //关于Y轴对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.x() = -point.x();
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::MirrorYeqPosX() //关于y=x对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		double t = point.x();
+		point.x() = point.y();
+		point.y() = t;
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::MirrorYeNegPX() //关于y=-x对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		double t = point.x();
+		point.x() = -point.y();
+		point.y() = -t;
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::MirrorOrigin() //关于原点对称（二维、三维）
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.x() = -point.x();
+		point.y() = -point.y();
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::ShearXAxis(double shx) //沿X轴错切
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.x() = point.x() + shx * point.y();
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::ShearYAxis(double shy) //沿Y轴错切
+{
+	//简单变换，不使用矩阵直接运算
+	for (auto& point : mPoints) {
+		point.y() = point.y() + shy * point.x();
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::ShearXYAxis(double shx, double shy) //沿X、Y轴错切
+{
+	//使用变换矩阵实现
+	Mat3d mat = Mat3d::getShear(shx, shy);
+	for (auto& point : mPoints) {
+		Vec3d p = operator*(mat, Vec3d(point));
+		point = Vec2d(p.x(), p.y());
+	}
+	setBoundsDirty(true);
+}
+void CG2DPolyLine::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
+{
+	for (auto& point : mPoints) {
+		Vec3d p = operator*(mat, Vec3d(point));
+		point = Vec2d(p.x(), p.y());
+	}
+	setBoundsDirty(true);
+}
 CG_NAMESPACE_EXIT
