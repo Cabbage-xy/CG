@@ -163,13 +163,21 @@
 #define ID_TRANSFORM_MATRIX             32844
 #define ID_BUTTON24                     32845
 #define ID_TRANSFORM_TRANSLATE_LEFT     32846
+#define ID_MOVE_VIEWPOINT               32847
+#define ID_EXTEND_VIEW                  32848
+#define ID_NARROW_VIEW                  32849
+#define ID_ROTATE_VIEW                  32850
+#define ID_SHOW_ALL                     32851
+#define ID_SELECT_VIEW                  32852
+#define ID_BUTTON8                      32853
+#define ID_RESET_CAMERA                 32853
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32847
+#define _APS_NEXT_COMMAND_VALUE         32854
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           312
 #endif
