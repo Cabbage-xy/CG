@@ -80,35 +80,6 @@ int CGView::BrushIndex() const
 	//派生类中实现
 	return 0;
 }
-//观察窗口宽度与视口宽度的比例
-double CGView::WidthFactorWindowtoViewPort() {
-	return 1.0;
-}
-//观察窗口高度与视口高度的比例
-double CGView::HeightFactorWindowtoViewPort() {
-	return 1.0;
-}
-//观察（二维）（保持与视口高宽比一致）
-void CGView::Move2DCamera(double tx, double ty) //频移观察窗口
-{
-	//派生类中实现
-}
-void CGView::Zoom2DCamera(const Vec2d& lb, const Vec2d& rt) //观察窗口左下角、右上角
-{
-	//派生类中实现
-}
-void CGView::Zoom2DCamera(double ratio) //给定观察窗口的缩放比例（）
-{
-	//派生类中实现
-}
-void CGView::Rotate2DCamera(double degree) //转动相机（观察坐标系）
-{
-	//派生类中实现
-}
-void CGView::Reset2DCamera() //重置到默认参数（二维）
-{
-	//派生类中实现
-}
 //画线算法
 int CGView::LineAlgorithm() const
 {

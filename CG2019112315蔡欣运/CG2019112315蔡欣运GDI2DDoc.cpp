@@ -233,8 +233,8 @@ bool CCG2019112315蔡欣运GDI2DDoc::RenderScene(CGRenderContext* pRC)
 		return false;
 	if (pRC->width() <= 0 && pRC->height() <= 0)
 		return false;
-	//mCamera.setClientRect(0, 0, pRC->width(), pRC->height());
-	//mCamera.setViewPortBox(0, 0, pRC->width(), pRC->height());
+	mCamera.setClientRect(0, 0, pRC->width(), pRC->height());
+	mCamera.setViewPortBox(0, 0, pRC->width(), pRC->height());
 	return mScene.Render(pRC, &mCamera);
 }
 
@@ -296,54 +296,6 @@ bool CCG2019112315蔡欣运GDI2DDoc::Transform(const Mat3d& mat) //几何变换�
 	return mScene.Transform(mat);
 }
 
-//观察窗口宽度与视口宽度的比例
-double CCG2019112315蔡欣运GDI2DDoc::WidthFactorWindowtoViewPort()
-{
-	return mCamera.WidthFactorWindowtoViewPort();
-}
-//观察窗口高度与视口高度的比例
-double CCG2019112315蔡欣运GDI2DDoc::HeightFactorWindowtoViewPort()
-{
-	return mCamera.HeightFactorWindowtoViewPort();
-}
-
-//观察（二维）（注意在实现中要保持与视口高宽比一致）
-void CCG2019112315蔡欣运GDI2DDoc::Move2DCamera(double tx, double ty) //平移观察窗口
-{
-	mCamera.Move(tx, ty);
-}
-void CCG2019112315蔡欣运GDI2DDoc::Zoom2DCamera(const Vec2d& lb, const Vec2d& rt) //观察窗口左下角、右上角
-{
-	mCamera.Zoom(lb, rt);
-}
-void CCG2019112315蔡欣运GDI2DDoc::Zoom2DCamera(double ratio) //给定观察窗口的缩放比例
-{
-	mCamera.Zoom(ratio);
-}
-void CCG2019112315蔡欣运GDI2DDoc::Rotate2DCamera(double degree) //转动相机（观察坐标系）
-{
-	mCamera.Rotate(degree);
-}
-void CCG2019112315蔡欣运GDI2DDoc::ShowAll2DCamera() //显示全部场景
-{
-	ABox2d box = mScene.BoundingABox();//先计算场景的范围
-	if (box.isNull())
-	{
-		box.setMaxCorner(10000, 10000);
-		box.setMinCorner(-10000, -10000);
-	}
-	mCamera.Zoom(box.minCorner(), box.maxCorner());
-	mCamera.setEye(box.center().x(), box.center().y());
-}
-void CCG2019112315蔡欣运GDI2DDoc::Reset2DCamera() //重置到默认参数（二维）
-{
-	mCamera.Reset();
-}
-//客户区大小发生变换时，调整观察窗口与视口，并使高宽比相同，不产生变形
-void CCG2019112315蔡欣运GDI2DDoc::ClientResized(int cx, int cy)
-{
-	mCamera.setClientRect(cx, cy); //客户区变化
-}
 
 void CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenColor(CCmdUI* pCmdUI)
 {

@@ -66,19 +66,4 @@ bool CGDI2DScene::Render(CGRenderContext* pRC, CGCamera* pCamera)
 #endif
 	return true;
 }
-ABox2d CGDI2DScene::BoundingABox()
-{
-	ABox2d box;
-	int i = 0, cnt = mRenderables.GetSize();
-	while (i < cnt)
-	{
-		CGRenderable* r = mRenderables.GetAt(i);
-		if (r != nullptr)
-		{
-			box.extend(((CG2DRenderable*)r)->BoundingABox());
-		}
-		i++;
-	}
-	return box;
-}
 CG_NAMESPACE_EXIT

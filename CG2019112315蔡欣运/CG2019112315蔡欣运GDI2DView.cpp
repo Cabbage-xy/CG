@@ -37,8 +37,6 @@
 #include "TransformRotate2DRenderable.h"
 #include "TransformScale2DRenderable.h"
 
-#include "Move2DCamera.h"
-
 #include "Pick2DRenderable.h"
 
 #include "CGRenderContext.h"
@@ -122,12 +120,6 @@ BEGIN_MESSAGE_MAP(CCG2019112315蔡欣运GDI2DView, CGDI2DView/*CView*/)
 	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_TRANSLATE_FREE, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformTranslateFree)
 	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_ROTATE_PICK_POINT, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformRotatePickPoint)
 	ON_UPDATE_COMMAND_UI(ID_TRANSFORM_SCALE, &CCG2019112315蔡欣运GDI2DView::OnUpdateTransformScale)
-	ON_COMMAND(ID_MOVE_VIEWPOINT, &CCG2019112315蔡欣运GDI2DView::OnMoveViewpoint)
-	ON_UPDATE_COMMAND_UI(ID_MOVE_VIEWPOINT, &CCG2019112315蔡欣运GDI2DView::OnUpdateMoveViewpoint)
-	ON_COMMAND(ID_EXTEND_VIEW, &CCG2019112315蔡欣运GDI2DView::OnExtendView)
-	ON_COMMAND(ID_NARROW_VIEW, &CCG2019112315蔡欣运GDI2DView::OnNarrowView)
-	ON_COMMAND(ID_RESET_CAMERA, &CCG2019112315蔡欣运GDI2DView::OnResetCamera)
-	ON_COMMAND(ID_SHOW_ALL, &CCG2019112315蔡欣运GDI2DView::OnShowAll)
 END_MESSAGE_MAP()
 
 // CCG2019112315蔡欣运GDI2DView 构造/析构
@@ -259,24 +251,6 @@ int CCG2019112315蔡欣运GDI2DView::BrushIndex() const
 		return -1; // 0;
 	return pMainWnd->BrushIndex();
 }
-//观察窗口宽度与视口宽度的比例
-double CCG2019112315蔡欣运GDI2DView::WidthFactorWindowtoViewPort() {
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		return pDoc->WidthFactorWindowtoViewPort();
-	}
-	return 1.0;
-}
-//观察窗口高度与视口高度的比例
-double CCG2019112315蔡欣运GDI2DView::HeightFactorWindowtoViewPort() {
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		return pDoc->HeightFactorWindowtoViewPort();
-	}
-	return 1.0;
-}
 //画线算法
 int CCG2019112315蔡欣运GDI2DView::LineAlgorithm() const
 {
@@ -284,47 +258,6 @@ int CCG2019112315蔡欣运GDI2DView::LineAlgorithm() const
 	if (!pMainWnd)
 		return 0;
 	return pMainWnd->LineAlgorithm();
-}
-//观察（二维）（保持与视口高宽比一致）
-void CCG2019112315蔡欣运GDI2DView::Move2DCamera(double tx, double ty) //频移观察窗口
-{
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Move2DCamera(tx, ty);
-	}
-}
-void CCG2019112315蔡欣运GDI2DView::Zoom2DCamera(const Vec2d& lb, const Vec2d& rt) //观察窗口左下角、右上角
-{
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Zoom2DCamera(lb, rt);
-	}
-}
-void CCG2019112315蔡欣运GDI2DView::Zoom2DCamera(double ratio) //给定观察窗口的缩放比例（）
-{
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Zoom2DCamera(ratio);
-	}
-}
-void CCG2019112315蔡欣运GDI2DView::Rotate2DCamera(double angle) //转动相机（观察坐标系）
-{
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Rotate2DCamera(angle);
-	}
-}
-void CCG2019112315蔡欣运GDI2DView::Reset2DCamera() //重置到默认参数（二维）
-{
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Reset2DCamera();
-	}
 }
 //圆弧算法
 int CCG2019112315蔡欣运GDI2DView::CircleAlgorithm() const
@@ -580,11 +513,8 @@ void CCG2019112315蔡欣运GDI2DView::OnSize(UINT nType, int cx, int cy)
 	CGDI2DView::OnSize(nType, cx, cy);
 
 	// TODO: 在此处添加消息处理程序代码
-	//if (mRenderContext != nullptr)
-		//mRenderContext->setView(this);	//更新渲染环境
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-		pDoc->ClientResized(cx, cy);
+	if (mRenderContext != nullptr)
+		mRenderContext->setView(this);	//更新渲染环境
 }
 
 
@@ -1334,75 +1264,3 @@ void CCG2019112315蔡欣运GDI2DView::OnTransformMatrix()
 	AfxMessageBox(_T("暂未实现"));
 }
 
-
-
-void CCG2019112315蔡欣运GDI2DView::OnMoveViewpoint()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (mCommand)
-	{
-		mCommand->Cancel();
-		delete mCommand;
-		mCommand = nullptr;
-	}
-	mCommand = new CG_NAMESPACE::Move2DCamera(this);
-}
-
-
-void CCG2019112315蔡欣运GDI2DView::OnUpdateMoveViewpoint(CCmdUI* pCmdUI)
-{
-	// TODO: 在此添加命令更新用户界面处理程序代码
-	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dMoveCamera);
-}
-
-
-void CCG2019112315蔡欣运GDI2DView::OnExtendView()
-{
-	// TODO: 在此添加命令处理程序代码
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Zoom2DCamera(1.2);
-	}
-	Invalidate();
-	UpdateWindow();
-}
-
-
-void CCG2019112315蔡欣运GDI2DView::OnNarrowView()
-{
-	// TODO: 在此添加命令处理程序代码
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Zoom2DCamera(0.8);
-	}
-	Invalidate();
-	UpdateWindow();
-}
-
-
-void CCG2019112315蔡欣运GDI2DView::OnResetCamera()
-{
-	// TODO: 在此添加命令处理程序代码
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->Reset2DCamera();
-	}
-	Invalidate();
-	UpdateWindow();
-}
-
-
-void CCG2019112315蔡欣运GDI2DView::OnShowAll()
-{
-	// TODO: 在此添加命令处理程序代码
-	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
-	if (pDoc)
-	{
-		pDoc->ShowAll2DCamera();
-	}
-	Invalidate();
-	UpdateWindow();
-}
