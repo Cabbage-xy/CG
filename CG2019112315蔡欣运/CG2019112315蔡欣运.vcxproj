@@ -232,7 +232,6 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Matrix22.h" />
     <ClInclude Include="Matrix33.h" />
-    <ClInclude Include="Move2DCamera.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pick2DRenderable.h" />
@@ -294,7 +293,6 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Matrix22.cpp" />
     <ClCompile Include="Matrix33.cpp" />
-    <ClCompile Include="Move2DCamera.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
