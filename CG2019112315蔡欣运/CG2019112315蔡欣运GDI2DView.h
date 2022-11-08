@@ -87,6 +87,7 @@ public:
 	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 
+
 // 实现
 public:
 	virtual ~CCG2019112315蔡欣运GDI2DView();

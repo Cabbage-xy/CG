@@ -71,6 +71,7 @@ public:
 	void Reset2DCamera(); //重置到默认参数（二维）
 	//客户区大小发生变换时，调整观察窗口与视口，并使高宽比相同，不产生变形
 	void ClientResized(int cx, int cy);
+
 // 重写
 public:
 	virtual BOOL OnNewDocument();

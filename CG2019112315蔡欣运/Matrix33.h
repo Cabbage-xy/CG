@@ -10,14 +10,14 @@ template <typename T> class Matrix33
 public:
     typedef T BaseType;
 
-    // Ä¬ÈÏ¹¹Ôì³Éµ¥Î»¾ØÕó
+    // é»˜è®¤æ„é€ æˆå•ä½çŸ©é˜µ
     Matrix33()
     {
         setIdentity();
     }
     ~Matrix33() = default;
 
-    // ´ÓÆäËûÀàĞÍµÄMatrix33¾ØÕó¹¹Ôì
+    // ä»å…¶ä»–ç±»å‹çš„Matrix33çŸ©é˜µæ„é€ 
     template<typename S>
     explicit Matrix33(const Matrix33<S>& m)
     {
@@ -26,20 +26,20 @@ public:
         e(0, 2) = (T)m.e(0, 2); e(1, 2) = (T)m.e(1, 2); e(2, 2) = (T)m.e(2, 2);
     }
 
-    // ¿½±´¹¹Ôì
+    // æ‹·è´æ„é€ 
     Matrix33(const Matrix33& other)
     {
         operator=(other);
     }
 
-    // ¹¹Ôì£¬Ö÷¶Ô½ÇÔªËØÉèÎªÖ¸¶¨Öµ£¬ÆäËûÔªËØÎª0
+    // æ„é€ ï¼Œä¸»å¯¹è§’å…ƒç´ è®¾ä¸ºæŒ‡å®šå€¼ï¼Œå…¶ä»–å…ƒç´ ä¸º0
     explicit Matrix33(T n)
     {
         setIdentity();
         e(0, 0) = e(1, 1) = e(2, 2) = n;
     }
 
-    // ¹¹Ôì£¬°´ĞĞ¸ø³öËùÓĞÔªËØ
+    // æ„é€ ï¼ŒæŒ‰è¡Œç»™å‡ºæ‰€æœ‰å…ƒç´ 
     explicit Matrix33(T e00, T e01, T e02, T e10, T e11, T e12, T e20, T e21, T e22)
     {
         e(0, 0) = e00; e(0, 1) = e01; e(0, 2) = e02;
@@ -47,7 +47,7 @@ public:
         e(2, 0) = e20; e(2, 1) = e21; e(2, 2) = e22;
     }
 
-    // ¹¹Ôì£¬´Ó3x3Êı×é¹¹Ôì
+    // æ„é€ ï¼Œä»3x3æ•°ç»„æ„é€ 
     //     a[0][0] a[0][1] a[0][2]
     //     a[1][0] a[1][1] a[1][2]
     //     a[2][0] a[2][1] a[2][2]
@@ -58,14 +58,14 @@ public:
         e(2, 0) = a[2][0]; e(2, 1) = a[2][1]; e(2, 2) = a[2][2];
     }
 
-    // ½«ËùÓĞÔªËØÉèÎªÖ¸¶¨Öµ
+    // å°†æ‰€æœ‰å…ƒç´ è®¾ä¸ºæŒ‡å®šå€¼
     Matrix33& fill(T val)
     {
         e(0, 0) = e(1, 0) = e(2, 0) = e(0, 1) = e(1, 1) = e(2, 1) = e(0, 2) = e(1, 2) = e(2, 2) = val;
         return *this;
     }
 
-    // ¸³Öµµ½ÁíÒ»¾ØÕó
+    // èµ‹å€¼åˆ°å¦ä¸€çŸ©é˜µ
     template<typename S>
     void getValue(Matrix33<S>& m) const
     {
@@ -74,7 +74,7 @@ public:
         m.e(0, 2) = (S)e(0, 2); m.e(1, 2) = (S)e(1, 2); m.e(2, 2) = (S)e(2, 2);
     }
 
-    // ´ÓÁíÒ»¾ØÕó¸³Öµ
+    // ä»å¦ä¸€çŸ©é˜µèµ‹å€¼
     template<typename S>
     Matrix33& setValue(const Matrix33<S>& m)
     {
@@ -84,7 +84,7 @@ public:
         return *this;
     }
 
-    //xÖá·½ÏòµÄÏòÁ¿£¨×ó±ß2*1×ÓÕó£©
+    //xè½´æ–¹å‘çš„å‘é‡ï¼ˆå·¦è¾¹2*1å­é˜µï¼‰
     Vector2<T> getX() const
     {
         Vector2<T> v;
@@ -92,7 +92,7 @@ public:
         v.y() = e(1, 0);
         return v;
     }
-    //yÖá·½ÏòµÄÏòÁ¿£¨ÖĞ¼ä2*1×ÓÕó£©
+    //yè½´æ–¹å‘çš„å‘é‡ï¼ˆä¸­é—´2*1å­é˜µï¼‰
     Vector2<T> getY() const
     {
         Vector2<T> v;
@@ -100,7 +100,7 @@ public:
         v.y() = e(1, 1);
         return v;
     }
-    //Æ½ÒÆÏòÁ¿£¨ÓÒ±ß2*1×ÓÕó£©
+    //å¹³ç§»å‘é‡ï¼ˆå³è¾¹2*1å­é˜µï¼‰
     Vector2<T> getT() const
     {
         Vector2<T> v;
@@ -109,21 +109,21 @@ public:
         return v;
     }
 
-    //ÉèÖÃXÏòÁ¿£¨×ó±ß2*1×ÓÕó£©
+    //è®¾ç½®Xå‘é‡ï¼ˆå·¦è¾¹2*1å­é˜µï¼‰
     Matrix33& setX(const Vector2<T>& v)
     {
         e(0, 0) = v.x();
         e(1, 0) = v.y();
         return *this;
     }
-    //ÉèÖÃYÏòÁ¿£¨ÖĞ¼ä2*1×ÓÕó£©
+    //è®¾ç½®Yå‘é‡ï¼ˆä¸­é—´2*1å­é˜µï¼‰
     Matrix33& setY(const Vector2<T>& v)
     {
         e(0, 1) = v.x();
         e(1, 1) = v.y();
         return *this;
     }
-    //ÉèÖÃÆ½ÒÆÏòÁ¿£¨ÓÒ±ß2*1×ÓÕó£©
+    //è®¾ç½®å¹³ç§»å‘é‡ï¼ˆå³è¾¹2*1å­é˜µï¼‰
     Matrix33& setT(const Vector2<T>& v)
     {
         e(0, 2) = v.x();
@@ -131,7 +131,7 @@ public:
         return *this;
     }
 
-    //·µ»Ø×óÉÏµÄ2*2×ÓÕó
+    //è¿”å›å·¦ä¸Šçš„2*2å­é˜µ
     Matrix22<T> get2x2() const
     {
         Matrix22<T> t;
@@ -139,14 +139,14 @@ public:
         t.e(0, 1) = e(0, 1); t.e(1, 1) = e(1, 1);
         return t;
     }
-    //ÉèÖÃ×óÉÏ2x2×ÓÕó
+    //è®¾ç½®å·¦ä¸Š2x2å­é˜µ
     void set2x2(const Matrix22<T>& m)
     {
         e(0, 0) = m.e(0, 0); e(1, 0) = m.e(1, 0);
         e(0, 1) = m.e(0, 1); e(1, 1) = m.e(1, 1);
     }
 
-    // ÓëÆäËû¾ØÕóµÄ²îÒì
+    // ä¸å…¶ä»–çŸ©é˜µçš„å·®å¼‚
     T diff(const Matrix33& other) const
     {
         T err = 0;
@@ -159,30 +159,30 @@ public:
         return err;
     }
 
-    // ÅĞ¶ÏÓëÁíÒ»¾ØÕóÊÇ·ñÍêÈ«ÏàµÈ
+    // åˆ¤æ–­ä¸å¦ä¸€çŸ©é˜µæ˜¯å¦å®Œå…¨ç›¸ç­‰
     bool operator==(const Matrix33& m) const
     {
         return memcmp(m.eVec, eVec, sizeof(T) * 9) == 0;
     }
-    // ÅĞ¶ÏÓëÁíÒ»¾ØÕóÊÇ·ñ²»µÈ
+    // åˆ¤æ–­ä¸å¦ä¸€çŸ©é˜µæ˜¯å¦ä¸ç­‰
     bool operator!=(const Matrix33& m) const
     {
         return !operator==(m);
     }
 
-    // ÖØÔØ¸³ÖµÔËËã·û
+    // é‡è½½èµ‹å€¼è¿ç®—ç¬¦
     Matrix33& operator=(const Matrix33& m)
     {
         memcpy(eVec, m.eVec, sizeof(T) * 9);
         return *this;
     }
-    // ÖØÔØ¸³ÖµÔËËã·û
+    // é‡è½½èµ‹å€¼è¿ç®—ç¬¦
     Matrix33& operator=(T val)
     {
         return fill(val);
     }
 
-    //ÖØÔØ¼ÓÔËËã·û£¨¼ÓÉÏÁíÒ»¸ö¾ØÕó£¬·µ»ØºÍ¾ØÕó£©
+    //é‡è½½åŠ è¿ç®—ç¬¦ï¼ˆåŠ ä¸Šå¦ä¸€ä¸ªçŸ©é˜µï¼Œè¿”å›å’ŒçŸ©é˜µï¼‰
     Matrix33 operator+(const Matrix33& m) const
     {
         Matrix33 t;
@@ -191,7 +191,7 @@ public:
                 t.e(j, i) = e(j, i) + m.e(j, i);
         return t;
     }
-    //ÖØÔØ¼õÔËËã·û£¨¼õÈ¥ÁíÒ»¸ö¾ØÕó£¬·µ»Ø²î¾ØÕó£©
+    //é‡è½½å‡è¿ç®—ç¬¦ï¼ˆå‡å»å¦ä¸€ä¸ªçŸ©é˜µï¼Œè¿”å›å·®çŸ©é˜µï¼‰
     Matrix33 operator-(const Matrix33& m) const
     {
         Matrix33 t;
@@ -200,14 +200,14 @@ public:
                 t.e(j, i) = e(j, i) - m.e(j, i);
         return t;
     }
-    // ÓÒÊ£Ò»¾ØÕó£¬·µ»Ø½á¹û¾ØÕó
+    // å³å‰©ä¸€çŸ©é˜µï¼Œè¿”å›ç»“æœçŸ©é˜µ
     Matrix33 operator*(const Matrix33& m) const
     {
         Matrix33<T> t;
         Matrix33<T>::multiply(t, *this, m);
         return t;
     }
-    //ÖØÔØ+ÔËËã·û£¬¸÷ÔªËØ¼ÓÉÏÖ¸¶¨Öµ£¬·µ»ØºÍ¾ØÕó
+    //é‡è½½+è¿ç®—ç¬¦ï¼Œå„å…ƒç´ åŠ ä¸ŠæŒ‡å®šå€¼ï¼Œè¿”å›å’ŒçŸ©é˜µ
     Matrix33 operator+(T d) const
     {
         Matrix33 t;
@@ -216,7 +216,7 @@ public:
                 t.e(j, i) = e(j, i) + d;
         return t;
     }
-    //ÖØÔØ-ÔËËã·û£¬¸÷ÔªËØ¼õÈ¥Ö¸¶¨Öµ£¬·µ»Ø²î¾ØÕó
+    //é‡è½½-è¿ç®—ç¬¦ï¼Œå„å…ƒç´ å‡å»æŒ‡å®šå€¼ï¼Œè¿”å›å·®çŸ©é˜µ
     Matrix33 operator-(T d) const
     {
         Matrix33 t;
@@ -225,7 +225,7 @@ public:
                 t.e(j, i) = e(j, i) - d;
         return t;
     }
-    //ÖØÔØ*ÔËËã·û£¬¸÷ÔªËØ³ËÒÔÖ¸¶¨Öµ£¬·µ»Ø»ı¾ØÕó
+    //é‡è½½*è¿ç®—ç¬¦ï¼Œå„å…ƒç´ ä¹˜ä»¥æŒ‡å®šå€¼ï¼Œè¿”å›ç§¯çŸ©é˜µ
     Matrix33 operator*(T d) const
     {
         Matrix33 t;
@@ -234,7 +234,7 @@ public:
                 t.e(j, i) = e(j, i) * d;
         return t;
     }
-    //ÖØÔØ*ÔËËã·û£¬¸÷ÔªËØ³ıÒÔÖ¸¶¨Öµ£¬·µ»ØÉÌ¾ØÕó
+    //é‡è½½*è¿ç®—ç¬¦ï¼Œå„å…ƒç´ é™¤ä»¥æŒ‡å®šå€¼ï¼Œè¿”å›å•†çŸ©é˜µ
     Matrix33 operator/(T d) const
     {
         d = (T)1 / d;
@@ -245,7 +245,7 @@ public:
         return t;
     }
 
-    //ÖØÔØ+=ÔËËã·û
+    //é‡è½½+=è¿ç®—ç¬¦
     Matrix33& operator+=(const Matrix33& m)
     {
         for (int i = 0; i < 3; ++i)
@@ -253,7 +253,7 @@ public:
                 e(j, i) += m.e(j, i);
         return *this;
     }
-    //ÖØÔØ-=ÔËËã·û
+    //é‡è½½-=è¿ç®—ç¬¦
     Matrix33& operator-=(const Matrix33& m)
     {
         for (int i = 0; i < 3; ++i)
@@ -261,12 +261,12 @@ public:
                 e(j, i) -= m.e(j, i);
         return *this;
     }
-    //ÖØÔØ*=ÔËËã·û£¬ÓÒ³ËÒÔÒ»¾ØÕó£¨*this * m£©
+    //é‡è½½*=è¿ç®—ç¬¦ï¼Œå³ä¹˜ä»¥ä¸€çŸ©é˜µï¼ˆ*this * mï¼‰
     Matrix33& operator*=(const Matrix33& m)
     {
         return postMultiply(m);
     }
-    //ÖØÔØ+=ÔËËã·û£¬¸÷ÔªËØ¼ÓÉÏÖ¸¶¨Öµ
+    //é‡è½½+=è¿ç®—ç¬¦ï¼Œå„å…ƒç´ åŠ ä¸ŠæŒ‡å®šå€¼
     Matrix33& operator+=(T d)
     {
         for (int i = 0; i < 3; ++i)
@@ -274,7 +274,7 @@ public:
                 e(j, i) += d;
         return *this;
     }
-    //ÖØÔØ-=ÔËËã·û£¬¸÷ÔªËØ¼õÈ¥Ö¸¶¨Öµ
+    //é‡è½½-=è¿ç®—ç¬¦ï¼Œå„å…ƒç´ å‡å»æŒ‡å®šå€¼
     Matrix33& operator-=(T d)
     {
         for (int i = 0; i < 3; ++i)
@@ -282,7 +282,7 @@ public:
                 e(j, i) -= d;
         return *this;
     }
-    //ÖØÔØ*=ÔËËã·û£¬¸÷ÔªËØ³ËÒÔÖ¸¶¨Öµ
+    //é‡è½½*=è¿ç®—ç¬¦ï¼Œå„å…ƒç´ ä¹˜ä»¥æŒ‡å®šå€¼
     Matrix33& operator*=(T d)
     {
         for (int i = 0; i < 3; ++i)
@@ -290,7 +290,7 @@ public:
                 e(j, i) *= d;
         return *this;
     }
-    //ÖØÔØ/=ÔËËã·û£¬¸÷ÔªËØ³ıÒÔÖ¸¶¨Öµ£¨²»ÄÜÎª0£¬·ñÔò»á0³ıÒì³££©
+    //é‡è½½/=è¿ç®—ç¬¦ï¼Œå„å…ƒç´ é™¤ä»¥æŒ‡å®šå€¼ï¼ˆä¸èƒ½ä¸º0ï¼Œå¦åˆ™ä¼š0é™¤å¼‚å¸¸ï¼‰
     Matrix33& operator/=(T d)
     {
         d = (T)1 / d;
@@ -300,7 +300,7 @@ public:
         return *this;
     }
 
-    //ÖØÔØ-ÔËËã·û£¨¸÷ÔªËØÈ¡·´£©
+    //é‡è½½-è¿ç®—ç¬¦ï¼ˆå„å…ƒç´ å–åï¼‰
     Matrix33 operator-() const
     {
         Matrix33 t;
@@ -317,18 +317,18 @@ public:
         return *this;
     }
 
-    //·µ»Ø×óÉÏÊ×ÔªËØÖ¸Õë
+    //è¿”å›å·¦ä¸Šé¦–å…ƒç´ æŒ‡é’ˆ
     T* ptr()
     {
         return &e(0, 0);
     }
-    //·µ»Ø×óÉÏÊ×ÔªËØÖ¸Õë
+    //è¿”å›å·¦ä¸Šé¦–å…ƒç´ æŒ‡é’ˆ
     const T* ptr() const
     {
         return &e(0, 0);
     }
 
-    //×ªÖÃ
+    //è½¬ç½®
     Matrix33& transpose()
     {
         T tmp;
@@ -343,7 +343,7 @@ public:
         }
         return *this;
     }
-    //·µ»Ø×ªÖÃ¾ØÕó
+    //è¿”å›è½¬ç½®çŸ©é˜µ
     Matrix33 getTransposed() const
     {
         Matrix33 m;
@@ -352,7 +352,7 @@ public:
                 m.e(j, i) = e(i, j);
         return m;
     }
-    //¸øÖ¸¶¨µÄ¾ØÕóÉèÎªµ±Ç°¾ØÕóµÄ×ªÖÃ¾ØÕó£¬·µ»Ø×ªÖÃ¾ØÕó£¨×óÖµ£©
+    //ç»™æŒ‡å®šçš„çŸ©é˜µè®¾ä¸ºå½“å‰çŸ©é˜µçš„è½¬ç½®çŸ©é˜µï¼Œè¿”å›è½¬ç½®çŸ©é˜µï¼ˆå·¦å€¼ï¼‰
     Matrix33& getTransposed(Matrix33& dest) const
     {
         for (int i = 0; i < 3; ++i)
@@ -361,7 +361,7 @@ public:
         return dest;
     }
 
-    //ÅĞ¶ÏÊÇ·ñÔªËØÈ«Îª0
+    //åˆ¤æ–­æ˜¯å¦å…ƒç´ å…¨ä¸º0
     bool isNull() const
     {
         for (int i = 0; i < 3; ++i)
@@ -370,32 +370,32 @@ public:
                     return false;
         return true;
     }
-    //ÉèÎª¿Õ¾ØÕó£¨ÔªËØÈ«Îª0£©
+    //è®¾ä¸ºç©ºçŸ©é˜µï¼ˆå…ƒç´ å…¨ä¸º0ï¼‰
     Matrix33& setNull()
     {
         fill(0);
         return *this;
     }
 
-    //½«Ö¸¶¨¾ØÕóÉèÎª¿Õ¾ØÕó£¨ÔªËØÈ«Îª0£©²¢·µ»Ø´«Èë¾ØÕó
+    //å°†æŒ‡å®šçŸ©é˜µè®¾ä¸ºç©ºçŸ©é˜µï¼ˆå…ƒç´ å…¨ä¸º0ï¼‰å¹¶è¿”å›ä¼ å…¥çŸ©é˜µ
     static Matrix33& getNull(Matrix33& out)
     {
         out.fill(0);
         return out;
     }
-    //·µ»ØÒ»¸ö¿Õ¾ØÕó
+    //è¿”å›ä¸€ä¸ªç©ºçŸ©é˜µ
     static Matrix33 getNull()
     {
         return Matrix33().fill(0);
     }
 
-    //ÅĞ¶ÏÊÇ·ñµ¥Î»¾ØÕó
+    //åˆ¤æ–­æ˜¯å¦å•ä½çŸ©é˜µ
     bool isIdentity() const
     {
         Matrix33 i;
         return memcmp(ptr(), i.ptr(), sizeof(T) * 9) == 0;
     }
-    //ÉèÖÃÎªµ¥Î»¾ØÕó
+    //è®¾ç½®ä¸ºå•ä½çŸ©é˜µ
     Matrix33& setIdentity()
     {
         static const T I3d[] =
@@ -407,21 +407,21 @@ public:
         memcpy(eVec, I3d, sizeof(T) * 9);
         return *this;
     }
-    //·µ»ØÒ»¸öµ¥Î»¾ØÕó
+    //è¿”å›ä¸€ä¸ªå•ä½çŸ©é˜µ
     static Matrix33 getIdentity()
     {
         return Matrix33();
     }
-    //½«´«Èë¾ØÕóÉèÎªµ¥Î»Õó²¢½«Æä·µ»Ø£¨×óÖµ£©
+    //å°†ä¼ å…¥çŸ©é˜µè®¾ä¸ºå•ä½é˜µå¹¶å°†å…¶è¿”å›ï¼ˆå·¦å€¼ï¼‰
     static Matrix33& getIdentity(Matrix33& out)
     {
         out.setIdentity();
         return out;
     }
 
-    //´«Èë¾ØÕó´ø»Øµ±Ç°¾ØÕóµÄÄæ¾ØÕó²¢·µ»ØĞĞÁĞÊ½µÄÖµ
+    //ä¼ å…¥çŸ©é˜µå¸¦å›å½“å‰çŸ©é˜µçš„é€†çŸ©é˜µå¹¶è¿”å›è¡Œåˆ—å¼çš„å€¼
     T getInverse(Matrix33& dest) const;
-    //·µ»Øµ±Ç°¾ØÕóµÄÄæ¾ØÕó£¬²¢·µ»ØĞĞÁĞÊ½µÄÖµ
+    //è¿”å›å½“å‰çŸ©é˜µçš„é€†çŸ©é˜µï¼Œå¹¶è¿”å›è¡Œåˆ—å¼çš„å€¼
     Matrix33 getInverse(T* determinant = nullptr) const
     {
         Matrix33 tmp;
@@ -431,7 +431,7 @@ public:
         return tmp;
     }
 
-    //Äæ£¬²¢·µ»ØĞĞÁĞÊ½µÄÖµ
+    //é€†ï¼Œå¹¶è¿”å›è¡Œåˆ—å¼çš„å€¼
     Matrix33& invert(T* determinant = nullptr)
     {
         T det = getInverse(*this);
@@ -439,7 +439,7 @@ public:
             *determinant = det;
         return *this;
     }
-    //ÇóĞĞÁĞÊ½Öµ
+    //æ±‚è¡Œåˆ—å¼å€¼
     T determinant() const
     {
         return e(0, 0) * (e(1, 1) * e(2, 2) - e(1, 2) * e(2, 1)) +
@@ -447,7 +447,7 @@ public:
             e(0, 2) * (e(1, 0) * e(2, 1) - e(1, 1) * e(2, 0));
     }
 
-    //¾ØÕóÏà³Ë£ºout = p * q £¨½á¹û¾ØÕó = ×ó¾ØÕó * ÓÒ¾ØÕó£©£¬Êä³ö¾ØÕóout
+    //çŸ©é˜µç›¸ä¹˜ï¼šout = p * q ï¼ˆç»“æœçŸ©é˜µ = å·¦çŸ©é˜µ * å³çŸ©é˜µï¼‰ï¼Œè¾“å‡ºçŸ©é˜µout
     static Matrix33& multiply(Matrix33& out, const Matrix33& p, const Matrix33& q)
     {
         //assert(out.ptr() != p.ptr() && out.ptr() != q.ptr());
@@ -466,35 +466,35 @@ public:
 
         return out;
     }
-    //ÓÒ³ËÒ»¾ØÕó£¨µ±Ç°¾ØÕó <= µ±Ç°¾ØÕó * m£©
+    //å³ä¹˜ä¸€çŸ©é˜µï¼ˆå½“å‰çŸ©é˜µ <= å½“å‰çŸ©é˜µ * mï¼‰
     Matrix33& postMultiply(const Matrix33& m)
     {
         Matrix33<T> t;
         return *this = multiply(t, *this, m);
     }
-    //×ó³ËÒ»¾ØÕó£¨µ±Ç°¾ØÕó <= m * µ±Ç°¾ØÕó£©
+    //å·¦ä¹˜ä¸€çŸ©é˜µï¼ˆå½“å‰çŸ©é˜µ <= m * å½“å‰çŸ©é˜µï¼‰
     Matrix33& preMultiply(const Matrix33& m)
     {
         Matrix33<T> t;
         return *this = multiply(t, m, *this);
     }
 
-    //¸ø¶¨ÈÆ×ø±êÔ­µãĞı×ª½Ç¶È£¨µ¥Î»£º¶È£¬ÄæÊ±ÕëÎªÕı£©»ñÈ¡¶ÔÓ¦Ğı×ª¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬¼´×ó³Ë¾ØÕó£©
+    //ç»™å®šç»•åæ ‡åŸç‚¹æ—‹è½¬è§’åº¦ï¼ˆå•ä½ï¼šåº¦ï¼Œé€†æ—¶é’ˆä¸ºæ­£ï¼‰è·å–å¯¹åº”æ—‹è½¬çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œå³å·¦ä¹˜çŸ©é˜µï¼‰
     static Matrix33 getRotation(T degrees);
-    //¸ø¶¨Ğı×ª½Ç¶È£¨µ¥Î»£º¶È£¬ÄæÊ±ÕëÎªÕı£©ºÍĞı×ªÖĞĞÄ£¬·µ»Ø¶ÔÓ¦Ğı×ª¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬¼´×ó³Ë¾ØÕó£©
+    //ç»™å®šæ—‹è½¬è§’åº¦ï¼ˆå•ä½ï¼šåº¦ï¼Œé€†æ—¶é’ˆä¸ºæ­£ï¼‰å’Œæ—‹è½¬ä¸­å¿ƒï¼Œè¿”å›å¯¹åº”æ—‹è½¬çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œå³å·¦ä¹˜çŸ©é˜µï¼‰
     static Matrix33 getRotation(T degrees, const Vector2<T>& v)
     {
-        //1£©Æ½ÒÆµ½ÖĞĞÄÓëÔ­µãÖØºÏgetTranslation(-v)
-        //2£©Ğı×ªgetRotation(degrees)
-        //3£©Æ½ÒÆµ½ÖĞĞÄ»Øµ½Ô­Î»ÖÃgetTranslation(v)
+        //1ï¼‰å¹³ç§»åˆ°ä¸­å¿ƒä¸åŸç‚¹é‡åˆgetTranslation(-v)
+        //2ï¼‰æ—‹è½¬getRotation(degrees)
+        //3ï¼‰å¹³ç§»åˆ°ä¸­å¿ƒå›åˆ°åŸä½ç½®getTranslation(v)
         return getTranslation(v) * getRotation(degrees) * getTranslation(-v);
     }
-    ////·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼Ïàµ±ÓÚ¹ıÔ­µãµÄÖ±Ïß£¬ÒªÇóÊÇ¶şÎ¬Í¼ĞÎµÄ¹æ·¶»¯Æë´Î×ø±ê£¬³¤¶È²»ÄÜÎª0£©µÄ¾ØÕó(HTJ)
+    ////è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½ç›¸å½“äºè¿‡åŸç‚¹çš„ç›´çº¿ï¼Œè¦æ±‚æ˜¯äºŒç»´å›¾å½¢çš„è§„èŒƒåŒ–é½æ¬¡åæ ‡ï¼Œé•¿åº¦ä¸èƒ½ä¸º0ï¼‰çš„çŸ©é˜µ(HTJ)
     //static Matrix33 getRotation(const Vector3<T>& from, const Vector3<T>& to)
     //{
     //    Matrix33<T> rot;
     //    Vector2<T> f(from.st()), t(to.st());
-    //    //ÔÚ3¡¢4ÏóÏŞ
+    //    //åœ¨3ã€4è±¡é™
     //    if (f.y() < 0) {
     //        f = f.negate();
     //    }
@@ -509,12 +509,12 @@ public:
     //    rot.e(0, 1) = -(T)sinValue;
     //    return rot;
     //}
-    ////·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼Ïàµ±ÓÚ¹ıÔ­µãµÄÖ±Ïß£¬ÒªÇó³¤¶È²»ÄÜÎª0£©µÄ¾ØÕó(HTJ)
+    ////è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½ç›¸å½“äºè¿‡åŸç‚¹çš„ç›´çº¿ï¼Œè¦æ±‚é•¿åº¦ä¸èƒ½ä¸º0ï¼‰çš„çŸ©é˜µ(HTJ)
     //static Matrix33 getRotation(const Vector2<T>& from, const Vector2<T>& to)
     //{
     //    Matrix33<T> rot;
     //    Vector2<T> f(from), t(to);
-    //    //ÔÚ3¡¢4ÏóÏŞ
+    //    //åœ¨3ã€4è±¡é™
     //    if (f.y() < 0) {
     //        f = f.negate();
     //    }
@@ -530,73 +530,73 @@ public:
     //    return rot;
     //}
 
-    //·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó
+    //è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µ
     static Matrix33 getRotation(const Vector3<T>& from, const Vector3<T>& to);
 
 
-    //·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»£¬ÏòÁ¿Ê¹ÓÃÁĞÏòÁ¿£©
+    //è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ï¼Œå‘é‡ä½¿ç”¨åˆ—å‘é‡ï¼‰
     static Matrix33 getRotation(const Vector2<T>& from, const Vector2<T>& to);
 
-    //ÈÆÔ­µãĞı×ªÖ¸¶¨½Ç¶È£¨µ¥Î»£º¶È£¬ÄæÊ±ÕëÎªÕı£©£¬this = R * this£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬²ÉÓÃ×ó³ËĞı×ª¾ØÕó·½Ê½£©
+    //ç»•åŸç‚¹æ—‹è½¬æŒ‡å®šè§’åº¦ï¼ˆå•ä½ï¼šåº¦ï¼Œé€†æ—¶é’ˆä¸ºæ­£ï¼‰ï¼Œthis = R * thisï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œé‡‡ç”¨å·¦ä¹˜æ—‹è½¬çŸ©é˜µæ–¹å¼ï¼‰
     Matrix33& rotate(T degrees)
     {
         return preMultiply(getRotation(degrees));
     }
 
-    //¸ø¶¨Æ½ÒÆÊ¸Á¿£¬½«´«ÈëµÄ¾ØÕóÉèÎªÆ½ÒÆ¾ØÕó²¢·µ»Ø´«Èë¾ØÕó£¨×óÖµ£©£¨¶şÎ¬Í¼ĞÎ±ä»»µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£©
+    //ç»™å®šå¹³ç§»çŸ¢é‡ï¼Œå°†ä¼ å…¥çš„çŸ©é˜µè®¾ä¸ºå¹³ç§»çŸ©é˜µå¹¶è¿”å›ä¼ å…¥çŸ©é˜µï¼ˆå·¦å€¼ï¼‰ï¼ˆäºŒç»´å›¾å½¢å˜æ¢ç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼‰
     static Matrix33& getTranslation(Matrix33& out, const Vector2<T>& v)
     {
         return getTranslation(out, v.x(), v.y());
     }
-    //¸ø¶¨Æ½ÒÆÊ¸Á¿£¬·µ»ØÒ»¸öÆ½ÒÆ¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£©
+    //ç»™å®šå¹³ç§»çŸ¢é‡ï¼Œè¿”å›ä¸€ä¸ªå¹³ç§»çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼‰
     static Matrix33 getTranslation(const Vector2<T>& v)
     {
         return getTranslation(v.x(), v.y());
     }
-    //¸ø¶¨Æ½ÒÆÊ¸Á¿£¬·µ»ØÒ»¸öÆ½ÒÆ¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£©
+    //ç»™å®šå¹³ç§»çŸ¢é‡ï¼Œè¿”å›ä¸€ä¸ªå¹³ç§»çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼‰
     static Matrix33 getTranslation(T x, T y)
     {
         Matrix33 m;
         return getTranslation(m, x, y);
     }
-    //¸ø¶¨Æ½ÒÆÊ¸Á¿£¬½«´«ÈëµÄ¾ØÕóÉèÎªÆ½ÒÆ¾ØÕó£¨ÓÒÉÏ1*2×ÓÕó£©²¢·µ»Ø´«Èë¾ØÕó£¨×óÖµ£©
+    //ç»™å®šå¹³ç§»çŸ¢é‡ï¼Œå°†ä¼ å…¥çš„çŸ©é˜µè®¾ä¸ºå¹³ç§»çŸ©é˜µï¼ˆå³ä¸Š1*2å­é˜µï¼‰å¹¶è¿”å›ä¼ å…¥çŸ©é˜µï¼ˆå·¦å€¼ï¼‰
     static Matrix33& getTranslation(Matrix33& out, T x, T y)
     {
         out.setIdentity();
-        out.e(0, 2) = x;    //ÓÃÓÚÍ¼ĞÎ±ä»»Ê±£¬½öÊÊÓÃÓÚÁĞÏòÁ¿±íÊ¾µÄ£¨×ó³Ë¾ØÕó£©
+        out.e(0, 2) = x;    //ç”¨äºå›¾å½¢å˜æ¢æ—¶ï¼Œä»…é€‚ç”¨äºåˆ—å‘é‡è¡¨ç¤ºçš„ï¼ˆå·¦ä¹˜çŸ©é˜µï¼‰
         out.e(1, 2) = y;
         return out;
     }
 
-    //Æ½ÒÆ£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬²ÉÓÃ×ó³ËĞı×ª¾ØÕó·½Ê½£©
+    //å¹³ç§»ï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œé‡‡ç”¨å·¦ä¹˜æ—‹è½¬çŸ©é˜µæ–¹å¼ï¼‰
     Matrix33& translate(T x, T y)
     {
         return preMultiply(getTranslation(x, y));
     }
-    //Æ½ÒÆ£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬²ÉÓÃ×ó³ËĞı×ª¾ØÕó·½Ê½£©
+    //å¹³ç§»ï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œé‡‡ç”¨å·¦ä¹˜æ—‹è½¬çŸ©é˜µæ–¹å¼ï¼‰
     Matrix33& translate(const Vector2<T>& v)
     {
         return preMultiply(getTranslation(v));
     }
 
-    //¸ø¶¨Ëõ·ÅÏµÊı£¬½«´«ÈëµÄ¾ØÕóÉèÎªËõ·Å¾ØÕó²¢·µ»Ø´«Èë¾ØÕó£¨×óÖµ£©
+    //ç»™å®šç¼©æ”¾ç³»æ•°ï¼Œå°†ä¼ å…¥çš„çŸ©é˜µè®¾ä¸ºç¼©æ”¾çŸ©é˜µå¹¶è¿”å›ä¼ å…¥çŸ©é˜µï¼ˆå·¦å€¼ï¼‰
     static Matrix33& getScaling(Matrix33& out, const Vector2<T>& v)
     {
         return getScaling(out, v.x(), v.y());
     }
-    //¸ø¶¨Ëõ·ÅÏµÊı£¬·µ»ØËõ·Å¾ØÕó
+    //ç»™å®šç¼©æ”¾ç³»æ•°ï¼Œè¿”å›ç¼©æ”¾çŸ©é˜µ
     static Matrix33 getScaling(const Vector2<T>& v)
     {
         Matrix33 m;
         return getScaling(m, v.x(), v.y());
     }
-    //¸ø¶¨Ëõ·ÅÏµÊı£¬·µ»ØËõ·Å¾ØÕó
+    //ç»™å®šç¼©æ”¾ç³»æ•°ï¼Œè¿”å›ç¼©æ”¾çŸ©é˜µ
     static Matrix33 getScaling(T x, T y)
     {
         Matrix33 m;
         return getScaling(m, x, y);
     }
-    //¸ø¶¨Ëõ·ÅÏµÊı£¬½«´«ÈëµÄ¾ØÕóÉèÎªËõ·Å¾ØÕó²¢·µ»Ø´«Èë¾ØÕó£¨×óÖµ£©
+    //ç»™å®šç¼©æ”¾ç³»æ•°ï¼Œå°†ä¼ å…¥çš„çŸ©é˜µè®¾ä¸ºç¼©æ”¾çŸ©é˜µå¹¶è¿”å›ä¼ å…¥çŸ©é˜µï¼ˆå·¦å€¼ï¼‰
     static Matrix33& getScaling(Matrix33& out, T x, T y)
     {
         out.setIdentity();
@@ -604,54 +604,54 @@ public:
         out.e(1, 1) = y;
         return out;
     }
-    //¸ø¶¨Ëõ·ÅÏµÊı¡¢Ëõ·Å²Î¿¼µã£¨²»±äµã£¬Ïàµ±ÓÚ¹æ·¶»¯Æë´Î×ø±ê£©·µ»ØËõ·Å¾ØÕó
+    //ç»™å®šç¼©æ”¾ç³»æ•°ã€ç¼©æ”¾å‚è€ƒç‚¹ï¼ˆä¸å˜ç‚¹ï¼Œç›¸å½“äºè§„èŒƒåŒ–é½æ¬¡åæ ‡ï¼‰è¿”å›ç¼©æ”¾çŸ©é˜µ
     static Matrix33 getScaling(const Vector2<T>& c, const Vector2<T>& ref)
     {
-        //1£©Æ½ÒÆµ½²Î¿¼µãÓëÔ­µãÖØºÏgetTranslation(-ref)
-        //2£©Ëõ·ÅgetScaling(c)
-        //3£©×÷1£©µÄÄæ±ä»»getTranslation(ref)
-        //×¢ÒâÊÇÓÃÓÚÁĞÏòÁ¿±í´ï£¬×ó³Ë¾ØÕó·½Ê½£¨µÚÒ»²½±ä»»·ÅÔÚÓÒ±ß£©
+        //1ï¼‰å¹³ç§»åˆ°å‚è€ƒç‚¹ä¸åŸç‚¹é‡åˆgetTranslation(-ref)
+        //2ï¼‰ç¼©æ”¾getScaling(c)
+        //3ï¼‰ä½œ1ï¼‰çš„é€†å˜æ¢getTranslation(ref)
+        //æ³¨æ„æ˜¯ç”¨äºåˆ—å‘é‡è¡¨è¾¾ï¼Œå·¦ä¹˜çŸ©é˜µæ–¹å¼ï¼ˆç¬¬ä¸€æ­¥å˜æ¢æ”¾åœ¨å³è¾¹ï¼‰
         return getTranslation(ref) * getScaling(c) * getTranslation(-ref);
     }
-    //¸ø¶¨Ëõ·ÅÏµÊı¡¢Ëõ·Å²Î¿¼µã£¨²»±äµã£©¡¢X·½Ïò£¨Y·½Ïò£©·µ»ØËõ·Å¾ØÕó
+    //ç»™å®šç¼©æ”¾ç³»æ•°ã€ç¼©æ”¾å‚è€ƒç‚¹ï¼ˆä¸å˜ç‚¹ï¼‰ã€Xæ–¹å‘ï¼ˆYæ–¹å‘ï¼‰è¿”å›ç¼©æ”¾çŸ©é˜µ
     static Matrix33 getScaling(const Vector2<T>& c, const Vector2<T>& ref, const Vector2<T>& x)
     {
         Vector2<T> xAxis(1, 0);
-        //1£©Æ½ÒÆµ½²Î¿¼µãÓëÔ­µãÖØºÏgetTranslation(-ref)
-        //2£©Ğı×ªµ½Ëõ·Å·½ÏòxÓëXÖáÖØºÏgetRotation(Vector3<T>(x), Vector3<T>(xAxis))
-        //3£©Ëõ·ÅgetScaling(c)
-        //4£©×÷2£©µÄÄæ±ä»»getRotation(Vector3<T>(xAxis), Vector3<T>(x))
-        //5£©×÷1£©µÄÄæ±ä»»getTranslation(ref)
-        //×¢ÒâÊÇÓÃÓÚÁĞÏòÁ¿±í´ï£¬×ó³Ë¾ØÕó·½Ê½£¨µÚÒ»²½±ä»»·ÅÔÚÓÒ±ß£©
+        //1ï¼‰å¹³ç§»åˆ°å‚è€ƒç‚¹ä¸åŸç‚¹é‡åˆgetTranslation(-ref)
+        //2ï¼‰æ—‹è½¬åˆ°ç¼©æ”¾æ–¹å‘xä¸Xè½´é‡åˆgetRotation(Vector3<T>(x), Vector3<T>(xAxis))
+        //3ï¼‰ç¼©æ”¾getScaling(c)
+        //4ï¼‰ä½œ2ï¼‰çš„é€†å˜æ¢getRotation(Vector3<T>(xAxis), Vector3<T>(x))
+        //5ï¼‰ä½œ1ï¼‰çš„é€†å˜æ¢getTranslation(ref)
+        //æ³¨æ„æ˜¯ç”¨äºåˆ—å‘é‡è¡¨è¾¾ï¼Œå·¦ä¹˜çŸ©é˜µæ–¹å¼ï¼ˆç¬¬ä¸€æ­¥å˜æ¢æ”¾åœ¨å³è¾¹ï¼‰
         return  getTranslation(ref) * getRotation(Vector3<T>(xAxis), Vector3<T>(x)) * getScaling(c) * getRotation(Vector3<T>(x), Vector3<T>(xAxis)) * getTranslation(-ref);
     }
 
-    //°´¸ø¶¨Ëõ·ÅÏµÊıËõ·Å£¨±ÈÀı£©£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬²ÉÓÃ×ó³ËĞı×ª¾ØÕó·½Ê½£©
+    //æŒ‰ç»™å®šç¼©æ”¾ç³»æ•°ç¼©æ”¾ï¼ˆæ¯”ä¾‹ï¼‰ï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œé‡‡ç”¨å·¦ä¹˜æ—‹è½¬çŸ©é˜µæ–¹å¼ï¼‰
     Matrix33& scale(T x, T y)
     {
         return preMultiply(getScaling(x, y));
     }
-    //°´¸ø¶¨Ëõ·ÅÏµÊıËõ·Å£¨±ÈÀı£©£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£¬²ÉÓÃ×ó³ËĞı×ª¾ØÕó·½Ê½£©
+    //æŒ‰ç»™å®šç¼©æ”¾ç³»æ•°ç¼©æ”¾ï¼ˆæ¯”ä¾‹ï¼‰ï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼Œé‡‡ç”¨å·¦ä¹˜æ—‹è½¬çŸ©é˜µæ–¹å¼ï¼‰
     Matrix33& scale(const Vector2<T>& v)
     {
         return preMultiply(getScaling(v.x(), v.y()));
     }
 
-    //·µ»Ø¹ØÓÚxÖá¶Ô³ÆµÄ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›å…³äºxè½´å¯¹ç§°çš„çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getMirrorXAxis()
     {
         Matrix33 m;
         m.e(1, 1) = (T)-1;
         return m;
     }
-    //·µ»Ø¹ØÓÚyÖá¶Ô³ÆµÄ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›å…³äºyè½´å¯¹ç§°çš„çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getMirrorYAxis()
     {
         Matrix33 m;
         m.e(0, 0) = (T)-1;
         return m;
     }
-    //·µ»Ø¹ØÓÚÔ­µã¶Ô³ÆµÄ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›å…³äºåŸç‚¹å¯¹ç§°çš„çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getMirrorOrigin()
     {
         Matrix33 m;
@@ -659,7 +659,7 @@ public:
         m.e(1, 1) = (T)-1;
         return m;
     }
-    //·µ»Ø¹ØÓÚy=xÏß¶Ô³ÆµÄ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›å…³äºy=xçº¿å¯¹ç§°çš„çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getMirrorYepX()
     {
         Matrix33 m = getNull();
@@ -668,7 +668,7 @@ public:
         m.e(2, 2) = (T)1;
         return m;
     }
-    //·µ»Ø¹ØÓÚy=-xÖá¶Ô³ÆµÄ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›å…³äºy=-xè½´å¯¹ç§°çš„çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getMirrorYenX()
     {
         Matrix33 m = getNull();
@@ -678,47 +678,47 @@ public:
         return m;
     }
 
-    //¹ØÓÚxÖá¶Ô³Æ£¨ÁĞÏòÁ¿·½Ê½£©
+    //å…³äºxè½´å¯¹ç§°ï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     Matrix33& mirrorXAxis()
     {
         return preMultiply(getMirrorX());
     }
-    //¹ØÓÚyÖá¶Ô³Æ£¨ÁĞÏòÁ¿·½Ê½£©
+    //å…³äºyè½´å¯¹ç§°ï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     Matrix33& mirrorYAxis()
     {
         return preMultiply(getMirrorY());
     }
-    //¹ØÓÚÔ­µã¶Ô³Æ£¨ÁĞÏòÁ¿·½Ê½£©
+    //å…³äºåŸç‚¹å¯¹ç§°ï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     Matrix33& mirrorOrigin()
     {
         return preMultiply(getMirrorOrigin());
     }
-    //¹ØÓÚy = xÏß¶Ô³Æ£¨ÁĞÏòÁ¿·½Ê½£©
+    //å…³äºy = xçº¿å¯¹ç§°ï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     Matrix33& mirrorYepX()
     {
         return preMultiply(getMirrorYepX());
     }
-    //¹ØÓÚy=-xÖá¶Ô³Æ£¨ÁĞÏòÁ¿·½Ê½£©
+    //å…³äºy=-xè½´å¯¹ç§°ï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     Matrix33& mirrorYenX()
     {
         return preMultiply(getMirrorYenX());
     }
 
-    //·µ»ØxÖá·½Ïò´íÇĞ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›xè½´æ–¹å‘é”™åˆ‡çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getShearXAxis(T shx)
     {
         Matrix33 m;
         m.e(0, 1) = shx;
         return m;
     }
-    //·µ»ØyÖá·½Ïò´íÇĞ¾ØÕó£¨ÁĞÏòÁ¿·½Ê½£©
+    //è¿”å›yè½´æ–¹å‘é”™åˆ‡çŸ©é˜µï¼ˆåˆ—å‘é‡æ–¹å¼ï¼‰
     static Matrix33 getShearYAxis(T shy)
     {
         Matrix33 m;
         m.e(1, 0) = shy;
         return m;
     }
-    //·µ»Ø´íÇĞ¾ØÕó£¨Ö¸¶¨x¡¢y·½Ïò´íÇĞÒò×Ó£©
+    //è¿”å›é”™åˆ‡çŸ©é˜µï¼ˆæŒ‡å®šxã€yæ–¹å‘é”™åˆ‡å› å­ï¼‰
     static Matrix33 getShear(T shx, T shy)
     {
         Matrix33 m;
@@ -726,25 +726,25 @@ public:
         m.e(1, 0) = shy;
         return m;
     }
-    //xÖá·½Ïò´íÇĞ
+    //xè½´æ–¹å‘é”™åˆ‡
     Matrix33& shearXAxis(T shx)
     {
         return preMultiply(getShearXAxis(shx));
     }
-    //yÖá·½Ïò´íÇĞ
+    //yè½´æ–¹å‘é”™åˆ‡
     Matrix33& shearYAxis(T shy)
     {
         return preMultiply(getShearYAxis(shy));
     }
-    //´íÇĞ£¨Ö¸¶¨x¡¢y·½Ïò´íÇĞÒò×Ó£©
+    //é”™åˆ‡ï¼ˆæŒ‡å®šxã€yæ–¹å‘é”™åˆ‡å› å­ï¼‰
     Matrix33& shear(T shx, T shy)
     {
         return preMultiply(getShear(shx, shy));
     }
 
-    //·µ»ØÖ¸¶¨ĞĞÁĞµÄÔªËØ£¨ÓÒÖµ£©
+    //è¿”å›æŒ‡å®šè¡Œåˆ—çš„å…ƒç´ ï¼ˆå³å€¼ï¼‰
     const T& e(int i, int j) const { return eVec[j][i]; }
-    //·µ»ØÖ¸¶¨ĞĞÁĞµÄÔªËØ£¨×óÖµ£©
+    //è¿”å›æŒ‡å®šè¡Œåˆ—çš„å…ƒç´ ï¼ˆå·¦å€¼ï¼‰
     T& e(int i, int j) { return eVec[j][i]; }
 
     //abs (this[i][j] - m[i][j]) <= e
@@ -768,74 +768,74 @@ public:
         return true;
     }
 
-    //·µ»Ø¾ØÕóÎ¬Êı
+    //è¿”å›çŸ©é˜µç»´æ•°
     static unsigned int dimensions()
     {
         return 3;
     }
 private:
-    //»ñÈ¡Ö¸¶¨ÁĞ£¨ÓÒÖµ£©
+    //è·å–æŒ‡å®šåˆ—ï¼ˆå³å€¼ï¼‰
     const Vector3<T>& operator[](unsigned int i) const { assert(i < 3); return eVec[i]; }
-    //»ñÈ¡Ö¸¶¨ÁĞ£¨×óÖµ£©
+    //è·å–æŒ‡å®šåˆ—ï¼ˆå·¦å€¼ï¼‰
     Vector3<T>& operator[](unsigned int i) { assert(i < 3); return eVec[i]; }
 protected:
-    Vector3<T> eVec[3]; //ÁĞÏòÁ¿
+    Vector3<T> eVec[3]; //åˆ—å‘é‡
 };
 
-//¶şÔªÔËËã·ûÖØÔØ
-//·µ»ØÁ½¾ØÕóµÄ»ı£¨p * q£©
+//äºŒå…ƒè¿ç®—ç¬¦é‡è½½
+//è¿”å›ä¸¤çŸ©é˜µçš„ç§¯ï¼ˆp * qï¼‰
 template<typename T>
 inline Matrix33<T> operator*(const Matrix33<T>& p, const Matrix33<T>& q);
 
-//·µ»ØÖµÓë¾ØÕóµÄºÍ£¨T + q£©£¬qµÄ¸÷ÔªËØ¼ÓÉÏÖ¸¶¨Öµ¡£
+//è¿”å›å€¼ä¸çŸ©é˜µçš„å’Œï¼ˆT + qï¼‰ï¼Œqçš„å„å…ƒç´ åŠ ä¸ŠæŒ‡å®šå€¼ã€‚
 template<typename T>
 inline Matrix33<T> operator+(T d, const Matrix33<T>& m);
 
-//·µ»ØÖµÓë¾ØÕóµÄ»ı£¨T * q£©£¬qµÄ¸÷ÔªËØ³ËÒÔÖ¸¶¨Öµ¡£
+//è¿”å›å€¼ä¸çŸ©é˜µçš„ç§¯ï¼ˆT * qï¼‰ï¼Œqçš„å„å…ƒç´ ä¹˜ä»¥æŒ‡å®šå€¼ã€‚
 template<typename T>
 inline Matrix33<T> operator*(T d, const Matrix33<T>& m);
 
-// ¸ø¶¨¾ØÕóÓÒ±ßÓÒ³ËÒ»¸öÁĞÏòÁ¿£¬·µ»Ø½á¹ûÁĞÏòÁ¿
+// ç»™å®šçŸ©é˜µå³è¾¹å³ä¹˜ä¸€ä¸ªåˆ—å‘é‡ï¼Œè¿”å›ç»“æœåˆ—å‘é‡
 template<typename T>
 inline Vector3<T> operator*(const Matrix33<T>& m, const Vector3<T>& v);
 
-// ¸ø¶¨¾ØÕóÓÒ±ßÓÒ³ËÒ»¸öÁĞÏòÁ¿£¨¼Ù¶¨z=0£©£¬·µ»Ø½á¹ûÁĞÏòÁ¿
+// ç»™å®šçŸ©é˜µå³è¾¹å³ä¹˜ä¸€ä¸ªåˆ—å‘é‡ï¼ˆå‡å®šz=0ï¼‰ï¼Œè¿”å›ç»“æœåˆ—å‘é‡
 template<typename T>
 inline Vector2<T> operator*(const Matrix33<T>& m, const Vector2<T>& v);
 
-// ĞĞÏòÁ¿vÓÒ³ËÒ»¸ö¾ØÕóm£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨×óÖµ£©
+// è¡Œå‘é‡vå³ä¹˜ä¸€ä¸ªçŸ©é˜µmï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå·¦å€¼ï¼‰
 template<typename T, typename S>
 inline Vector3<T>& operator*=(Vector3<T>& v, const Matrix33<S>& m);
 
-// ĞĞÏòÁ¿vÓÒ³ËÒ»¸ö¾ØÕóm£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨ÓÒÖµ£©
+// è¡Œå‘é‡vå³ä¹˜ä¸€ä¸ªçŸ©é˜µmï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå³å€¼ï¼‰
 template<typename T, typename S>
 inline Vector3<T> operator*(const Vector3<T>& v, const Matrix33<S>& m);
 
-//! ĞĞÏòÁ¿v£¨¼Ù¶¨z=0£©ÓÒ³ËÒ»¸ö¾ØÕóm£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨ÓÒÖµ£©
+//! è¡Œå‘é‡vï¼ˆå‡å®šz=0ï¼‰å³ä¹˜ä¸€ä¸ªçŸ©é˜µmï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå³å€¼ï¼‰
 template<typename T, typename S>
 inline Vector2<T> operator*(const Vector2<T>& v, const Matrix33<S>& m);
 
-//·µ»Ø¸ø¶¨½Ç¶È£¨¶È£©µÄĞı×ª¾ØÕó£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£©
+//è¿”å›ç»™å®šè§’åº¦ï¼ˆåº¦ï¼‰çš„æ—‹è½¬çŸ©é˜µï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼‰
 template<typename T>
 Matrix33<T> Matrix33<T>::getRotation(T degrees);
 
-//·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó
+//è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µ
 template<typename T>
 Matrix33<T> getRotation(const Vector3<T>& from, const Vector3<T>& to);
 
 
-//·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»£¬ÏòÁ¿Ê¹ÓÃÁĞÏòÁ¿£©
+//è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ï¼Œå‘é‡ä½¿ç”¨åˆ—å‘é‡ï¼‰
 template<typename T>
 Matrix33<T> getRotation(const Vector2<T>& from, const Vector2<T>& to);
 
 
-//´ø»Ø¾ØÕóµÄÄæ¾ØÕó²¢·µ»ØĞĞÁĞÊ½Öµ
+//å¸¦å›çŸ©é˜µçš„é€†çŸ©é˜µå¹¶è¿”å›è¡Œåˆ—å¼å€¼
 template<typename T>
 T Matrix33<T>::getInverse(Matrix33<T>& dest) const;
 
 
-//¾ßÌåÊµÏÖ
-//·µ»ØÁ½¾ØÕóµÄ»ı£¨out = p * q£©
+//å…·ä½“å®ç°
+//è¿”å›ä¸¤çŸ©é˜µçš„ç§¯ï¼ˆout = p * qï¼‰
 template<typename T>
 inline Matrix33<T> operator*(const Matrix33<T>& p, const Matrix33<T>& q)
 {
@@ -844,21 +844,21 @@ inline Matrix33<T> operator*(const Matrix33<T>& p, const Matrix33<T>& q)
     return t;
 }
 
-//·µ»ØÖµÓë¾ØÕóµÄºÍ£¨out = T + q£©£¬qµÄ¸÷ÔªËØ¼ÓÉÏÖ¸¶¨Öµ¡£
+//è¿”å›å€¼ä¸çŸ©é˜µçš„å’Œï¼ˆout = T + qï¼‰ï¼Œqçš„å„å…ƒç´ åŠ ä¸ŠæŒ‡å®šå€¼ã€‚
 template<typename T>
 inline Matrix33<T> operator+(T d, const Matrix33<T>& m)
 {
     return m + d;
 }
 
-//·µ»ØÖµÓë¾ØÕóµÄ»ı£¨out = T * q£©£¬qµÄ¸÷ÔªËØ³ËÒÔÖ¸¶¨Öµ¡£
+//è¿”å›å€¼ä¸çŸ©é˜µçš„ç§¯ï¼ˆout = T * qï¼‰ï¼Œqçš„å„å…ƒç´ ä¹˜ä»¥æŒ‡å®šå€¼ã€‚
 template<typename T>
 inline Matrix33<T> operator*(T d, const Matrix33<T>& m)
 {
     return m * d;
 }
 
-// ¸ø¶¨¾ØÕóÓÒ±ßÓÒ³ËÒ»¸öÁĞÏòÁ¿£¬·µ»Ø½á¹ûÁĞÏòÁ¿£¨out = m * v£©
+// ç»™å®šçŸ©é˜µå³è¾¹å³ä¹˜ä¸€ä¸ªåˆ—å‘é‡ï¼Œè¿”å›ç»“æœåˆ—å‘é‡ï¼ˆout = m * vï¼‰
 template<typename T>
 inline Vector3<T> operator*(const Matrix33<T>& m, const Vector3<T>& v)
 {
@@ -869,7 +869,7 @@ inline Vector3<T> operator*(const Matrix33<T>& m, const Vector3<T>& v)
     return t;
 }
 
-// ¸ø¶¨¾ØÕóÓÒ±ßÓÒ³ËÒ»¸öÁĞÏòÁ¿£¨¼Ù¶¨z=0£©£¬·µ»Ø½á¹ûÁĞÏòÁ¿£¨out = m * v£©
+// ç»™å®šçŸ©é˜µå³è¾¹å³ä¹˜ä¸€ä¸ªåˆ—å‘é‡ï¼ˆå‡å®šz=0ï¼‰ï¼Œè¿”å›ç»“æœåˆ—å‘é‡ï¼ˆout = m * vï¼‰
 template<typename T>
 inline Vector2<T> operator*(const Matrix33<T>& m, const Vector2<T>& v)
 {
@@ -879,7 +879,7 @@ inline Vector2<T> operator*(const Matrix33<T>& m, const Vector2<T>& v)
     return t;
 }
 
-// ĞĞÏòÁ¿ÓÒ³ËÒ»¸ö¾ØÕó£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨×óÖµ£©(out = v * m)£¬´¿´â¾ØÕóÔËËã£¬²»Òª×÷ÎªÍ¼ĞÎ±ä»»£¨Í¼ĞÎ±ä»»¼Ù¶¨µÄÊÇÓÃÁĞÏòÁ¿£©
+// è¡Œå‘é‡å³ä¹˜ä¸€ä¸ªçŸ©é˜µï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå·¦å€¼ï¼‰(out = v * m)ï¼Œçº¯ç²¹çŸ©é˜µè¿ç®—ï¼Œä¸è¦ä½œä¸ºå›¾å½¢å˜æ¢ï¼ˆå›¾å½¢å˜æ¢å‡å®šçš„æ˜¯ç”¨åˆ—å‘é‡ï¼‰
 template<typename T, typename S>
 inline Vector3<T>& operator*=(Vector3<T>& v, const Matrix33<S>& m)
 {
@@ -892,7 +892,7 @@ inline Vector3<T>& operator*=(Vector3<T>& v, const Matrix33<S>& m)
     return v;
 }
 
-// ĞĞÏòÁ¿ÓÒ³ËÒ»¸ö¾ØÕó£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨ÓÒÖµ£©£¨out = v * m£©£¬´¿´â¾ØÕóÔËËã£¬²»Òª×÷ÎªÍ¼ĞÎ±ä»»£¨Í¼ĞÎ±ä»»¼Ù¶¨µÄÊÇÓÃÁĞÏòÁ¿£©
+// è¡Œå‘é‡å³ä¹˜ä¸€ä¸ªçŸ©é˜µï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå³å€¼ï¼‰ï¼ˆout = v * mï¼‰ï¼Œçº¯ç²¹çŸ©é˜µè¿ç®—ï¼Œä¸è¦ä½œä¸ºå›¾å½¢å˜æ¢ï¼ˆå›¾å½¢å˜æ¢å‡å®šçš„æ˜¯ç”¨åˆ—å‘é‡ï¼‰
 template<typename T, typename S>
 inline Vector3<T> operator*(const Vector3<T>& v, const Matrix33<S>& m)
 {
@@ -903,7 +903,7 @@ inline Vector3<T> operator*(const Vector3<T>& v, const Matrix33<S>& m)
     return t;
 }
 
-// ĞĞÏòÁ¿v£¨¼Ù¶¨z=0£©ÓÒ³ËÒ»¸ö¾ØÕóm£¬·µ»Ø½á¹ûĞĞÏòÁ¿£¨ÓÒÖµ£©£¨out = v * m£©£¬´¿´â¾ØÕóÔËËã£¬²»Òª×÷ÎªÍ¼ĞÎ±ä»»£¨Í¼ĞÎ±ä»»¼Ù¶¨µÄÊÇÓÃÁĞÏòÁ¿£©
+// è¡Œå‘é‡vï¼ˆå‡å®šz=0ï¼‰å³ä¹˜ä¸€ä¸ªçŸ©é˜µmï¼Œè¿”å›ç»“æœè¡Œå‘é‡ï¼ˆå³å€¼ï¼‰ï¼ˆout = v * mï¼‰ï¼Œçº¯ç²¹çŸ©é˜µè¿ç®—ï¼Œä¸è¦ä½œä¸ºå›¾å½¢å˜æ¢ï¼ˆå›¾å½¢å˜æ¢å‡å®šçš„æ˜¯ç”¨åˆ—å‘é‡ï¼‰
 template<typename T, typename S>
 inline Vector2<T> operator*(const Vector2<T>& v, const Matrix33<S>& m)
 {
@@ -913,7 +913,7 @@ inline Vector2<T> operator*(const Vector2<T>& v, const Matrix33<S>& m)
     return t;
 }
 
-//·µ»Ø¸ø¶¨½Ç¶È£¨µ¥Î»£º¶È£¬ÄæÊ±ÕëÎªÕı£©µÄĞı×ª¾ØÕó£¨µã×ø±ê²ÉÓÃÁĞÏòÁ¿ĞÎÊ½£©£¨Í¼ĞÎĞı×ª±ä»»¾ØÕó£¨ÈÆ×ø±êÔ­µã£©£¬Í¼ĞÎ×ø±êÓÃÁĞÏòÁ¿±íÊ¾£©
+//è¿”å›ç»™å®šè§’åº¦ï¼ˆå•ä½ï¼šåº¦ï¼Œé€†æ—¶é’ˆä¸ºæ­£ï¼‰çš„æ—‹è½¬çŸ©é˜µï¼ˆç‚¹åæ ‡é‡‡ç”¨åˆ—å‘é‡å½¢å¼ï¼‰ï¼ˆå›¾å½¢æ—‹è½¬å˜æ¢çŸ©é˜µï¼ˆç»•åæ ‡åŸç‚¹ï¼‰ï¼Œå›¾å½¢åæ ‡ç”¨åˆ—å‘é‡è¡¨ç¤ºï¼‰
 template<typename T>
 Matrix33<T> Matrix33<T>::getRotation(T degrees)
 {
@@ -921,14 +921,14 @@ Matrix33<T> Matrix33<T>::getRotation(T degrees)
     degrees = degrees * (T)dDEG_TO_RAD;
     T s = (T)sin(degrees);
     T c = (T)cos(degrees);
-    rot.e(0, 0) = (T)c;     //cos  -sin   0 //µã×ø±êÊÇÁĞÏòÁ¿Ê±µÄĞı×ª¾ØÕóĞÎÊ½
+    rot.e(0, 0) = (T)c;     //cos  -sin   0 //ç‚¹åæ ‡æ˜¯åˆ—å‘é‡æ—¶çš„æ—‹è½¬çŸ©é˜µå½¢å¼
     rot.e(1, 1) = (T)c;     //sin   cos   0
     rot.e(1, 0) = (T)s;     //0     0     1
-    rot.e(0, 1) = -(T)s;    //µã×ø±êÊ¹ÓÃÁĞÏòÁ¿ĞÎÊ½
-    return rot;     //·µ»ØµÄ¾ØÕó½«ÓÃÓÚ×ó³ËÁĞÏòÁ¿µã×ø±ê(M * V)
+    rot.e(0, 1) = -(T)s;    //ç‚¹åæ ‡ä½¿ç”¨åˆ—å‘é‡å½¢å¼
+    return rot;     //è¿”å›çš„çŸ©é˜µå°†ç”¨äºå·¦ä¹˜åˆ—å‘é‡ç‚¹åæ ‡(M * V)
 }
 
-//·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó
+//è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µ
 template<typename T>
 Matrix33<T> Matrix33<T>::getRotation(const Vector3<T>& from, const Vector3<T>& to)
 {
@@ -937,32 +937,32 @@ Matrix33<T> Matrix33<T>::getRotation(const Vector3<T>& from, const Vector3<T>& t
 }
 
 
-//·µ»ØÒ»¸ö´ÓfromĞı×ªµ½to£¨¶¼ÊÇ¹ıÔ­µãµÄÖ±Ïß£©µÄ¾ØÕó£¨¶şÎ¬Í¼ĞÎ±ä»»£¬ÏòÁ¿Ê¹ÓÃÁĞÏòÁ¿£©
+//è¿”å›ä¸€ä¸ªä»fromæ—‹è½¬åˆ°toï¼ˆéƒ½æ˜¯è¿‡åŸç‚¹çš„ç›´çº¿ï¼‰çš„çŸ©é˜µï¼ˆäºŒç»´å›¾å½¢å˜æ¢ï¼Œå‘é‡ä½¿ç”¨åˆ—å‘é‡ï¼‰
 template<typename T>
 Matrix33<T> Matrix33<T>::getRotation(const Vector2<T>& from, const Vector2<T>& to)
 {
     Vector2<T> a, b, xAxis(1, 0);
     a = from;
     b = to;
-    a.normalize();  //ÓàÏÒ¶¨Àí£ºÁ½¹æ·¶»¯ÏòÁ¿µÄµã»ıÖµÊÇÁ½ÏòÁ¿¼Ğ½ÇµÄÓàÏÒÖµ
+    a.normalize();  //ä½™å¼¦å®šç†ï¼šä¸¤è§„èŒƒåŒ–å‘é‡çš„ç‚¹ç§¯å€¼æ˜¯ä¸¤å‘é‡å¤¹è§’çš„ä½™å¼¦å€¼
     b.normalize();  //
-    //T cosa = a.dot(b);    //dot(a, b);    ÓàÏÒÖµ·¶Î§ÊÇ[-1, 1]
-    //T alpha = acos(cosa); //Çóa×ªµ½bµÄ½Ç¶È£¨»¡¶È£©£¬¿ÉÒÔ¿´³ÉÖ±Ïß¶ÎOAµ½OBµÄ½Ç¶È¡£·´ÓàÏÒµÃµ½µÄ½Ç¶È·¶Î§[0, pi]£¬¶ÔÓ¦[1, -1]
+    //T cosa = a.dot(b);    //dot(a, b);    ä½™å¼¦å€¼èŒƒå›´æ˜¯[-1, 1]
+    //T alpha = acos(cosa); //æ±‚aè½¬åˆ°bçš„è§’åº¦ï¼ˆå¼§åº¦ï¼‰ï¼Œå¯ä»¥çœ‹æˆç›´çº¿æ®µOAåˆ°OBçš„è§’åº¦ã€‚åä½™å¼¦å¾—åˆ°çš„è§’åº¦èŒƒå›´[0, pi]ï¼Œå¯¹åº”[1, -1]
     //return getRotation(alpha * (T)dRAD_TO_DEG);
 
-    //Èç¹ûÊÇÒªÇóÄæÊ±Õë·½Ïò´Ófrom×ªµ½to£¬Ôò½Ç¶È·¶Î§[0, 360]
-    //¹ıÔ­µã×öÒ»ÌõÖ±Ïß´¹Ö±ÓÚa(from)£¬Ôòµã»ıÖµ´óÓÚ0±íÊ¾b(to)Óëa(from)ÔÚ¸ÃÖ±ÏßÍ¬Ò»²à£¬µã»ıÖµĞ¡ÓÚ0±íÊ¾b(to)Óëa(from)ÔÚ¸ÃÖ±ÏßÁ½²à
-    //Çó from ÄæÊ±ÕëĞı×ªµ½xÖáµÄ½Ç¶È
+    //å¦‚æœæ˜¯è¦æ±‚é€†æ—¶é’ˆæ–¹å‘ä»fromè½¬åˆ°toï¼Œåˆ™è§’åº¦èŒƒå›´[0, 360]
+    //è¿‡åŸç‚¹åšä¸€æ¡ç›´çº¿å‚ç›´äºa(from)ï¼Œåˆ™ç‚¹ç§¯å€¼å¤§äº0è¡¨ç¤ºb(to)ä¸a(from)åœ¨è¯¥ç›´çº¿åŒä¸€ä¾§ï¼Œç‚¹ç§¯å€¼å°äº0è¡¨ç¤ºb(to)ä¸a(from)åœ¨è¯¥ç›´çº¿ä¸¤ä¾§
+    //æ±‚ from é€†æ—¶é’ˆæ—‹è½¬åˆ°xè½´çš„è§’åº¦
     T cosax = a.dot(xAxis);
-    T angleax = acos(cosax) * (T)dRAD_TO_DEG;   //[0 180]£¬Ò»¡¢¶şÏóÏŞÊ±Õı³££¬Èı¡¢ËÄÏóÏŞÊ±ĞèĞŞÕı
-    //ÇótoÄæÊ±ÕëĞı×ªµ½xÖáµÄ½Ç¶È
+    T angleax = acos(cosax) * (T)dRAD_TO_DEG;   //[0 180]ï¼Œä¸€ã€äºŒè±¡é™æ—¶æ­£å¸¸ï¼Œä¸‰ã€å››è±¡é™æ—¶éœ€ä¿®æ­£
+    //æ±‚toé€†æ—¶é’ˆæ—‹è½¬åˆ°xè½´çš„è§’åº¦
     T cosbx = b.dot(xAxis);
-    T anglebx = acos(cosbx) * (T)dRAD_TO_DEG;   //[0 180]£¬Ò»¡¢¶şÏóÏŞÊ±Õı³££¬Èı¡¢ËÄÏóÏŞÊ±ĞèĞŞÕı
-    if (a.y() < 0) //Èı¡¢ËÄÏóÏŞ[180 360]
+    T anglebx = acos(cosbx) * (T)dRAD_TO_DEG;   //[0 180]ï¼Œä¸€ã€äºŒè±¡é™æ—¶æ­£å¸¸ï¼Œä¸‰ã€å››è±¡é™æ—¶éœ€ä¿®æ­£
+    if (a.y() < 0) //ä¸‰ã€å››è±¡é™[180 360]
         angleax = 360 - angleax;
     if (b.y() < 0)
         anglebx = 360 - anglebx;
-    T alpha;    //fromÄæÊ±ÕëĞı×ªµ½toµÄ½Ç¶È[0 360]
+    T alpha;    //fromé€†æ—¶é’ˆæ—‹è½¬åˆ°toçš„è§’åº¦[0 360]
     if (anglebx > angleax)
         alpha = anglebx - angleax;
     else
@@ -970,7 +970,7 @@ Matrix33<T> Matrix33<T>::getRotation(const Vector2<T>& from, const Vector2<T>& t
     return getRotation(alpha);
 }
 
-//´ø»Ø¾ØÕóµÄÄæ¾ØÕó²¢·µ»ØĞĞÁĞÊ½Öµ£¬´¿´â¾ØÕóÔËËã£¬ÓÃÓÚÍ¼ĞÎ±ä»»Ê±Òª×¢Òâ¡£
+//å¸¦å›çŸ©é˜µçš„é€†çŸ©é˜µå¹¶è¿”å›è¡Œåˆ—å¼å€¼ï¼Œçº¯ç²¹çŸ©é˜µè¿ç®—ï¼Œç”¨äºå›¾å½¢å˜æ¢æ—¶è¦æ³¨æ„ã€‚
 template<typename T>
 T Matrix33<T>::getInverse(Matrix33<T>& dest) const
 {
