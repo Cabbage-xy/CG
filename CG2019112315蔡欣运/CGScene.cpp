@@ -12,6 +12,7 @@ CGScene::CGScene()
 CGScene::~CGScene()
 {
 	removeAllRenderable();
+	ClearClipResult();
 }
 //序列化
 void CGScene::Serialize(CArchive & ar)
@@ -406,5 +407,22 @@ bool CGScene::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
 		i++;
 	}
 	return true;
+}
+//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果不为空时返回true。
+bool CGScene::Clip(double xl, double yb, double xr, double yt, CGCamera* pCamera)
+{
+	//派生类中实现
+	return false;
+}
+void CGScene::ClearClipResult() //清除裁剪结果集
+{
+	int i = 0, cnt = mClipResult.GetSize();
+	while (i < cnt)
+	{
+		if (mClipResult.GetAt(i))
+			delete mClipResult.GetAt(i);
+		i++;
+	}
+	mClipResult.RemoveAll();
 }
 CG_NAMESPACE_EXIT

@@ -280,4 +280,19 @@ void CG2DLineSegment::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
 	mEnd = Vec2d(end.x(), end.y());
 	setBoundsDirty(true);
 }
+bool CG2DLineSegment::Cliped(double xl, double yb, double xr, double yt, CGCamera* pCamera,
+	CTypedPtrArray<CObArray, CGRenderable*>& result)
+{
+	Vec2d s, e; //记录线段裁剪结果的起点、终点
+	//调用裁剪算法裁剪本线段
+	bool flag = pCamera->CohenSutherlandLineClip(xl, yb, xr, yt, mStart, mEnd, s, e);
+	if (flag) //有裁剪窗口内的部分，加入裁剪结果集
+	{
+		CG2DLineSegment* pline = new CG2DLineSegment(*this); //拷贝构造
+		pline->mStart = s; //结果起点
+		pline->mEnd = e; //结果终点
+		result.Add(pline); //加入裁剪结果集
+	}
+	return flag;
+}
 CG_NAMESPACE_EXIT

@@ -39,6 +39,8 @@
 
 #include "Move2DCamera.h"
 
+#include "RectClip2D.h"
+
 #include "Pick2DRenderable.h"
 
 #include "CGRenderContext.h"
@@ -128,6 +130,9 @@ BEGIN_MESSAGE_MAP(CCG2019112315蔡欣运GDI2DView, CGDI2DView/*CView*/)
 	ON_COMMAND(ID_NARROW_VIEW, &CCG2019112315蔡欣运GDI2DView::OnNarrowView)
 	ON_COMMAND(ID_RESET_CAMERA, &CCG2019112315蔡欣运GDI2DView::OnResetCamera)
 	ON_COMMAND(ID_SHOW_ALL, &CCG2019112315蔡欣运GDI2DView::OnShowAll)
+	ON_COMMAND(ID_CLIP_RECT, &CCG2019112315蔡欣运GDI2DView::OnClipRect)
+	ON_COMMAND(ID_CLIP_UNDO, &CCG2019112315蔡欣运GDI2DView::OnClipUndo)
+	ON_UPDATE_COMMAND_UI(ID_CLIP_RECT, &CCG2019112315蔡欣运GDI2DView::OnUpdateClipRect)
 END_MESSAGE_MAP()
 
 // CCG2019112315蔡欣运GDI2DView 构造/析构
@@ -1105,6 +1110,27 @@ void CCG2019112315蔡欣运GDI2DView::ShearXYAxis(double shx, double shy) //沿X
 		UpdateWindow();
 	}
 }
+//测试裁剪用（通过通过交互命令类调用）;
+void CCG2019112315蔡欣运GDI2DView::Clip(double xl, double yb, double xr, double yt)
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->Clip(xl, yb, xr, yt);
+		Invalidate();
+		UpdateWindow();
+	}
+}
+void CCG2019112315蔡欣运GDI2DView::ClearClipResult() //清除裁剪结果集
+{
+	CCG2019112315蔡欣运GDI2DDoc* pDoc = GetDocument();
+	if (pDoc)
+	{
+		pDoc->ClearClipResult();
+		Invalidate();
+		UpdateWindow();
+	}
+}
 
 //Button响应函数
 void CCG2019112315蔡欣运GDI2DView::OnTransformTranslateLeft()
@@ -1405,4 +1431,31 @@ void CCG2019112315蔡欣运GDI2DView::OnShowAll()
 	}
 	Invalidate();
 	UpdateWindow();
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnClipRect()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (mCommand)
+	{
+		mCommand->Cancel();
+		delete mCommand;
+		mCommand = nullptr;
+	}
+	mCommand = new RectClip2D(this);
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnUpdateClipRect(CCmdUI* pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(mCommand && mCommand->GetType() == cmd2dRectClip);
+}
+
+
+void CCG2019112315蔡欣运GDI2DView::OnClipUndo()
+{
+	// TODO: 在此添加命令处理程序代码
+	ClearClipResult();
 }

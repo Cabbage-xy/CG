@@ -124,6 +124,83 @@ void CGDI2DCamera::Reset() //重置到默认参数
 	mUpX = 0.0;
 	mUpY = 1.0;
 }
+
+int GetCode(double xl, double yb, double xr, double yt, const Vec2d& p) {
+	int code = 0;
+	const int TOP = 8;//1000
+	const int BOTTOM = 4;//0100
+	const int RIGHT = 2;//0010
+	const int LEFT = 1;//0001
+	if (p.x() < xl) // 左
+		code |= LEFT;
+	else if (p.x() > xr) // 右
+		code |= RIGHT;
+	if (p.y() < yb) // 下
+		code |= BOTTOM;
+	else if (p.y() > yt) // 上
+		code |= TOP;
+	return code;
+}
+
+bool CGDI2DCamera::CohenSutherlandLineClip(double xl, double yb, double xr, double yt, const Vec2d& s,
+	const Vec2d& e, Vec2d& rs, Vec2d& re)
+{
+	int codeS, codeE;
+	rs = s, re = e;
+	codeS = GetCode(xl, yb, xr, yt, rs);
+	codeE = GetCode(xl, yb, xr, yt, re);
+	while (true) {
+		if (codeS == 0 && codeE == 0) {
+			return true;
+		}
+		else if ((codeS & codeE) != 0) {
+			return false;
+		}
+		else {
+			int codeOut;
+			double x, y;
+			const int TOP = 8;//1000
+			const int BOTTOM = 4;//0100
+			const int RIGHT = 2;//0010
+			const int LEFT = 1;//0001
+			if (codeS != 0) codeOut = codeS;
+			else codeOut = codeE;
+			if (codeOut & TOP) {
+				// 在矩形上方
+				x = rs.x() + (re.x() - rs.x()) * (yt - rs.y()) / (re.y() - rs.y());
+				y = yt;
+			}
+			else if (codeOut & BOTTOM) {
+				// 在矩形下方
+				x = rs.x() + (re.x() - rs.x()) * (yb - rs.y()) / (re.y() - rs.y());
+				y = yb;
+			}
+			else if (codeOut & RIGHT) {
+				// 在矩形右边
+				y = rs.y() + (re.y() - rs.y()) * (xr - rs.x()) / (re.x() - rs.x());
+				x = xr;
+			}
+			else if (codeOut & LEFT) {
+				// 在矩形左边
+				y = rs.y() + (re.y() - rs.y()) * (xl - rs.x()) / (re.x() - rs.x());
+				x = xl;
+			}
+			if (codeOut == codeS) {
+				rs.x() = x;
+				rs.y() = y;
+				codeS = GetCode(xl, yb, xr, yt, rs);
+			}
+			else {
+				re.x() = x;
+				re.y() = y;
+				codeE = GetCode(xl, yb, xr, yt, re);
+			}
+		}
+	}
+
+	return false;
+}
+
 //二维图形观察变换（世界坐标系到观察坐标系）（二维） ，移动观察坐标系
 Vec2d CGDI2DCamera::WCStoVCS(const Vec2d& p)
 {

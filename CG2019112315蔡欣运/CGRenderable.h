@@ -47,6 +47,14 @@ public:
 	virtual void ShearYAxis(double shy); //沿Y轴错切
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 	virtual void Transform(const Mat3d& mat); //几何变换（左乘给定矩阵）
+public:
+	//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果放入result数组。
+	virtual bool Cliped(double xl, double yb, double xr, double yt, CGCamera* pCamera,
+	CTypedPtrArray<CObArray, CGRenderable*>& result);
+	//利用相机的窗口范围进行裁剪，裁剪结果放入result数组。
+	//virtual bool Cliped(CGCamera* pCamera, CTypedPtrArray<CObArray, CGRenderable*>& result);
+	//裁剪窗口为任意多边形（clipWin），裁剪结果放入result数组。
+	//virtual bool Cliped(const Vec2dArray& clipWin, CGCamera* pCamera, CTypedPtrArray<CObArray, CGRenderable*>& result); //任意多边形裁剪窗口
 protected:
 	CGScene* mScene; //对象实例所属的场景，当对象加入场景时自动进行设置。
 	int mStatus = 0; //状态

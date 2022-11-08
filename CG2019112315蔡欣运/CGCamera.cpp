@@ -161,6 +161,19 @@ void CGCamera::Reset() //重置到默认参数
 {
 	//派生类中实现
 }
+
+//裁剪算法
+//直线段裁剪算法（使用交互命令构造裁剪窗口对选中的线段进行裁剪）
+//Cohen-Sutherland（编码）直线段裁剪
+//xl、yb、xr、yt对应裁剪窗口的左、下、右、上。s、e输入线段起点终点，rs、re裁剪结果，无，则返回false，有则返回true
+bool CGCamera::CohenSutherlandLineClip(double xl, double yb, double xr, double yt, const Vec2d& s,
+	const Vec2d& e, Vec2d& rs, Vec2d& re)
+{
+	//派生类中实现
+	return false;
+}
+//其他裁剪算法（选做）
+
 //二维图形观察变换（世界坐标系到观察坐标系）（二维）
 Vec2d CGCamera::WCStoVCS(const Vec2d& p)
 {

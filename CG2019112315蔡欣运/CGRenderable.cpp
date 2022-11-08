@@ -99,4 +99,10 @@ void CGRenderable::Transform(const Mat3d& mat) //几何变换（左乘给定矩阵）
 {
 	//派生类中实现
 }
+//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果放入result数组。
+bool CGRenderable::Cliped(double xl, double yb, double xr, double yt, CGCamera* pCamera,
+	CTypedPtrArray<CObArray, CGRenderable*>& result)
+{
+	return false;
+}
 CG_NAMESPACE_EXIT
