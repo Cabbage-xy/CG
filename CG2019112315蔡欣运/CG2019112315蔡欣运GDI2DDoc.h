@@ -58,6 +58,19 @@ public:
 	bool ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 	bool Transform(const Mat3d& mat); //几何变换（左乘给定矩阵）
 
+	//观察窗口宽度与视口宽度的比例
+	double WidthFactorWindowtoViewPort();
+	//观察窗口高度与视口高度的比例
+	double HeightFactorWindowtoViewPort();
+	//观察（二维）（注意保持与视口高宽比一致）
+	void Move2DCamera(double tx, double ty); //频移观察窗口
+	void Zoom2DCamera(const Vec2d& lb, const Vec2d& rt); //观察窗口左下角、右上角
+	void Zoom2DCamera(double ratio); //给定观察窗口的缩放比例（）
+	void Rotate2DCamera(double degree); //转动相机（观察坐标系）
+	void ShowAll2DCamera(); //显示全部场景
+	void Reset2DCamera(); //重置到默认参数（二维）
+	//客户区大小发生变换时，调整观察窗口与视口，并使高宽比相同，不产生变形
+	void ClientResized(int cx, int cy);
 // 重写
 public:
 	virtual BOOL OnNewDocument();

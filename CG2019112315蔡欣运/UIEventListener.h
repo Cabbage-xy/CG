@@ -21,7 +21,8 @@ enum CommandType
 	cmd2dRotateRenderable = 101, //绕选点旋转
 	cmd2dScaleRenderable = 102, //指定点，指定方向缩放
 	cmd2dMirrorRenderable = 103, //指定轴线对称
-
+	//二维观察指令
+	cmd2dMoveCamera = 110,
 	cmd2dPickRenderable = 1000, //拾取图形
 };
 //使用命令模式，简化CGView派生类中键盘、鼠标事件的处理
