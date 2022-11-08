@@ -5,34 +5,35 @@
 CG_NAMESPACE_ENTER
 enum CommandType
 {
-	cmdNone = 0, //ÎŞ£¬ÏÔÊ¾Êó±êÖ¸Õë£¬²»½»»¥»­Í¼
-	cmd2dLineSegment = 1, //ÀûÓÃÆğµã¡¢ÖÕµã»æÖÆÖ±Ïß¶Î
-	cmd2dLine = 2, //ÆôÓÃÁ½µã»æÖÆÎŞÏŞ³¤Ö±Ïß
-	cmd2dRay = 3, //ÀûÓÃÆğµã¡¢·½Ïò£¨µÚ¶şµãÈ·¶¨£©»æÖÆÉäÏß
-	cmd2dPolyline = 4, //ÕÛÏßÁ¬ĞøÏàÁ¬µÄÖ±Ïß¶ÎĞÎ³É
-	cmd2dCircle1PointRadius = 5, //Ò»µã+ÊäÈë°ë¾¶»­Ô²
-	cmd2dCircle2PointRadius = 6, //Á½µãÎª°ë¾¶»­Ô²
-	cmd2dCircle2PointDiameter = 7, //Á½µãÎªÖ±¾¶»­Ô²
-	cmd2dCircle3Point = 8, //ÈıµãÍâ½ÓÔ²
-	cmd2dPolygon = 9, //»æÖÆÒ»°ã¶à±ßĞÎ
-	cmd2dSeedFill = 10, //ÖÖ×ÓÌî³ä
-	//¶şÎ¬±ä»»Ö¸Áî
-	cmd2dTranslateRenderable = 100, //×ÔÓÉÆ½ÒÆ
-	cmd2dRotateRenderable = 101, //ÈÆÑ¡µãĞı×ª
-	cmd2dScaleRenderable = 102, //Ö¸¶¨µã£¬Ö¸¶¨·½ÏòËõ·Å
-	cmd2dMirrorRenderable = 103, //Ö¸¶¨ÖáÏß¶Ô³Æ
-
-	cmd2dPickRenderable = 1000, //Ê°È¡Í¼ĞÎ
+	cmdNone = 0, //æ— ï¼Œæ˜¾ç¤ºé¼ æ ‡æŒ‡é’ˆï¼Œä¸äº¤äº’ç”»å›¾
+	cmd2dLineSegment = 1, //åˆ©ç”¨èµ·ç‚¹ã€ç»ˆç‚¹ç»˜åˆ¶ç›´çº¿æ®µ
+	cmd2dLine = 2, //å¯ç”¨ä¸¤ç‚¹ç»˜åˆ¶æ— é™é•¿ç›´çº¿
+	cmd2dRay = 3, //åˆ©ç”¨èµ·ç‚¹ã€æ–¹å‘ï¼ˆç¬¬äºŒç‚¹ç¡®å®šï¼‰ç»˜åˆ¶å°„çº¿
+	cmd2dPolyline = 4, //æŠ˜çº¿è¿ç»­ç›¸è¿çš„ç›´çº¿æ®µå½¢æˆ
+	cmd2dCircle1PointRadius = 5, //ä¸€ç‚¹+è¾“å…¥åŠå¾„ç”»åœ†
+	cmd2dCircle2PointRadius = 6, //ä¸¤ç‚¹ä¸ºåŠå¾„ç”»åœ†
+	cmd2dCircle2PointDiameter = 7, //ä¸¤ç‚¹ä¸ºç›´å¾„ç”»åœ†
+	cmd2dCircle3Point = 8, //ä¸‰ç‚¹å¤–æ¥åœ†
+	cmd2dPolygon = 9, //ç»˜åˆ¶ä¸€èˆ¬å¤šè¾¹å½¢
+	cmd2dSeedFill = 10, //ç§å­å¡«å……
+	//äºŒç»´å˜æ¢æŒ‡ä»¤
+	cmd2dTranslateRenderable = 100, //è‡ªç”±å¹³ç§»
+	cmd2dRotateRenderable = 101, //ç»•é€‰ç‚¹æ—‹è½¬
+	cmd2dScaleRenderable = 102, //æŒ‡å®šç‚¹ï¼ŒæŒ‡å®šæ–¹å‘ç¼©æ”¾
+	cmd2dMirrorRenderable = 103, //æŒ‡å®šè½´çº¿å¯¹ç§°
+	//äºŒç»´è§‚å¯ŸæŒ‡ä»¤
+	cmd2dMoveCamera = 110,
+	cmd2dPickRenderable = 1000, //æ‹¾å–å›¾å½¢
 };
-//Ê¹ÓÃÃüÁîÄ£Ê½£¬¼ò»¯CGViewÅÉÉúÀàÖĞ¼üÅÌ¡¢Êó±êÊÂ¼şµÄ´¦Àí
+//ä½¿ç”¨å‘½ä»¤æ¨¡å¼ï¼Œç®€åŒ–CGViewæ´¾ç”Ÿç±»ä¸­é”®ç›˜ã€é¼ æ ‡äº‹ä»¶çš„å¤„ç†
 class UIEventListener : public CGObject
 {
 	friend class CGView;
 public:
-	UIEventListener(CGView* pview = nullptr); //Ê¹ÓÃÃüÁî¶ÔÏóµÄView¶ÔÏó£¨CGViewÅÉÉúÀà£©
+	UIEventListener(CGView* pview = nullptr); //ä½¿ç”¨å‘½ä»¤å¯¹è±¡çš„Viewå¯¹è±¡ï¼ˆCGViewæ´¾ç”Ÿç±»ï¼‰
 	~UIEventListener();
-	virtual int GetType() = 0; //ÃüÁîÀàĞÍ£¬±ØĞëÔÚÅÉÉúÀàÖĞÖØĞ´
-	//Êó±êÊÂ¼ş£¨¶¼Ö»¸ø³öÄ¬ÈÏÊµÏÖ£¬ÅÉÉúÀà¸ù¾İĞèÒªÖØĞ´ÏàÓ¦µÄº¯Êı£©
+	virtual int GetType() = 0; //å‘½ä»¤ç±»å‹ï¼Œå¿…é¡»åœ¨æ´¾ç”Ÿç±»ä¸­é‡å†™
+	//é¼ æ ‡äº‹ä»¶ï¼ˆéƒ½åªç»™å‡ºé»˜è®¤å®ç°ï¼Œæ´¾ç”Ÿç±»æ ¹æ®éœ€è¦é‡å†™ç›¸åº”çš„å‡½æ•°ï¼‰
 	virtual int OnLButtonUp(UINT nFlags, const Pos2i& pos);
 	virtual int OnLButtonDown(UINT nFlags, const Pos2i& pos);
 	virtual int OnLButtonDblClk(UINT nFlags, const Pos2i& pos);
@@ -44,18 +45,18 @@ public:
 	virtual int OnRButtonUp(UINT nFlags, const Pos2i& pos);
 	virtual int OnRButtonDown(UINT nFlags, const Pos2i& pos);
 	virtual int OnRButtonDblClk(UINT nFlags, const Pos2i& pos);
-	//¼üÅÌÊÂ¼ş
+	//é”®ç›˜äº‹ä»¶
 	virtual int OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual int OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual int OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual int OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual int OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	//È¡ÏûÃüÁî£¨°´ESC¼üÖĞ¶Ïµ±Ç°ÃüÁîµÄÖ´ĞĞ£©£¬±ØĞëÔÚÅÉÉúÀàÖĞÖØĞ´
+	//å–æ¶ˆå‘½ä»¤ï¼ˆæŒ‰ESCé”®ä¸­æ–­å½“å‰å‘½ä»¤çš„æ‰§è¡Œï¼‰ï¼Œå¿…é¡»åœ¨æ´¾ç”Ÿç±»ä¸­é‡å†™
 	virtual int Cancel() = 0;
 	//CGRenderContext* RenderContext(); //
 protected:
-	int mStep; // ÃüÁî²Ù×÷¼ÆÊı
-	CGView* mView; // ´¦ÀíÊÂ¼şµÄ´°¿Ú
+	int mStep; // å‘½ä»¤æ“ä½œè®¡æ•°
+	CGView* mView; // å¤„ç†äº‹ä»¶çš„çª—å£
 };
 CG_NAMESPACE_EXIT
 #endif //_UIEVENTLISTENER_H_INCLUDED

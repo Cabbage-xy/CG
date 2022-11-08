@@ -50,6 +50,16 @@ public:
 	virtual bool UseBrush() const;
 	virtual COLORREF BrushColor() const;
 	virtual int BrushIndex() const;
+	//观察窗口宽度与视口宽度的比例
+	double WidthFactorWindowtoViewPort();
+	//观察窗口高度与视口高度的比例
+	double HeightFactorWindowtoViewPort();
+	//观察（二维）（注意在实现中要保持与视口高宽比一致）
+	virtual void Move2DCamera(double tx, double ty); //频移观察窗口
+	virtual void Zoom2DCamera(const Vec2d& lb, const Vec2d& rt); //观察窗口左下角、右上角
+	virtual void Zoom2DCamera(double ratio); //给定观察窗口的缩放比例（）
+	virtual void Rotate2DCamera(double degree); //转动相机（观察坐标系）
+	virtual void Reset2DCamera(); //重置到默认参数（二维）
 	//画线算法
 	virtual int LineAlgorithm() const;
 	//圆弧算法
@@ -76,6 +86,8 @@ public:
 	virtual void Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
 	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
+
+
 // 实现
 public:
 	virtual ~CCG2019112315蔡欣运GDI2DView();
@@ -156,6 +168,12 @@ public:
 	afx_msg void OnUpdateTransformTranslateFree(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateTransformRotatePickPoint(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateTransformScale(CCmdUI* pCmdUI);
+	afx_msg void OnMoveViewpoint();
+	afx_msg void OnUpdateMoveViewpoint(CCmdUI* pCmdUI);
+	afx_msg void OnExtendView();
+	afx_msg void OnNarrowView();
+	afx_msg void OnResetCamera();
+	afx_msg void OnShowAll();
 };
 
 #ifndef _DEBUG  // CG2019112315蔡欣运GDI2DView.cpp 中的调试版本
