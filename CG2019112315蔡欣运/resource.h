@@ -171,13 +171,17 @@
 #define ID_SELECT_VIEW                  32852
 #define ID_BUTTON8                      32853
 #define ID_RESET_CAMERA                 32853
+#define ID_CLIP_RECT                    32854
+#define ID_BUTTON3                      32855
+#define ID_CLIP_RESET                   32855
+#define ID_CLIP_UNDO                    32856
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32854
+#define _APS_NEXT_COMMAND_VALUE         32857
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           312
 #endif

@@ -237,6 +237,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pick2DRenderable.h" />
     <ClInclude Include="PropertiesWnd.h" />
+    <ClInclude Include="RectClip2D.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TransformMirror2DRenderable.h" />
@@ -304,6 +305,7 @@
     </ClCompile>
     <ClCompile Include="Pick2DRenderable.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="RectClip2D.cpp" />
     <ClCompile Include="TransformMirror2DRenderable.cpp" />
     <ClCompile Include="TransformRotate2DRenderable.cpp" />
     <ClCompile Include="TransformScale2DRenderable.cpp" />

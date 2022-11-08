@@ -2,6 +2,7 @@
 #define _CGCAMERA_H_INCLUDED
 #include "AABBox2.h"
 #include "CGViewPort.h"
+#include "Vector2.h"
 CG_NAMESPACE_ENTER
 class CGCamera : public CGObject
 {
@@ -64,6 +65,21 @@ public:
 	virtual void Zoom(const Vec2d& lb, const Vec2d& rt); //观察窗口缩放（二维）（指定窗口参数，但要保证两方向同比例缩放）
 	virtual void Rotate(double degree); //旋转观察坐标系（绕坐标系原点，逆时针方向为正，单位：度）（二维）
 	virtual void Reset(); //重置到默认参数（二维）
+public:
+	//直线段裁剪算法（使用交互命令构造裁剪窗口对选中的线段进行裁剪）
+	//Cohen-Sutherland（编码）直线段裁剪
+	//xl、yb、xr、yt对应裁剪窗口的左、下、右、上。s、e输入线段起点终点，rs、re裁剪结果，无，则返回false，有则返回true
+	virtual bool CohenSutherlandLineClip(double xl, double yb, double xr, double yt, const Vec2d& s, const Vec2d& e, Vec2d& rs, Vec2d& re);
+	//其他裁剪算法（选做）
+	//中点分割直线段裁剪算法
+	//bool MidpointSplitLineClip(double xl, double yb, double xr, double yt, const Vec2d& s, const Vec2d& e, Vec2d& rs, Vec2d& re);
+	//梁-Barsky直线段裁剪算法
+	//bool LiangBarskyLineClip(double xl, double yb, double xr, double yt, const Vec2d& s, const Vec2d& e, Vec2d& rs, Vec2d& re);
+	//多边形裁剪算法（使用交互命令构造裁剪窗口对选中的多边形进行裁剪）
+	//Sutherland-Hodgman(逐边)多边形裁剪算法，输入矩形裁剪窗口、被裁剪多边形，输出一个结果多边形
+	//bool SutherlandHodgmanPolygonClip(double xl, double yb, double xr, double yt, const Vec2dArray& in, Vec2dArray& out);
+	//Werler-Atherton(双边)多边形裁剪算法，输入裁剪窗口多边形、被裁剪多边形，可能输出多个结果多边形
+	//bool WerlerAthertonPolygonClip(const Vec2dArray& win, const Vec2dArray& in, std::vector<Vec2dArray>& out);
 protected:
 	//变换支持函数
 	//二维图形观察变换（世界坐标系到观察坐标系）（二维）

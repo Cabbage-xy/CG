@@ -201,6 +201,9 @@
     <ClInclude Include="Move2DCamera.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RectClip2D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CG2019112315蔡欣运.cpp">
@@ -375,6 +378,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Move2DCamera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RectClip2D.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

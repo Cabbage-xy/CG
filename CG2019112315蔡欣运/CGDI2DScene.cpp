@@ -30,16 +30,44 @@ bool CGDI2DScene::Render(CGRenderContext* pRC, CGCamera* pCamera)
 		return false;
 	if (pCamera == nullptr || !pCamera->IsKindOf(RUNTIME_CLASS(CGDI2DCamera)))
 		return false;
-	int i = 0, cnt = mRenderables.GetSize();
-	while (i < cnt)
+	//测试裁剪用
+	int i = 0, cnt = mClipResult.GetSize();
+	if (cnt > 0) //如果裁剪结果集不为空，则绘制裁剪结果集中的对象。
 	{
-		CGRenderable* r = mRenderables.GetAt(i);
-		if (r != nullptr)
+		while (i < cnt)
 		{
-			r->Render(pRC, pCamera);
+			CGRenderable* r = mClipResult.GetAt(i);
+			if (r != nullptr)
+			{
+				r->Render(pRC, pCamera);
+			}
+			i++;
 		}
-		i++;
 	}
+	else
+	{
+		cnt = mRenderables.GetSize();
+		while (i < cnt)
+		{
+			CGRenderable* r = mRenderables.GetAt(i);
+			if (r != nullptr)
+			{
+				r->Render(pRC, pCamera);
+			}
+			i++;
+		}
+	}
+	//依次访问容器中的图形对象，调用其绘制函数，实现绘制
+	//int i = 0, cnt = mRenderables.GetSize();
+	//while (i < cnt)
+	//{
+	//	CGRenderable* r = mRenderables.GetAt(i);
+	//	if (r != nullptr)
+	//	{
+	//		r->Render(pRC, pCamera);
+	//	}
+	//	i++;
+	//}
 	//绘制世界坐标系测试（给定范围）
 	Vec2d wxs(-2000, 0), wxe(2000, 0), wys(0, -2000), wye(0, 2000);
 	Vec2i vxs = pCamera->WorldtoViewPort(wxs);
@@ -80,5 +108,37 @@ ABox2d CGDI2DScene::BoundingABox()
 		i++;
 	}
 	return box;
+}
+//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果不为空时返回true。
+bool CGDI2DScene::Clip(double xl, double yb, double xr, double yt, CGCamera* pCamera)
+{
+	//先删除裁剪结果集中的对象并清空裁剪结果集
+	int i = 0, cnt = mClipResult.GetSize();
+	while (i < cnt)
+	{
+		if (mClipResult.GetAt(i))
+			delete mClipResult.GetAt(i); //删除前次的裁剪结果。
+		i++;
+	}
+	mClipResult.RemoveAll();
+	CTypedPtrArray<CObArray, CGRenderable*> temp; //图形对象的裁剪结果
+	bool flag = false; //场景裁剪是否有结果，
+	i = 0;
+	cnt = mRenderables.GetSize();
+	while (i < cnt) //依次取出场景中的对象，裁剪，裁剪有结果则加入裁剪结果集
+	{
+		CGRenderable* r = mRenderables.GetAt(i);
+		if (r != nullptr)
+		{
+			if (r->Cliped(xl, yb, xr, yt, pCamera, temp)) //如果该图形对象裁剪有结果
+			{
+				flag = true;
+				mClipResult.Append(temp); //加入到场景的裁剪结果集
+				temp.RemoveAll(); //清空，用于存放下一个图形对象的裁剪
+			}
+		}
+		i++;
+	}
+	return flag;
 }
 CG_NAMESPACE_EXIT

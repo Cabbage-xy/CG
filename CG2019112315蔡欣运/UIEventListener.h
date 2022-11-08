@@ -23,6 +23,9 @@ enum CommandType
 	cmd2dMirrorRenderable = 103, //指定轴线对称
 	//二维观察指令
 	cmd2dMoveCamera = 110,
+	//二维裁剪指令
+	cmd2dRectClip = 120,
+
 	cmd2dPickRenderable = 1000, //拾取图形
 };
 //使用命令模式，简化CGView派生类中键盘、鼠标事件的处理

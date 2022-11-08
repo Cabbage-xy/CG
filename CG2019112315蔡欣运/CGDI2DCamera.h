@@ -25,6 +25,9 @@ public://相机操作
 	virtual void Zoom(const Vec2d& lb, const Vec2d& rt); //观察窗口缩放（二维）
 	virtual void Rotate(double degree); //旋转观察坐标系（绕坐标系原点）（二维）
 	virtual void Reset(); //重置到默认参数（二维）
+public:
+	bool CohenSutherlandLineClip(double xl, double yb, double xr, double yt, const Vec2d& s, const Vec2d& e, Vec2d& rs, Vec2d& re) override;
+
 
 protected://观察变换
 //二维图形观察变换（世界坐标系到观察坐标系）（二维）

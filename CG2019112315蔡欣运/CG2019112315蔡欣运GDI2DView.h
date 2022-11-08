@@ -86,6 +86,10 @@ public:
 	virtual void Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
 	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
+public:
+	//测试裁剪用（通过通过交互命令类调用）
+	virtual void Clip(double xl, double yb, double xr, double yt) override;
+	virtual void ClearClipResult() override; //清除裁剪结果集
 
 // 实现
 public:
@@ -173,6 +177,9 @@ public:
 	afx_msg void OnNarrowView();
 	afx_msg void OnResetCamera();
 	afx_msg void OnShowAll();
+	afx_msg void OnClipRect();
+	afx_msg void OnClipUndo();
+	afx_msg void OnUpdateClipRect(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // CG2019112315蔡欣运GDI2DView.cpp 中的调试版本

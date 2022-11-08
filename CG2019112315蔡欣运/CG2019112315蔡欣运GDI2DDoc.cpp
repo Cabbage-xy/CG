@@ -344,7 +344,15 @@ void CCG2019112315蔡欣运GDI2DDoc::ClientResized(int cx, int cy)
 {
 	mCamera.setClientRect(cx, cy); //客户区变化
 }
-
+//测试裁剪用（通过View类调用）;
+void CCG2019112315蔡欣运GDI2DDoc::Clip(double xl, double yb, double xr, double yt)
+{
+	mScene.Clip(xl, yb, xr, yt, &mCamera);
+}
+void CCG2019112315蔡欣运GDI2DDoc::ClearClipResult() //清除裁剪结果集
+{
+	mScene.ClearClipResult();
+}
 void CCG2019112315蔡欣运GDI2DDoc::OnUpdatePenColor(CCmdUI* pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码

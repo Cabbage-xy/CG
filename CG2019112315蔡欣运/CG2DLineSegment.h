@@ -34,7 +34,10 @@ public:
 	virtual void ShearYAxis(double shy); //沿Y轴错切
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 	virtual void Transform(const Mat3d& mat); //几何变换（左乘给定矩阵）
-
+public:
+	//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果放入result数组。
+	virtual bool Cliped(double xl, double yb, double xr, double yt, CGCamera* pCamera,
+		CTypedPtrArray<CObArray, CGRenderable*>& result) override;
 protected:
 	Vec2d mStart, mEnd; //起点、终点坐标
 };

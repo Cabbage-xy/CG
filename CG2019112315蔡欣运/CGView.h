@@ -63,6 +63,9 @@ public:
 	virtual void Scale(double sx, double sy, double cx, double cy); //缩放（关于指定参考点缩放）
 	virtual void Scale(double sx, double sy, double cx, double cy, const Vec2d& xDir); //缩放（指定参考点，缩放方向）
 	virtual void ShearXYAxis(double shx, double shy); //沿X、Y轴错切
+	//测试裁剪用（通过通过交互命令类调用）
+	virtual void Clip(double xl, double yb, double xr, double yt) {}
+	virtual void ClearClipResult() {} //清除裁剪结果集
 	// 实现
 public:
 	virtual ~CGView();

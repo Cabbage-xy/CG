@@ -48,10 +48,16 @@ public:
 	virtual bool ShearYAxis(double shy); //沿Y轴错切
 	virtual bool ShearXYAxis(double shx, double shy); //沿X、Y轴错切
 	virtual bool Transform(const Mat3d& mat); //几何变换（左乘给定矩阵）
+public:
+	//给定裁剪窗口（矩形范围）左下右上进行采集，裁剪结果不为空时返回true。
+	virtual bool Clip(double xl, double yb, double xr, double yt, CGCamera* pCamera);
+	void ClearClipResult(); //清除裁剪结果集
 protected:
 	CTypedPtrArray<CObArray, CGRenderable*> mRenderables;//图形对象列表
 	//图形对象选择集
 	CTypedPtrArray<CObArray, CGRenderable*> mSelections;
+	//裁剪结果
+	CTypedPtrArray<CObArray, CGRenderable*> mClipResult;
 };
 CG_NAMESPACE_EXIT
 #endif //_CGSCENE_H_INCLUDED
