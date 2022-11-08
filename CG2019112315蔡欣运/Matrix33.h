@@ -489,46 +489,53 @@ public:
         //3）平移到中心回到原位置getTranslation(v)
         return getTranslation(v) * getRotation(degrees) * getTranslation(-v);
     }
-    //返回一个从from旋转到to（都相当于过原点的直线，要求是二维图形的规范化齐次坐标，长度不能为0）的矩阵(HTJ)
-    static Matrix33 getRotation(const Vector3<T>& from, const Vector3<T>& to)
-    {
-        Matrix33<T> rot;
-        Vector2<T> f(from.st()), t(to.st());
-        //在3、4象限
-        if (f.y() < 0) {
-            f = f.negate();
-        }
-        if (t.y() < 0) {
-            t = t.negate();
-        }
-        T cosValue = (T)(f.dot(t) / (f.length() * t.length()));
-        T sinValue = (T)::sqrt((T)1 - cosValue);
-        rot.e(0, 0) = (T)cosValue;
-        rot.e(1, 1) = (T)cosValue;
-        rot.e(1, 0) = (T)sinValue;
-        rot.e(0, 1) = -(T)sinValue;
-        return rot;
-    }
-    //返回一个从from旋转到to（都相当于过原点的直线，要求长度不能为0）的矩阵(HTJ)
-    static Matrix33 getRotation(const Vector2<T>& from, const Vector2<T>& to)
-    {
-        Matrix33<T> rot;
-        Vector2<T> f(from), t(to);
-        //在3、4象限
-        if (f.y() < 0) {
-            f = f.negate();
-        }
-        if (t.y() < 0) {
-            t = t.negate();
-        }
-        T cosValue = (T)(f.dot(t) / (f.length() * t.length()));
-        T sinValue = (T)::sqrt((T)1 - cosValue);
-        rot.e(0, 0) = (T)cosValue;
-        rot.e(1, 1) = (T)cosValue;
-        rot.e(1, 0) = (T)sinValue;
-        rot.e(0, 1) = -(T)sinValue;
-        return rot;
-    }
+    ////返回一个从from旋转到to（都相当于过原点的直线，要求是二维图形的规范化齐次坐标，长度不能为0）的矩阵(HTJ)
+    //static Matrix33 getRotation(const Vector3<T>& from, const Vector3<T>& to)
+    //{
+    //    Matrix33<T> rot;
+    //    Vector2<T> f(from.st()), t(to.st());
+    //    //在3、4象限
+    //    if (f.y() < 0) {
+    //        f = f.negate();
+    //    }
+    //    if (t.y() < 0) {
+    //        t = t.negate();
+    //    }
+    //    T cosValue = (T)(f.dot(t) / (f.length() * t.length()));
+    //    T sinValue = (T)::sqrt((T)1 - cosValue);
+    //    rot.e(0, 0) = (T)cosValue;
+    //    rot.e(1, 1) = (T)cosValue;
+    //    rot.e(1, 0) = (T)sinValue;
+    //    rot.e(0, 1) = -(T)sinValue;
+    //    return rot;
+    //}
+    ////返回一个从from旋转到to（都相当于过原点的直线，要求长度不能为0）的矩阵(HTJ)
+    //static Matrix33 getRotation(const Vector2<T>& from, const Vector2<T>& to)
+    //{
+    //    Matrix33<T> rot;
+    //    Vector2<T> f(from), t(to);
+    //    //在3、4象限
+    //    if (f.y() < 0) {
+    //        f = f.negate();
+    //    }
+    //    if (t.y() < 0) {
+    //        t = t.negate();
+    //    }
+    //    T cosValue = (T)(f.dot(t) / (f.length() * t.length()));
+    //    T sinValue = (T)::sqrt((T)1 - cosValue);
+    //    rot.e(0, 0) = (T)cosValue;
+    //    rot.e(1, 1) = (T)cosValue;
+    //    rot.e(1, 0) = (T)sinValue;
+    //    rot.e(0, 1) = -(T)sinValue;
+    //    return rot;
+    //}
+
+    //返回一个从from旋转到to（都是过原点的直线）的矩阵
+    static Matrix33 getRotation(const Vector3<T>& from, const Vector3<T>& to);
+
+
+    //返回一个从from旋转到to（都是过原点的直线）的矩阵（二维图形变换，向量使用列向量）
+    static Matrix33 getRotation(const Vector2<T>& from, const Vector2<T>& to);
 
     //绕原点旋转指定角度（单位：度，逆时针为正），this = R * this（点坐标采用列向量形式，采用左乘旋转矩阵方式）
     Matrix33& rotate(T degrees)
@@ -812,6 +819,16 @@ inline Vector2<T> operator*(const Vector2<T>& v, const Matrix33<S>& m);
 template<typename T>
 Matrix33<T> Matrix33<T>::getRotation(T degrees);
 
+//返回一个从from旋转到to（都是过原点的直线）的矩阵
+template<typename T>
+Matrix33<T> getRotation(const Vector3<T>& from, const Vector3<T>& to);
+
+
+//返回一个从from旋转到to（都是过原点的直线）的矩阵（二维图形变换，向量使用列向量）
+template<typename T>
+Matrix33<T> getRotation(const Vector2<T>& from, const Vector2<T>& to);
+
+
 //带回矩阵的逆矩阵并返回行列式值
 template<typename T>
 T Matrix33<T>::getInverse(Matrix33<T>& dest) const;
@@ -909,6 +926,48 @@ Matrix33<T> Matrix33<T>::getRotation(T degrees)
     rot.e(1, 0) = (T)s;     //0     0     1
     rot.e(0, 1) = -(T)s;    //点坐标使用列向量形式
     return rot;     //返回的矩阵将用于左乘列向量点坐标(M * V)
+}
+
+//返回一个从from旋转到to（都是过原点的直线）的矩阵
+template<typename T>
+Matrix33<T> Matrix33<T>::getRotation(const Vector3<T>& from, const Vector3<T>& to)
+{
+    Vector2<T> a(from.x(), from.y()), b(to.x(), to.y());
+    return getRotation(a, b);
+}
+
+
+//返回一个从from旋转到to（都是过原点的直线）的矩阵（二维图形变换，向量使用列向量）
+template<typename T>
+Matrix33<T> Matrix33<T>::getRotation(const Vector2<T>& from, const Vector2<T>& to)
+{
+    Vector2<T> a, b, xAxis(1, 0);
+    a = from;
+    b = to;
+    a.normalize();  //余弦定理：两规范化向量的点积值是两向量夹角的余弦值
+    b.normalize();  //
+    //T cosa = a.dot(b);    //dot(a, b);    余弦值范围是[-1, 1]
+    //T alpha = acos(cosa); //求a转到b的角度（弧度），可以看成直线段OA到OB的角度。反余弦得到的角度范围[0, pi]，对应[1, -1]
+    //return getRotation(alpha * (T)dRAD_TO_DEG);
+
+    //如果是要求逆时针方向从from转到to，则角度范围[0, 360]
+    //过原点做一条直线垂直于a(from)，则点积值大于0表示b(to)与a(from)在该直线同一侧，点积值小于0表示b(to)与a(from)在该直线两侧
+    //求 from 逆时针旋转到x轴的角度
+    T cosax = a.dot(xAxis);
+    T angleax = acos(cosax) * (T)dRAD_TO_DEG;   //[0 180]，一、二象限时正常，三、四象限时需修正
+    //求to逆时针旋转到x轴的角度
+    T cosbx = b.dot(xAxis);
+    T anglebx = acos(cosbx) * (T)dRAD_TO_DEG;   //[0 180]，一、二象限时正常，三、四象限时需修正
+    if (a.y() < 0) //三、四象限[180 360]
+        angleax = 360 - angleax;
+    if (b.y() < 0)
+        anglebx = 360 - anglebx;
+    T alpha;    //from逆时针旋转到to的角度[0 360]
+    if (anglebx > angleax)
+        alpha = anglebx - angleax;
+    else
+        alpha = anglebx - angleax + 360;
+    return getRotation(alpha);
 }
 
 //带回矩阵的逆矩阵并返回行列式值，纯粹矩阵运算，用于图形变换时要注意。
