@@ -12,6 +12,8 @@ public:
 	virtual void Serialize(CArchive& ar);
 	//渲染场景到指定客户区（依赖CGDI2DView）
 	virtual bool Render(CGRenderContext* pRC, CGCamera* pCamera);
+	//二维场景包围盒计算
+	virtual ABox2d BoundingABox();
 };
 CG_NAMESPACE_EXIT
 #endif //_CGDI2DSCENE_H_INCLUDED

@@ -17,6 +17,28 @@ public:
 	virtual Vec2i WorldtoViewPort(const Vec2d& p);
 	//视口转换到世界坐标系（二维）
 	virtual Vec2d ViewPorttoWorld(const Vec2i& p);
+
+public://相机操作
+	//相机控制（观察控制）
+	virtual void Move(double tx, double ty); //移动观察坐标系（二维）
+	virtual void Zoom(double ratio); //观察窗口缩放（二维）
+	virtual void Zoom(const Vec2d& lb, const Vec2d& rt); //观察窗口缩放（二维）
+	virtual void Rotate(double degree); //旋转观察坐标系（绕坐标系原点）（二维）
+	virtual void Reset(); //重置到默认参数（二维）
+
+protected://观察变换
+//二维图形观察变换（世界坐标系到观察坐标系）（二维）
+	virtual Vec2d WCStoVCS(const Vec2d& p);
+	//二维图形窗视变换（观察坐标系到规范化设备坐标系）（二维）（实验中使用虚拟设备坐标系代替规范化设备坐标系）
+	virtual Vec2d VCStoNCS(const Vec2d& p);
+	//二维图形视口变换（规范化设备坐标系到设备坐标系）（二维）（实验中使用虚拟设备坐标系代替规范化设备坐标系）
+	virtual Vec2i NCStoDCS(const Vec2d& p);
+	//设备坐标系到规范化设备坐标系（二维）（实验中使用虚拟设备坐标系代替规范化设备坐标系）
+	virtual Vec2d DCStoNCS(const Vec2i& p);
+	//规范化设备坐标系到观察坐标系（二维）（实验中使用虚拟设备坐标系代替规范化设备坐标系）
+	virtual Vec2d NCStoVCS(const Vec2d& p);
+	//观察坐标系到世界坐标系（二维）
+	virtual Vec2d VCStoWCS(const Vec2d& p);
 protected:
 };
 CG_NAMESPACE_EXIT
